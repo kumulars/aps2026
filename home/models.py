@@ -5,12 +5,14 @@ from django.utils import timezone
 from wagtail.images.models import Image
 from wagtail.models import Page
 
+
 class HomePage(Page):
     pass
 
+
 @register_snippet
 class NewsResearchItem(models.Model):
-    news_item_id = models.IntegerField(unique=True)
+    news_item_id = models.IntegerField(unique=True)  # keep for legacy import
     news_item_entry_date = models.DateField(default=timezone.now)
     news_item_pi_first_name = models.CharField(max_length=100)
     news_item_pi_last_name = models.CharField(max_length=100)
@@ -25,18 +27,15 @@ class NewsResearchItem(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
-    news_item_full_title = models.CharField(max_length=300)
     news_item_full_title = models.CharField(max_length=300)
     news_item_authors = models.TextField()
     news_item_citation = models.TextField()
     news_item_journal_url = models.URLField(blank=True)
 
-
-
-
-
+    # 🆕 Add auto timestamp for new records
+    created_at = models.DateTimeField(auto_now_add=True)
 
     panels = [
         FieldPanel("news_item_entry_date"),
@@ -50,12 +49,15 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_full_text"),
         FieldPanel("news_item_image"),
         FieldPanel("news_item_full_title"),
-        FieldPanel("news_item_full_title"),
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
         FieldPanel("news_item_journal_url"),
-        
+        # news_item_id is intentionally omitted from panels
     ]
 
     def __str__(self):
-        return f"News Item {self.news_item_id}"
+        return self.news_item_short_title
+
+    class Meta:
+        ordering = ["-news_item_entry_date"]
+
