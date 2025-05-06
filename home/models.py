@@ -12,7 +12,7 @@ class HomePage(Page):
 
 @register_snippet
 class NewsResearchItem(models.Model):
-    news_item_id = models.IntegerField(unique=True)  # keep for legacy import
+    news_item_id = models.CharField(max_length=100, blank=True, null=True)
     news_item_entry_date = models.DateField(default=timezone.now)
     news_item_pi_first_name = models.CharField(max_length=100)
     news_item_pi_last_name = models.CharField(max_length=100)
