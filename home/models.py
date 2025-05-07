@@ -2,8 +2,11 @@ from django.db import models
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.panels import FieldPanel
 from django.utils import timezone
+
 from wagtail.images.models import Image
 from wagtail.models import Page
+from django.utils.text import slugify
+from django.urls import reverse
 
 
 class HomePage(Page):
@@ -20,8 +23,9 @@ class NewsResearchItem(models.Model):
     news_item_pi_institution = models.CharField(max_length=200)
     news_item_pi_website = models.URLField(blank=True)
     news_item_short_title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
     news_item_blurb = models.TextField()
-    news_item_full_text = models.TextField()
+    news_item_full_text = models.TextField(help_text="HTML content — rendered via `|safe` in template")
     news_item_image = models.ForeignKey(
         Image,
         null=True,
@@ -34,7 +38,7 @@ class NewsResearchItem(models.Model):
     news_item_citation = models.TextField()
     news_item_journal_url = models.URLField(blank=True)
 
-    # 🆕 Add auto timestamp for new records
+    # 🆕 Auto timestamp for new records
     created_at = models.DateTimeField(auto_now_add=True)
 
     panels = [
@@ -45,6 +49,7 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_pi_institution"),
         FieldPanel("news_item_pi_website"),
         FieldPanel("news_item_short_title"),
+        FieldPanel("slug"),
         FieldPanel("news_item_blurb"),
         FieldPanel("news_item_full_text"),
         FieldPanel("news_item_image"),
@@ -58,6 +63,13 @@ class NewsResearchItem(models.Model):
     def __str__(self):
         return self.news_item_short_title
 
+    def save(self, *args, **kwargs):
+        if not self.slug and self.news_item_short_title:
+            self.slug = slugify(self.news_item_short_title)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("news_item_detail", kwargs={"slug": self.slug})
+
     class Meta:
         ordering = ["-news_item_entry_date"]
-

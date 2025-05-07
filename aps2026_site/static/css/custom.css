@@ -30,6 +30,15 @@ body.site-entered .aps-menu-placeholder {
   margin-bottom: 49px; /* adjust as needed */
 }
 
+.panel {
+    border: none;
+    box-shadow: none;
+}
+
+html, body {
+  height: auto !important;
+  overflow-y: scroll !important;
+}
 
 .aps-menu-placeholder {
   position: relative;
@@ -310,7 +319,7 @@ footer.footer {
   padding: 4rem 0 2rem 0;
   font-size: 1.1rem;
   display: none;
-  margin-top:39px;
+  margin-top:5rem;
 }
 
 body.site-entered footer.footer {
@@ -359,6 +368,20 @@ footer .footer-logo {
   letter-spacing: 0.03em;
   text-align: center;
 }
+
+.colophon {
+  display: none;
+}
+body.site-entered .colophon {
+  display: flex;
+}
+
+
+
+.block-content {
+  min-height: calc(100vh - 300px); /* leave room for footer + colophon */
+}
+
 
 body.site-entered .colophon {
   display: flex;

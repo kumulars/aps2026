@@ -23,14 +23,11 @@
       </div>
       <div class="col-md-3">
 {% for item in news_items %}
-  <h4>{{ item.news_item_short_title }}</h4>
-
+ <a href="{{ item.get_absolute_url }}" class="news-item-link"><h4>{{ item.news_item_short_title }}</h4>
   {% if item.news_item_image %}
     <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img">
   {% endif %}
-
-  <p>{{ item.news_item_blurb|safe }}</p>
-
+  {{ item.news_item_blurb|safe }}</a>
   {% if not forloop.last %}
     <hr class="aps-border">
   {% endif %}
