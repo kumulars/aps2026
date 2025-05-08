@@ -2,7 +2,6 @@ from django.db import models
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.panels import FieldPanel
 from django.utils import timezone
-
 from wagtail.images.models import Image
 from wagtail.models import Page
 from django.utils.text import slugify
@@ -38,7 +37,6 @@ class NewsResearchItem(models.Model):
     news_item_citation = models.TextField()
     news_item_journal_url = models.URLField(blank=True)
 
-    # 🆕 Auto timestamp for new records
     created_at = models.DateTimeField(auto_now_add=True)
 
     panels = [
@@ -57,7 +55,6 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
         FieldPanel("news_item_journal_url"),
-        # news_item_id is intentionally omitted from panels
     ]
 
     def __str__(self):
@@ -69,7 +66,7 @@ class NewsResearchItem(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("news_item_detail", kwargs={"slug": self.slug})
+        return reverse("news_item_detail", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["-news_item_entry_date"]

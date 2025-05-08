@@ -1,5 +1,9 @@
+print(">>>>> BASE SETTINGS LOADED <<<<<")
+
+
 import os
 from pathlib import Path
+
 
 # Project paths
 PROJECT_DIR = Path(__file__).resolve().parent.parent  # /aps2026_site/
@@ -47,7 +51,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(PROJECT_DIR, "templates"),  # /aps2026_site/templates/
+            os.path.join(PROJECT_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -92,13 +96,13 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),  # /aps2026_site/static/
+    os.path.join(PROJECT_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")        # /aps2026/static/
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")          # /aps2026/media/
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 # File storage backends
@@ -120,11 +124,11 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-WAGTAILADMIN_BASE_URL = "http://example.com"
+WAGTAIL_ADMIN_BASE_URL = "/"
 
 WAGTAILDOCS_EXTENSIONS = [
-    'csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip'
+    "csv", "docx", "key", "odt", "pdf", "pptx", "rtf", "txt", "xlsx", "zip"
 ]
 
-# Increase form field limits
+# Form field safety
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000

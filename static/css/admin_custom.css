@@ -1,0 +1,42 @@
+/* Hide the inline SVG used by Wagtail */
+.wagtail-logo svg {
+  display: none !important;
+}
+
+/* Force the background image to appear */
+.wagtail-logo {
+  background-image: url('/static/images/aps_circle.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center left !important;
+  width: 160px !important;
+  height: 48px !important;
+  display: block !important;
+  margin-left: 1rem !important;
+}
+
+
+
+/* Login page styling */
+.login-page {
+  background-color: #f5f5f5;
+}
+
+.login-panel {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.button {
+  background-color: #00457c;
+  color: white;
+}
+
+.button:hover {
+  background-color: #00345a;
+}
+
+
+

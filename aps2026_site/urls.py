@@ -17,7 +17,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
 
     # News item detail pages (based on slug)
-    path("news/<slug:slug>/", news_item_detail_view, name="news_item_detail"),
+    path("news/<int:pk>/", news_item_detail_view, name="news_item_detail"),
 
     # Homepage
     path("", HomePageView.as_view(), name="home"),

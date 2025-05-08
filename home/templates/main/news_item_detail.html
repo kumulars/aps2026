@@ -13,7 +13,7 @@
     <!-- Left: Recent News -->
     <div class="col-md-3">
       {% for item in recent_news %}
-        <a href="{{ item.get_absolute_url }}" class="news-item-link">
+        <a href="{% url 'news_item_detail' pk=item.pk %}" class="news-item-link">
           <h4>{{ item.news_item_short_title }}</h4>
           {% if item.news_item_image %}
             <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img">
