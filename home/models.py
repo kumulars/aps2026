@@ -3,6 +3,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.admin.panels import FieldPanel
 from django.utils import timezone
 from wagtail.images.models import Image
+from wagtail.images.widgets import AdminImageChooser
 from wagtail.models import Page
 from django.utils.text import slugify
 from django.urls import reverse
@@ -66,7 +67,57 @@ class NewsResearchItem(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("news_item_detail", kwargs={"pk": self.pk})
+        return reverse("news_item_detail", kwargs={"slug": self.slug})
+
 
     class Meta:
-        ordering = ["-news_item_entry_date"]
+        ordering = ["-id"]
+        verbose_name = "News Research Item"
+        verbose_name_plural = "News Research Items"
+
+
+
+@register_snippet
+class Person(models.Model):
+    CATEGORY_CHOICES = [
+        ("President", "President"),
+        ("President Elect", "President Elect"),
+        ("Past President", "Past President"),
+        ("Councilor", "Councilor"),
+        ("Honorary", "Honorary"),
+        ("Obituary", "Obituary"),
+    ]
+
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    professional_title = models.CharField(max_length=255, blank=True)
+    institution = models.CharField(max_length=255, blank=True)
+    service_start_date = models.DateField(null=True, blank=True)
+    service_end_date = models.DateField(null=True, blank=True)
+
+    person_image = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+"
+    )
+
+    panels = [
+        FieldPanel("category"),
+        FieldPanel("first_name"),
+        FieldPanel("last_name"),
+        FieldPanel("professional_title"),
+        FieldPanel("institution"),
+        FieldPanel("service_start_date"),
+        FieldPanel("service_end_date"),
+        FieldPanel("person_image", widget=AdminImageChooser),
+    ]
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        ordering = ["last_name", "first_name"]
+

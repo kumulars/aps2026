@@ -12,14 +12,13 @@ class HomePageView(TemplateView):
         return context
 
 
-def news_item_detail_view(request, pk):
-    item = get_object_or_404(NewsResearchItem, pk=pk)
+def news_item_detail_view(request, slug):
+    item = get_object_or_404(NewsResearchItem, slug=slug)
 
     # Estimate content length safely
     full_text = item.news_item_full_text or ""
     full_text_length = len(strip_tags(full_text.strip()))
 
-    # Adjust sidebar length
     if full_text_length < 500:
         sidebar_count = 2
     elif full_text_length < 1000:
@@ -29,8 +28,7 @@ def news_item_detail_view(request, pk):
     else:
         sidebar_count = 5
 
-    # Get recent items (excluding current), newest first
-    recent = NewsResearchItem.objects.exclude(pk=pk).order_by('-news_item_entry_date')[:sidebar_count]
+    recent = NewsResearchItem.objects.exclude(pk=item.pk).order_by("-id")[:sidebar_count]
 
     return render(request, "main/news_item_detail.html", {
         "page": item,
