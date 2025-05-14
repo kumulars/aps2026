@@ -1,6 +1,3 @@
-print(">>>>> BASE SETTINGS LOADED <<<<<")
-
-
 import os
 from pathlib import Path
 

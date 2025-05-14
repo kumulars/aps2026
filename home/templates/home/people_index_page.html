@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block body_class %}site-entered{% endblock %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row panel">
+    <div class="col-md-12">
+      <h1 class="main-page-header">The American Peptide Society - Officers &amp; Councilors</h1>
+    </div>
+  </div>
+
+<!-- Officers -->
+<div class="col-md-12 inside">
+  <h2>Officers</h2>
+
+  {% for row in officer_rows %}
+    <div class="row people">
+      {% for person in row %}
+        <div class="col-md-2">
+          {% if person.person_image %}
+            <img alt="{{ person }}" class="aps-img img-responsive" src="{{ person.person_image.file.url }}" style="max-height: 230px;" />
+          {% endif %}
+          <h4 class="people-header">{{ person.first_name }} {{ person.last_name }}</h4>
+          <p><strong>{{ person.category }}</strong><br/>{{ person.professional_title }}<br/>{{ person.institution }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+
+
+<!-- Councilors Section -->
+<div class="col-md-12 inside">
+  <h2>Councilors</h2>
+
+  {% for row in councilor_rows %}
+    <div class="row people">
+      {% for person in row %}
+        <div class="col-md-2">
+          {% if person.person_image %}
+            <img src="{{ person.person_image.file.url }}" alt="{{ person }}" class="aps-img img-responsive" style="max-height: 230px;" />
+          {% endif %}
+          <h4 class="people-header">{{ person.first_name }} {{ person.last_name }}</h4>
+          <p>{{ person.professional_title }}<br/>{{ person.institution }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+</div>
+<div class="footer-spacer"></div>
+{% endblock %}

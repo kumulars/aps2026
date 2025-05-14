@@ -1,31 +1,24 @@
+
 /* === TypeKit & Global Font === */
 @import url("https://use.typekit.net/dvt1uyd.css");
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* === Body Layout === */
 body {
   font-family: "azo-sans-web", sans-serif;
   color: #222;
   background-color: #fff;
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
-  height: auto;
-}
-
-html, body {
-  height: auto !important;
-  overflow-y: scroll !important;
 }
 
 body:not(.site-entered) {
@@ -33,36 +26,20 @@ body:not(.site-entered) {
   height: 100vh;
 }
 
-body.site-entered {
-  overflow: visible;
-  height: auto;
-}
-
-body.site-entered .block-content {
-  padding-top: 100px;
-  padding-bottom: 300px;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-
-
-/* === Hero Mode Suppression === */
-body:not(.site-entered) .aps-menu-placeholder {
-  display: none;
-}
-
 body.site-entered .aps-menu-placeholder {
-  margin-bottom: 49px;
+  margin-bottom: 49px; /* adjust as needed */
 }
 
-/* === Panels === */
 .panel {
-  border: none;
-  box-shadow: none;
+    border: none;
+    box-shadow: none;
 }
 
-/* === Layout Elements === */
+html, body {
+  height: auto !important;
+  overflow-y: scroll !important;
+}
+
 .aps-menu-placeholder {
   position: relative;
   z-index: 10;
@@ -74,8 +51,8 @@ body.site-entered .aps-menu-placeholder {
 .aps-menu-inner {
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: center;         /* vertically center text */
+  justify-content: flex-start; /* align left */
 }
 
 .aps-menu-text {
@@ -86,15 +63,7 @@ body.site-entered .aps-menu-placeholder {
   padding-left: 0;
 }
 
-.inside{
-  padding: 0;
-  }
 
- .people{
-  margin-bottom: 30px;
- } 
-
-/* === Typography === */
 p {
   font-size: clamp(1.225rem, 2.3vw, 1.475rem);
   line-height: 1.5;
@@ -112,6 +81,7 @@ p {
   display: block;
 }
 
+
 .main-page-header {
   font-size: 42px;
   margin-bottom: 29px;
@@ -119,8 +89,8 @@ p {
   background-image: url("/media/logo/aps_circle.png");
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 35px;
-  padding-left: 39px;
+  background-size: 35px; /* match text size or adjust visually */
+  padding-left: 39px; 
   line-height: 1.2;
 }
 
@@ -131,10 +101,11 @@ p {
   margin-bottom: 24px;
 }
 
-.people-header {
+.people-header{
   margin-bottom: 3px;
-  font-size: 2rem;
+  font-size: 2rem;  
 }
+
 
 .news-item-link {
   text-decoration: none;
@@ -147,6 +118,8 @@ p {
   color: inherit;
   cursor: pointer;
 }
+
+
 
 .aps-container {
   max-width: 1362px;
@@ -176,6 +149,15 @@ p {
   background-color: white;
   min-height: 100vh;
   transition: transform 1s ease-in-out;
+}
+
+body.site-entered {
+  overflow: visible;
+  height: auto;
+}
+
+body:not(.site-entered) .aps-menu-placeholder {
+  display: none;
 }
 
 body.site-entered .aps-hero-fullscreen {
@@ -251,7 +233,14 @@ body.site-entered .aps-homepage-content {
 }
 
 /* === Image Effects === */
-.aps-img,
+.aps-img {
+  margin-bottom: 12px;
+  border-radius: 7px;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .aps-news-research-content img {
   margin-bottom: 12px;
   border-radius: 7px;
@@ -267,6 +256,7 @@ body.site-entered .aps-homepage-content {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+
 /* === Page Sections === */
 .aps-page-header {
   position: relative;
@@ -279,7 +269,7 @@ body.site-entered .aps-homepage-content {
   padding-bottom: 3rem;
 }
 
-/* === Headings === */
+/* === Headings (optional semantic headers) === */
 .aps-news-header,
 .aps-community-header,
 .aps-member-header {
@@ -289,6 +279,7 @@ body.site-entered .aps-homepage-content {
   color: #333;
   text-align: left;
 }
+
 
 /* === Borders / Dividers === */
 .aps-border {
@@ -327,18 +318,13 @@ body.site-entered .aps-homepage-content {
 }
 
 /* === Footer Visibility Control === */
-
-.footer-spacer{
-  height: 349px;
-}
-
 footer.footer {
   background-color: #EBF7FF;
   color: #4E8098;
   padding: 4rem 0 2rem 0;
   font-size: 1.1rem;
   display: none;
-  margin-top: 5rem;
+  margin-top:5rem;
 }
 
 body.site-entered footer.footer {
@@ -387,6 +373,20 @@ footer .footer-logo {
   letter-spacing: 0.03em;
   text-align: center;
 }
+
+.colophon {
+  display: none;
+}
+body.site-entered .colophon {
+  display: flex;
+}
+
+
+
+.block-content {
+  min-height: calc(100vh - 300px); /* leave room for footer + colophon */
+}
+
 
 body.site-entered .colophon {
   display: flex;

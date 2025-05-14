@@ -6,9 +6,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-
-from home.views import HomePageView, news_item_detail_view
 from search import views as search_views
+from home import views
+
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -16,12 +16,11 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
 
-    # News item detail pages (based on slug)
-    path("news/<slug:slug>/", news_item_detail_view, name="news_item_detail"),
+    # News item detail pages (custom view still needed)
+    path("news/<slug:slug>/", views.news_item_detail_view, name="news_item_detail"),
 
-
-    # Homepage
-    path("", HomePageView.as_view(), name="home"),
+    # Wagtail's page routing — MUST come last
+    path("", include(wagtail_urls)),
 ]
 
 if settings.DEBUG:
