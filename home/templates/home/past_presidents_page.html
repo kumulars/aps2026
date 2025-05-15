@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body_class %}site-entered{% endblock %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row panel">
+    <div class="col-md-12">
+      <h1 class="main-page-header">APS Past Presidents</h1>
+    </div>
+  </div>
+
+  <div class="col-md-12 inside">
+    {% for row in past_president_rows %}
+      <div class="row people">
+        {% for person in row %}
+          <div class="col-md-2">
+            {% if person.person_image %}
+              <img alt="{{ person }}" class="aps-img img-responsive" src="{{ person.person_image.file.url }}" style="max-height: 230px;" />
+            {% endif %}
+            <h4 class="people-header">{{ person.first_name }} {{ person.last_name }}</h4>
+            {% if person.service_start_date and person.service_end_date %}
+  <p><strong>{{ person.service_start_date|date:"Y" }} &ndash; {{ person.service_end_date|date:"Y" }}</strong></p>
+{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

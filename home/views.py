@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
-from home.models import NewsResearchItem
 from django.utils.html import strip_tags
+from .models import NewsResearchItem, Obituary
 
 class HomePageView(TemplateView):
     template_name = "home/home_page.html"
@@ -33,4 +33,14 @@ def news_item_detail_view(request, slug):
     return render(request, "main/news_item_detail.html", {
         "page": item,
         "recent_news": recent,
+    })
+
+
+def obituary_detail_view(request, slug):
+    obit = get_object_or_404(Obituary, person__slug=slug)
+    recent = Obituary.objects.exclude(pk=obit.pk).order_by("-obituary_id")[:5]
+
+    return render(request, "main/obituary_detail.html", {
+        "page": obit,
+        "recent_obits": recent,
     })

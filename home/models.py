@@ -1,15 +1,19 @@
-from wagtail.snippets.models import register_snippet
-from wagtail.snippets.views.snippets import SnippetViewSet
-from wagtail.admin.panels import FieldPanel
+from django.db import models
+from django.db.models import Q
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
+
+from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.images.models import Image
 from wagtail.images.widgets import AdminImageChooser
-from django.utils.html import format_html
-from django.db import models
-from wagtail.models import Page
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
-from django.db.models import Q
+from wagtail.snippets.models import register_snippet
+from wagtail.snippets.views.snippets import SnippetViewSet
+
+from modelcluster.models import ParentalKey, ClusterableModel
 
 
 class HomePage(Page):
@@ -26,7 +30,6 @@ class PeopleIndexPage(Page):
     def get_context(self, request):
         context = super().get_context(request)
 
-        # Ordered officers (left to right in the top row)
         officer_titles = [
             "President",
             "President Elect",
@@ -34,13 +37,20 @@ class PeopleIndexPage(Page):
             "Treasurer",
             "Immediate Past President",
         ]
-        context["officers"] = [
-            Person.objects.filter(category=title).first() for title in officer_titles
-        ]
 
-        # Councilors (could be paginated or further sorted later)
-        context["councilors"] = Person.objects.filter(category="Councilor").order_by("last_name")
+        officers_unsorted = Person.objects.filter(category__in=officer_titles)
+        officers_ordered = []
+        for title in officer_titles:
+            matched = officers_unsorted.filter(category=title)
+            officers_ordered.extend(matched)
 
+        councilors = Person.objects.filter(category="Councilor").order_by("last_name")
+
+        def chunked(queryset, size):
+            return [queryset[i:i + size] for i in range(0, len(queryset), size)]
+
+        context["officer_rows"] = chunked(officers_ordered, 6)
+        context["councilor_rows"] = chunked(list(councilors), 6)
         return context
 
     class Meta:
@@ -57,7 +67,7 @@ class NewsResearchItem(models.Model):
     news_item_pi_institution = models.CharField(max_length=200)
     news_item_pi_website = models.URLField(blank=True)
     news_item_short_title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(blank=True, null=True)
     news_item_blurb = models.TextField()
     news_item_full_text = models.TextField(help_text="HTML content — rendered via `|safe` in template")
     news_item_image = models.ForeignKey(
@@ -109,15 +119,7 @@ class NewsResearchItem(models.Model):
         verbose_name_plural = "News Research Items"
 
 
-from django.db import models
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
-from wagtail.images.models import Image
-from wagtail.images.widgets import AdminImageChooser
-from django.utils.html import format_html
-from django.db.models import Q
-
-class Person(models.Model):
+class Person(ClusterableModel):
     CATEGORY_CHOICES = [
         ("President", "President"),
         ("President Elect", "President Elect"),
@@ -139,6 +141,7 @@ class Person(models.Model):
     institution = models.CharField(max_length=255, blank=True)
     service_start_date = models.DateField(null=True, blank=True)
     service_end_date = models.DateField(null=True, blank=True)
+    slug = models.SlugField(blank=True, unique=True)
     person_image = models.ForeignKey(
         Image, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
@@ -152,6 +155,8 @@ class Person(models.Model):
         FieldPanel("service_start_date"),
         FieldPanel("service_end_date"),
         FieldPanel("person_image", widget=AdminImageChooser),
+        InlinePanel("committee_roles", label="Committee Roles"),
+        InlinePanel("obituary", label="Obituary", max_num=1),
     ]
 
     def image_thumb(self):
@@ -161,6 +166,17 @@ class Person(models.Model):
 
     image_thumb.short_description = "Image"
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.first_name} {self.last_name}")
+            slug_candidate = base_slug
+            num = 1
+            while Person.objects.filter(slug=slug_candidate).exclude(pk=self.pk).exists():
+                num += 1
+                slug_candidate = f"{base_slug}-{num}"
+            self.slug = slug_candidate
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -168,31 +184,103 @@ class Person(models.Model):
         ordering = ["last_name", "first_name"]
 
 
-class PeopleIndexPage(Page):
-    template = "home/people_index_page.html"
+class Committee(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class CommitteeMembership(models.Model):
+    CHAIR = 'chair'
+    MEMBER = 'member'
+    ROLE_CHOICES = [
+        (CHAIR, 'Chair'),
+        (MEMBER, 'Member'),
+    ]
+
+    person = ParentalKey("Person", on_delete=models.CASCADE, related_name="committee_roles")
+    committee = models.ForeignKey("Committee", on_delete=models.CASCADE, related_name="memberships")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+
+    panels = [
+        FieldPanel("committee"),
+        FieldPanel("role"),
+    ]
+
+    class Meta:
+        unique_together = ('person', 'committee', 'role')
+
+    def __str__(self):
+        return f"{self.person} - {self.role} of {self.committee}"
+
+
+class PastPresidentsPage(Page):
+    template = "home/past_presidents_page.html"
 
     def get_context(self, request):
         context = super().get_context(request)
 
-        officer_titles = [
-            "President",
-            "President Elect",
-            "Secretary",
-            "Treasurer",
-            "Immediate Past President",
-        ]
-
-        officers_unsorted = Person.objects.filter(category__in=officer_titles)
-        officers_ordered = []
-        for title in officer_titles:
-            matched = officers_unsorted.filter(category=title)
-            officers_ordered.extend(matched)
-
-        councilors = Person.objects.filter(category="Councilor").order_by("last_name")
+        past_presidents = Person.objects.filter(
+            category="Past President"
+        ).order_by("-service_start_date")
 
         def chunked(queryset, size):
             return [queryset[i:i + size] for i in range(0, len(queryset), size)]
 
-        context["officer_rows"] = chunked(officers_ordered, 6)
-        context["councilor_rows"] = chunked(list(councilors), 6)
+        context["past_president_rows"] = chunked(list(past_presidents), 6)
+        return context
+
+
+class Obituary(models.Model):
+    person = ParentalKey("Person", on_delete=models.CASCADE, related_name="obituary", unique=True)
+    obituary_id = models.IntegerField()
+    image = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+"
+    )
+    blurb = models.TextField(
+        help_text="Short HTML summary for obituary display only. Will be rendered as safe.",
+        blank=True
+    )
+    full_text = models.TextField(
+        help_text="Full obituary content. HTML allowed. For obituary use only.",
+        blank=True
+    )
+
+    panels = [
+        FieldPanel("obituary_id"),
+        FieldPanel("image", widget=AdminImageChooser),
+        FieldPanel("blurb"),
+        FieldPanel("full_text"),
+    ]
+
+    class Meta:
+        ordering = ["-obituary_id"]
+
+    def __str__(self):
+        return f"Obituary for {self.person.first_name} {self.person.last_name}"
+
+
+class CommitteeIndexPage(Page):
+    template = "home/committee_index_page.html"
+
+    def get_context(self, request):
+        from .models import NewsResearchItem
+        context = super().get_context(request)
+        context["committees"] = Committee.objects.prefetch_related("memberships__person").all().order_by("name")
+        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:6]
+        return context
+
+
+class ObituariesIndexPage(Page):
+    template = "home/obituaries_index_page.html"
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        from home.models import Obituary
+        context["obituaries"] = Obituary.objects.select_related("person").order_by("-obituary_id")
         return context

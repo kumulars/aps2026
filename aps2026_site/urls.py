@@ -19,6 +19,9 @@ urlpatterns = [
     # News item detail pages (custom view still needed)
     path("news/<slug:slug>/", views.news_item_detail_view, name="news_item_detail"),
 
+    # Obituary detail pages
+    path("obituaries/<slug:slug>/", views.obituary_detail_view, name="obituary_detail"),
+
     # Wagtail's page routing — MUST come last
     path("", include(wagtail_urls)),
 ]

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body_class %}site-entered{% endblock %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row panel">
+    <div class="col-md-12">
+      <h1 class="main-page-header">The American Peptide Society - In Memoriam</h1>
+    </div>
+
+    <!-- Left Column: Recent Obituaries -->
+    <div class="col-md-3">
+    <!--  {% for item in recent_obits %}
+        <a href="{% url 'obituary_detail' item.person.slug %}">
+          <h4>{{ item.person.first_name }} {{ item.person.last_name }}</h4>
+          {% if item.image %}
+            <img src="{{ item.image.file.url }}" alt="{{ item.person }}" class="aps-img">
+          {% endif %}
+          <p>{{ item.blurb|safe }}</p>
+        </a>
+        {% if not forloop.last %}
+          <hr class="aps-border">
+        {% endif %}
+      {% endfor %}-->
+    </div>
+
+    <!-- Center Column: Obituary Detail -->
+    <div class="col-md-6" style="border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC;">
+      <h3 style="margin-top: 0;">{{ page.person.first_name }} {{ page.person.last_name }}</h3>
+      {% if page.image %}
+        <img src="{{ page.image.file.url }}" alt="{{ page.person }}" class="aps-img" style="margin-bottom: 19px;">
+      {% endif %}
+      {{ page.full_text|safe }}
+    </div>
+
+    <!-- Right Column: Reserved or empty -->
+    <div class="col-md-3">
+      <div style="min-height: 1px;"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

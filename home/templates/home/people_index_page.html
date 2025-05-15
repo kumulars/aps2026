@@ -18,7 +18,7 @@
       {% for person in row %}
         <div class="col-md-2">
           {% if person.person_image %}
-            <img alt="{{ person }}" class="aps-img img-responsive" src="{{ person.person_image.file.url }}" style="max-height: 230px;" />
+            <img alt="{{ person }}" class="aps-img img-responsive" src="{{ person.person_image.file.url }}" />
           {% endif %}
           <h4 class="people-header">{{ person.first_name }} {{ person.last_name }}</h4>
           <p><strong>{{ person.category }}</strong><br/>{{ person.professional_title }}<br/>{{ person.institution }}</p>
@@ -38,7 +38,7 @@
       {% for person in row %}
         <div class="col-md-2">
           {% if person.person_image %}
-            <img src="{{ person.person_image.file.url }}" alt="{{ person }}" class="aps-img img-responsive" style="max-height: 230px;" />
+            <img src="{{ person.person_image.file.url }}" alt="{{ person }}" class="aps-img img-responsive" />
           {% endif %}
           <h4 class="people-header">{{ person.first_name }} {{ person.last_name }}</h4>
           <p>{{ person.professional_title }}<br/>{{ person.institution }}</p>
