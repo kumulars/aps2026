@@ -5,8 +5,9 @@ from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
-
+from django.utils.functional import cached_property
 from wagtail.models import Page
+from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.images.models import Image
 from wagtail.images.widgets import AdminImageChooser
@@ -284,3 +285,25 @@ class ObituariesIndexPage(Page):
         from home.models import Obituary
         context["obituaries"] = Obituary.objects.select_related("person").order_by("-obituary_id")
         return context
+
+def chunked(queryset, size):
+    return [queryset[i:i + size] for i in range(0, len(queryset), size)]
+
+class NewsResearchIndexPage(Page):
+    template = "home/news_research_index_page.html"
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        items = NewsResearchItem.objects.all().order_by("-id")
+        context["news_rows"] = chunked(list(items), 6)
+        return context
+
+class IntroPage(Page):
+    body_text = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('body_text'),
+    ]
+
+    template = "home/intro_page.html"
+

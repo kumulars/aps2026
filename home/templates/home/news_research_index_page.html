@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row panel">
+    <div class="col-md-12">
+      <h1 class="main-page-header">APS Research & News Archive</h1>
+    </div>
+  </div>
+
+  <div class="col-md-12 inside">
+    {% for row in news_rows %}
+      <div class="row people">
+        {% for item in row %}
+          <div class="col-md-2 text-left">
+  <a href="{{ item.get_absolute_url }}" class="aps-archive-link">
+    {% if item.news_item_image %}
+      <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img img-responsive aps-archive-hover" />
+    {% endif %}
+    <p style="margin-top: 8px;">
+      {{ item.news_item_short_title }}
+    </p>
+  </a>
+</div>
+
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="aps-hero-fullscreen">
+  <video autoplay muted loop playsinline class="hero-bg-video">
+    <source src="/media/videos/colorful_structure.mp4" type="video/mp4">
+  </video>
+  <div class="aps-hero-overlay"></div>
+  <div class="aps-hero-content fade-in">
+    <img src="/media/logo/aps_logo_white.png" alt="APS Logo" class="hero-logo-top-left">
+    <h1 class="aps-hero-welcome">Welcome to the American Peptide Society</h1>
+    <h2 class="aps-hero-subtext">Advancing and Promoting Knowledge of the Chemistry and Biology of Peptides</h2>
+   <button class="aps-enter-button" onclick="startFade()">Enter Site</button>
+  </div>
+</section>
+<script>
+  function startFade() {
+    document.body.classList.add('fade-out');
+    setTimeout(function () {
+      window.location.href = "/";
+    }, 600); // match fade-out duration
+  }
+</script>
+{% endblock %}
+

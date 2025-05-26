@@ -6,11 +6,12 @@
 <div class="aps-container block-content">
     <div class="row panel">
     <div class="col-md-12">
-      <h1 class="main-page-header">APS Committees</h1>
+      <h1 class="main-page-header">American Peptide Society - Committees</h1>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-3">&nbsp;</div>
+    <div class="col-md-6" style="border-left: 1px solid #CCC;border-right: 1px solid #CCC;">
       {% for committee in committees %}
         <h4 class="tertiary-header">{{ committee.name }}</h4>
         <div class="row inside people">
@@ -30,20 +31,8 @@
         </div>
       {% endfor %}
     </div>
-    <div class="col-md-3" style="border-left: 1px solid #CCC;">
-  {% for item in news_items %}
-    <div class="news-item">
-      <a href="/news/{{ item.slug }}/" class="news-item-link">
-        <h4>{{ item.news_item_short_title }}</h4>
-        {% if item.news_item_image %}
-          <img src="{{ item.news_item_image.file.url }}" class="aps-img" alt="{{ item.news_item_short_title }}" />
-        {% endif %}
-        <p>{{ item.news_item_blurb|safe }}</p></a>
-        {% if not forloop.last %}
-    <hr class="aps-border">
-  {% endif %}
-    </div>
-  {% endfor %}
+    <div class="col-md-3">
+&nbsp;
 </div>
   </div>
 </div>

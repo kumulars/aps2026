@@ -1,0 +1,37 @@
+<nav class="navbar aps-navbar">
+  <div class="container aps-container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img src="/media/logo/aps_logo_black.png" class="aps-navbar-logo" alt="APS Logo">
+      </a>
+    </div>
+    <ul class="nav navbar-nav navbar-right aps-nav-links">
+
+      <li class="{% if request.path == '/' %}active{% endif %}">
+        <a href="/">HOME</a>
+      </li>
+
+      <li class="dropdown {% if request.path|slice:':6' == '/news' or request.path|slice:':6' == '/labs' or request.path|slice:':12' == '/proceedings' or request.path|slice:':16' == '/symposia-images' or request.path|slice:':8' == '/journal' %}active{% endif %}">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">EXPLORE <b class="caret"></b></a>
+        <ul class="dropdown-menu aps-fade-dropdown">
+          <li><a href="/news-research-index/">News Archive</a></li>
+          <li><a href="/labs/">Lab of the Month Archive</a></li>
+          <li><a href="/proceedings/">Proceedings Archive</a></li>
+          <li><a href="/symposia-images/">Symposium Images</a></li>
+          <li><a href="/journal/">Our Journal</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown {% if request.path|slice:':7' == '/people' or request.path|slice:':15' == '/past-presidents' or request.path|slice:':11' == '/committees' or request.path|slice:':20' == '/student-activities' or request.path|slice:':11' == '/obituaries' %}active{% endif %}">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">PEOPLE <b class="caret"></b></a>
+        <ul class="dropdown-menu aps-fade-dropdown">
+          <li><a href="/people/">Officers & Councilors</a></li>
+          <li><a href="/past-presidents/">Past Presidents</a></li>
+          <li><a href="/committees/">Committees</a></li>
+          <li><a href="/student-activities/">Student Activities Committee</a></li>
+          <li><a href="/obituaries/">In Memoriam</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
