@@ -8,20 +8,33 @@ from django.utils.text import slugify
 from django.utils.functional import cached_property
 from wagtail.models import Page
 from wagtail.fields import RichTextField
+from wagtail.fields import StreamField
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.images.models import Image
 from wagtail.images.widgets import AdminImageChooser
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet
-
 from modelcluster.models import ParentalKey, ClusterableModel
+from wagtail import blocks
+
+class NewsItemCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "News Item Categories"
 
 
 class HomePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
-        from .models import NewsResearchItem
-        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:5]
+        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:6]
+        context["middle_column_items"] = HighlightPanel.objects.filter(
+            column="middle", is_archived=False).order_by("sort_order")
+        context["right_column_items"] = HighlightPanel.objects.filter(
+            column="right", is_archived=False).order_by("sort_order")
         return context
 
 
@@ -58,7 +71,6 @@ class PeopleIndexPage(Page):
         verbose_name = "People Index Page"
 
 
-@register_snippet
 class NewsResearchItem(models.Model):
     news_item_id = models.CharField(max_length=100, blank=True, null=True)
     news_item_entry_date = models.DateField(default=timezone.now)
@@ -85,8 +97,17 @@ class NewsResearchItem(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    category = models.ForeignKey(
+    "home.NewsItemCategory",
+    null=True,
+    blank=True,
+    on_delete=models.SET_NULL,
+    related_name="news_items",
+    )
+
     panels = [
         FieldPanel("news_item_entry_date"),
+        FieldPanel("category"),
         FieldPanel("news_item_pi_first_name"),
         FieldPanel("news_item_pi_last_name"),
         FieldPanel("news_item_pi_title"),
@@ -100,7 +121,7 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_full_title"),
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
-        FieldPanel("news_item_journal_url"),
+        FieldPanel("news_item_journal_url"),        
     ]
 
     def __str__(self):
@@ -294,8 +315,23 @@ class NewsResearchIndexPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        items = NewsResearchItem.objects.all().order_by("-id")
+
+        selected_category = request.GET.get("category")
+        if selected_category:
+            items = NewsResearchItem.objects.filter(
+                category__name=selected_category
+            ).order_by("-id")
+        else:
+            items = NewsResearchItem.objects.all().order_by("-id")
+
+        # Chunk items into rows of 6
+        def chunked(qs, size):
+            return [qs[i:i+size] for i in range(0, len(qs), size)]
+
         context["news_rows"] = chunked(list(items), 6)
+        context["categories"] = NewsItemCategory.objects.all().order_by("name")
+        context["selected_category"] = selected_category
+
         return context
 
 class IntroPage(Page):
@@ -306,4 +342,210 @@ class IntroPage(Page):
     ]
 
     template = "home/intro_page.html"
+
+@register_snippet
+class HighlightPanel(ClusterableModel):
+    COLUMN_CHOICES = [
+        ("middle", "Middle Column"),
+        ("right", "Right Column"),
+    ]
+
+    title = models.TextField(
+    help_text="Paste HTML title. Will be rendered using the `|safe` filter.",
+    blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_images'
+    )
+
+    html_body = models.TextField(
+    help_text="Paste HTML. Will be rendered using the `|safe` filter.",
+    blank=True)
+    column = models.CharField(max_length=10, choices=COLUMN_CHOICES, default="middle")
+    slug = models.SlugField(unique=True, help_text="Used to generate the detail page URL")
+    is_lab_with_tabs = models.BooleanField(default=False)
+
+    # Add these fields to the HighlightPanel model
+    tab1_title = models.CharField(max_length=255, blank=True)
+    tab1_left_content = models.TextField(
+    help_text="Paste HTML. Will be rendered using the `|safe` filter.",
+    blank=True)
+    tab1_right_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab1_images'
+    )
+
+    tab1_right_image_2 = models.ForeignKey(
+    'wagtailimages.Image',
+    null=True, blank=True,
+    on_delete=models.SET_NULL,
+    related_name='highlight_tab1_images_2'
+    )
+    
+    tab1_right_image_3 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab1_images_3'
+    )
+    
+    tab1_right_image_4 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab1_images_4'
+    )
+
+    tab2_title = models.CharField(max_length=255, blank=True)
+    tab2_left_content = models.TextField(
+    help_text="Paste HTML. Will be rendered using the `|safe` filter.",
+    blank=True)
+    tab2_right_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab2_images'
+    )
+
+    tab2_right_image_2 = models.ForeignKey(
+    'wagtailimages.Image',
+    null=True, blank=True,
+    on_delete=models.SET_NULL,
+    related_name='highlight_tab2_images_2'
+    )
+    
+    tab2_right_image_3 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab2_images_3'
+    )
+    
+    tab2_right_image_4 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab2_images_4'
+    )
+
+    tab3_title = models.CharField(max_length=255, blank=True)
+    tab3_left_content = models.TextField(
+    help_text="Paste HTML. Will be rendered using the `|safe` filter.",
+    blank=True)
+    tab3_right_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab3_images'
+    )
+
+    tab3_right_image_2 = models.ForeignKey(
+    'wagtailimages.Image',
+    null=True, blank=True,
+    on_delete=models.SET_NULL,
+    related_name='highlight_tab3_images_2'
+    )
+    
+    tab3_right_image_3 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab3_images_3'
+    )
+    
+    tab3_right_image_4 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab3_images_4'
+    )
+
+    tab4_title = models.CharField(max_length=255, blank=True)
+    tab4_left_content = models.TextField(
+    help_text="Paste HTML. Will be rendered using the `|safe` filter.",
+    blank=True)
+    tab4_right_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab4_images'
+    )
+
+    tab4_right_image_2 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab4_images_2'
+    )
+    
+    tab4_right_image_3 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab4_images_3'
+    )
+    
+    tab4_right_image_4 = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='highlight_tab4_images_4'
+    )
+
+    is_archived = models.BooleanField(
+        default=False,
+        help_text="Uncheck to hide this panel from the homepage."
+    )
+
+    sort_order = models.IntegerField(
+        default=0,
+        help_text="Lower numbers appear first in the column."
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("image", widget=AdminImageChooser),
+        FieldPanel("html_body"),
+        FieldPanel("column"),
+        FieldPanel("slug"),
+        FieldPanel("is_lab_with_tabs"),
+        FieldPanel("tab1_title"),
+        FieldPanel("tab1_left_content"),
+        FieldPanel("tab1_right_image", widget=AdminImageChooser),
+        FieldPanel("tab1_right_image_2", widget=AdminImageChooser),
+        FieldPanel("tab1_right_image_3", widget=AdminImageChooser),
+        FieldPanel("tab1_right_image_4", widget=AdminImageChooser),
+        FieldPanel("tab2_title"),
+        FieldPanel("tab2_left_content"),
+        FieldPanel("tab2_right_image", widget=AdminImageChooser),
+        FieldPanel("tab2_right_image_2", widget=AdminImageChooser),
+        FieldPanel("tab2_right_image_3", widget=AdminImageChooser),
+        FieldPanel("tab2_right_image_4", widget=AdminImageChooser),
+        FieldPanel("tab3_title"),
+        FieldPanel("tab3_left_content"),
+        FieldPanel("tab3_right_image", widget=AdminImageChooser),
+        FieldPanel("tab3_right_image_2", widget=AdminImageChooser),
+        FieldPanel("tab3_right_image_3", widget=AdminImageChooser),
+        FieldPanel("tab3_right_image_4", widget=AdminImageChooser),
+        FieldPanel("tab4_title"),
+        FieldPanel("tab4_left_content"),
+        FieldPanel("tab4_right_image", widget=AdminImageChooser),
+        FieldPanel("tab4_right_image_2", widget=AdminImageChooser),
+        FieldPanel("tab4_right_image_3", widget=AdminImageChooser),
+        FieldPanel("tab4_right_image_4", widget=AdminImageChooser),
+        FieldPanel("is_archived"),
+        FieldPanel("sort_order"),
+
+    ]
+
+    def get_absolute_url(self):
+        return f"/highlight/{self.slug}/"
+
+    def __str__(self):
+        return self.title
+
 

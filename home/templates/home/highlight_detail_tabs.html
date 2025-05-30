@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <h1 class="main-page-header">{{ object.title }}</h1>
+
+{% if object.is_lab_with_tabs %}
+  <div role="tabpanel">
+    <!-- Tab headers -->
+    <ul class="nav nav-tabs" role="tablist">
+      {% for tab in tabs %}
+        {% if tab.title or tab.left or tab.images.0 or tab.images.1 or tab.images.2 or tab.images.3 %}
+          <li role="presentation" {% if forloop.first %}class="active"{% endif %}>
+            <a href="#tab{{ forloop.counter }}" role="tab" data-toggle="tab">
+              {{ tab.title }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content">
+      {% for tab in tabs %}
+        {% if tab.title or tab.left or tab.images.0 or tab.images.1 or tab.images.2 or tab.images.3 %}
+          <div role="tabpanel" class="tab-pane{% if forloop.first %} active{% endif %}" id="tab{{ forloop.counter }}">
+            <div class="row">
+              <div class="col-md-7">
+                {{ tab.left|safe }}
+              </div>
+              <div class="col-md-5 tab-pane-image-col"  style="border-left: 1px solid #CCCCCC;">
+                {% for image in tab.images %}
+                  {% if image %}
+                    <img src="{{ image.file.url }}" class="aps-img" alt="{{ object.title }}">
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+</div>
+{% endblock %}

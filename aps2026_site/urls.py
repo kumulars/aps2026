@@ -8,14 +8,15 @@ from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from search import views as search_views
 from home import views
-
+from home.views import highlight_detail
+from django.shortcuts import render, get_object_or_404
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
-
+    path("highlight/<slug:slug>/", highlight_detail, name="highlight_detail"),
     # News item detail pages (custom view still needed)
     path("news/<slug:slug>/", views.news_item_detail_view, name="news_item_detail"),
 
@@ -29,3 +30,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

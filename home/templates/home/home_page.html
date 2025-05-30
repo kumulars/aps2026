@@ -11,8 +11,9 @@
       </div>
       <div class="col-md-3">
 {% for item in news_items %}
- <a href="{{ item.get_absolute_url }}" class="news-item-link"><h4>{{ item.news_item_short_title }}</h4>
-  {% if item.news_item_image %}
+ <h4 style="margin-top: 0;">{{ item.news_item_short_title }}</h4>
+  <a href="{{ item.get_absolute_url }}" class="news-item-link">
+    {% if item.news_item_image %}
     <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img">
   {% endif %}
   {{ item.news_item_blurb|safe }}</a>
@@ -21,33 +22,38 @@
   {% endif %}
 {% endfor %}
       </div>
-      <div class="col-md-5" style="border-left: 1px solid #CCCCCC;">
-        <h4>Automated Peptide Synthesis</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2025/03/gyros_automated_spps.jpg" class="aps-img">
-        <p>In this sponsored content by Gyros Protein Technologies, discover how automated systems revolutionize peptide production with enhanced efficiency and reproducibility.</p>
-        <p>The evolution from manual to automated solid-phase peptide synthesis, SPPS, has transformed research workflows, significantly reducing human error while enabling walk-away operations and parallel processing capabilities.</p>
-        <hr class="aps-border">
-        <h4>The Wenshe Liu Lab</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2025/04/liu_lab_2.jpg" class="aps-img">
-        <p>The Wenshe Liu Lab at Texas A&M University applies cutting-edge chemical biology techniques to advance drug discovery. Our work spans a broad spectrum, from cell biology and target identification to traditional medicinal chemistry. The lab operates across two Texas A&M campuses: one within the Department of Chemistry in College Station and the other at the Institute of Biosciences and Technology in Houston.</p>
-        <hr class="aps-border">
-        <h4>T-Shirts for a Cause!</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2025/04/t_shirt_sale.jpg" class="aps-img">
-        <p>Celebrate the spirit of discovery with our exclusive Peptides Rising T-shirt, available by pre-order until May 1st. Proceeds support the APS Student Travel Grant Fund, helping the next generation of researchers share their work. Shirts will be available for pick-up at registration — a thoughtful choice for both style and purpose. Place your order today!</p>
-      </div>
-      <div class="col-md-4" style="border-left: 1px solid #CCCCCC;">
-        <h4>Firmly Committed to Fostering</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2024/03/group_2.jpg" class="aps-img">
-        <p>The Society organizes a biennial international symposium featuring invited and submitted talks from distinguished scientists. The APS sponsors five awards, including the early-career investigator awards, and all awardees present lectures at the Symposium.</p>
-        <hr class="aps-border">
-        <h4>International Symposium Featuring</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2024/03/group_image.jpg" class="aps-img">
-        <p>The Society organizes a biennial international symposium featuring invited and submitted talks from distinguished scientists. The APS sponsors five awards, including the early-career investigator awards, and all awardees present lectures at the Symposium.</p>
-        <hr class="aps-border">
-        <h4>Peptide Synthesis for Beginners</h4>
-        <img src="https://americanpeptidesociety.org/wp-content/uploads/2024/06/draining_reagents.jpg" class="aps-img">
-        <p>Explore an in-depth tutorial on peptide synthesis, featuring contributions from the APS Website Committee and other researchers in the field.</p>
-      </div>
+<div class="col-md-5" style="border-left: 1px solid #CCCCCC;">
+  {% for item in middle_column_items %}
+  <a href="{{ item.get_absolute_url }}" class="news-item-link">
+     <h4 style="margin-top: 0;">{{ item.title }}</h4>
+    {% if item.image %}
+      <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
+    {% endif %}
+    <div class="highlight-html-body">
+      {{ item.html_body|safe }} </a>
+    </div>
+
+  {% if not forloop.last %}
+    <hr class="aps-border"> 
+  {% endif %}
+{% endfor %}
+
+</div>
+
+<div class="col-md-4" style="border-left: 1px solid #CCCCCC;">
+  {% for item in right_column_items %}
+    <h4 style="margin-top: 0;">{{ item.title }}</h4>
+    <a href="{{ item.get_absolute_url }}" class="news-item-link">
+<a href="{{ item.get_absolute_url }}" class="news-item-link">{% if item.image %}
+      <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
+    {% endif %}
+    {{ item.html_body|safe }}</a>
+    {% if not forloop.last %}
+      <hr class="aps-border">
+    {% endif %}
+  {% endfor %}
+</div>
+
     </div>
   </div>
 </section>

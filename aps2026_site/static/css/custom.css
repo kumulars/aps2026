@@ -67,6 +67,64 @@ html, body {
   padding-left: 11px;
 }
 
+.aps-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #FFFFFF;
+}
+
+/* === Fix Tab Visibility and Styling === */
+
+.nav-tabs {
+  border-bottom: 1px solid #E0E0E0;
+  margin-bottom: 20px;
+}
+
+.nav-tabs > li {
+  margin-bottom: -1px; /* aligns active tab with content box */
+}
+
+.nav-tabs > li > a {
+  font-weight: 400;
+  color: #000;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 0 0;
+  margin-right: 4px;
+  padding: 8px 16px;
+}
+
+.nav-tabs > li > a:hover {
+  color: #FF7F11;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  color: #FF7F11;
+  background-color: #fff;
+  border: 1px solid #FF7F11;
+  border-bottom-color: transparent;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.tab-content {
+  border-top: none;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 0 0 6px 6px;
+}
+
+.aps-container ol {
+  padding-left: 15px !important; /* Default is usually 40px */
+}
+.aps-container ul {
+  padding-left: 15px !important; /* Default is usually 40px */
+}
 
 
 /* === Sticky Footer Support === */
@@ -171,6 +229,8 @@ body.fade-out {
   background-color: #FFC914;
 }
 
+
+
 /* === Layout Elements === */
 .panel {
   border: none;
@@ -215,6 +275,40 @@ body.fade-out {
   margin-bottom: 30px;
 }
 
+
+
+/* === news item categories === */
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 0.5rem;
+}
+
+.category-filters a {
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.category-filters a.active {
+  background-color: #003366;
+  color: white;
+}
+
+.sub-header {
+  text-align: left;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+
+
+
+
 /* === Typography === */
 p {
   font-size: clamp(1.225rem, 2.3vw, 1.475rem);
@@ -222,6 +316,16 @@ p {
   font-weight: 400;
   color: #5A5A5A;
 }
+
+.index-header {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  font-weight: 600;
+  color: #5A5A5A;
+  margin-top: 7px;
+}
+
+
 
 .aps-h2 {
   all: unset;
@@ -295,16 +399,17 @@ p {
 
 /* === Footer Styles === */
 footer.footer {
-  background-color: #EBF7FF;
+  background-color: #F7F9FB;
   color: #4E8098;
   padding: 4rem 0 2rem 0;
   font-size: 1.1rem;
   margin-top: 5rem;
 }
 
-
-footer h3 {
-  color: inherit;
+footer h3,
+footer h4,
+footer strong {
+  color: #222222;
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -318,7 +423,7 @@ footer a {
 }
 
 footer a:hover {
-  color: #F1FAEE;
+  color: #FF7F11;
   text-decoration: underline;
 }
 
@@ -336,6 +441,7 @@ footer .footer-logo {
   background-color: #2A628F;
   color: #FFFFFF;
   height: 60px;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 14px 0;
@@ -344,6 +450,7 @@ footer .footer-logo {
   letter-spacing: 0.03em;
   text-align: center;
 }
+
 
 
 /* === Responsive Adjustments === */

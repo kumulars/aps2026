@@ -1,0 +1,79 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% load i18n static wagtailadmin_tags %}
+
+{% block titletag %}{% trans "Sign in" %}{% endblock %}
+{% block bodyclass %}login{% endblock %}
+
+{% block furniture %}
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="{% static 'videos/colorful_structure.mp4' %}" type="video/mp4">
+    </video>
+    <main class="content-wrapper" id="main">
+        <h1>{% block branding_login %}American Peptide Society{% endblock %}</h1>
+    <div class="messages" role="status">
+            {# Always show messages div so it can be appended to by JS #}
+            {% if messages or form.errors %}
+                <ul>
+                    {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                            <li class="error">{{ error }}</li>
+                        {% endfor %}
+                    {% endif %}
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        {% block above_login %}{% endblock %}
+
+        <form class="login-form" action="{% url 'wagtailadmin_login' %}" method="post" autocomplete="off" novalidate>
+            {% block login_form %}
+                {% csrf_token %}
+
+                {% url 'wagtailadmin_home' as home_url %}
+                <input type="hidden" name="next" value="{{ next|default:home_url }}" />
+
+                {% block fields %}
+                    {% formattedfield form.username %}
+                    {% formattedfield form.password %}
+
+                    {% if show_password_reset %}
+                        <a class="reset-password" href="{% url 'wagtailadmin_password_reset' %}">{% trans "Forgotten password?" %}</a>
+                    {% endif %}
+
+                    {% block extra_fields %}
+                        {% for field_name, field in form.extra_fields %}
+                            {% formattedfield field %}
+                        {% endfor %}
+                    {% endblock extra_fields %}
+
+                    {% include "wagtailadmin/shared/forms/single_checkbox.html" with label_classname="remember-me" name="remember" text=_("Remember me") %}
+                {% endblock %}
+            {% endblock %}
+            <footer class="form-actions">
+                {% block submit_buttons %}
+                    <button
+                        type="submit"
+                        class="button button-longrunning"
+                        data-controller="w-progress"
+                        data-action="w-progress#activate"
+                        data-w-progress-active-value="{% trans 'Signing in…' %}"
+                    >
+                        {% icon name="spinner" %}
+                        <em data-w-progress-target="label">{% trans 'Sign in' %}</em>
+                    </button>
+                {% endblock %}
+                {% block branding_logo %}
+    <div class="login-logo" style="text-align:center;">
+        <img src="{% static 'images/aps_logo_black.png' %}" alt="APS Logo" style="width:235px; height:auto;">
+    </div>
+{% endblock %}
+            </footer>
+        </form>
+
+{% endblock %}
+    </main>
+

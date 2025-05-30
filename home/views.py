@@ -2,6 +2,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
 from django.utils.html import strip_tags
 from .models import NewsResearchItem, Obituary
+from .models import HighlightPanel
+from django.http import HttpResponse
 
 class HomePageView(TemplateView):
     template_name = "home/home_page.html"
@@ -43,4 +45,40 @@ def obituary_detail_view(request, slug):
     return render(request, "main/obituary_detail.html", {
         "page": obit,
         "recent_obits": recent,
+    })
+
+
+def homepage_view(request):
+    middle_column_items = HighlightPanel.objects.filter(column="middle")
+    right_column_items = HighlightPanel.objects.filter(column="right")
+
+    print("Middle column count:", middle_column_items.count())
+    for item in middle_column_items:
+        print(" -", item.title, "| Slug:", item.slug, "| Column:", item.column)
+
+    return render(request, "home_page.html", {
+        "news_items": [],  # just in case it's not provided elsewhere
+        "middle_column_items": middle_column_items,
+        "right_column_items": right_column_items,
+    })
+
+def highlight_detail(request, slug):
+    item = get_object_or_404(HighlightPanel, slug=slug)
+
+    tabs = []
+    for i in range(1, 5):
+        tabs.append({
+            'title': getattr(item, f'tab{i}_title', None),
+            'left': getattr(item, f'tab{i}_left_content', None),
+            'images': [
+                getattr(item, f'tab{i}_right_image', None),
+                getattr(item, f'tab{i}_right_image_2', None),
+                getattr(item, f'tab{i}_right_image_3', None),
+                getattr(item, f'tab{i}_right_image_4', None),
+            ]
+        })
+
+    return render(request, 'home/highlight_detail_tabs.html', {
+        'object': item,
+        'tabs': tabs,
     })

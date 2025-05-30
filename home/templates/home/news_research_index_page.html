@@ -6,6 +6,36 @@
   <div class="row panel">
     <div class="col-md-12">
       <h1 class="main-page-header">APS Research & News Archive</h1>
+      
+<div class="category-filters">
+  <a href="{{ page.url }}" class="btn btn-outline-primary btn-sm {% if not selected_category %}active{% endif %}">ALL</a>
+  {% for cat in categories %}
+    {% if cat.name == "Cell Signaling and Cancer" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">SIGNALLING</a>
+    {% elif cat.name == "Computational Peptide Science" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">COMPUTATIONAL</a>
+    {% elif cat.name == "Peptide Materials" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">MATERIALS</a>
+    {% elif cat.name == "Structural Biology" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">STRUCTURES</a>
+    {% elif cat.name == "Synthetic Methods" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">SYNTHETICS</a>
+    {% elif cat.name == "Therapeutics and Drug Delivery" %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">THERAPEUTICS</a>
+    {% else %}
+      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">OTHER</a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% if selected_category %}
+  <h2 class="sub-header text-center mt-4">
+    Articles in the <em>{{ selected_category }}</em> Category
+  </h2>
+{% endif %}
+
+
+
     </div>
   </div>
 
@@ -14,19 +44,19 @@
       <div class="row people">
         {% for item in row %}
           <div class="col-md-2 text-left">
-  <a href="{{ item.get_absolute_url }}" class="aps-archive-link">
-    {% if item.news_item_image %}
-      <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img img-responsive aps-archive-hover" />
-    {% endif %}
-    <p style="margin-top: 8px;">
-      {{ item.news_item_short_title }}
-    </p>
-  </a>
-</div>
-
+            <a href="{{ item.get_absolute_url }}" class="aps-archive-link">
+              {% if item.news_item_image %}
+                <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img img-responsive aps-archive-hover" />
+              {% endif %}
+              <p class="index-header">
+                {{ item.news_item_short_title }}
+              </p>
+            </a>
+          </div>
         {% endfor %}
       </div>
     {% endfor %}
   </div>
 </div>
 {% endblock %}
+
