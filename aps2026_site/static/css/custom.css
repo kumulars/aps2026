@@ -13,6 +13,14 @@
   }
 }
 
+
+.carousel-full-width {
+  width: 100%;
+  padding: 0 30px;
+  background: #fff;
+}
+
+
 /* === Base Layout === */
 html, body {
   height: 100%;
@@ -73,6 +81,18 @@ html, body {
   z-index: 999;
   background-color: #FFFFFF;
 }
+
+/* === PROCEEDINGS DISPLAY === */
+
+.caption-wrapper {
+    min-height: 200px; /* Adjust based on content density */
+}
+
+.caption {
+    padding-top: 10px;
+}
+
+
 
 /* === Fix Tab Visibility and Styling === */
 
@@ -135,6 +155,24 @@ html, body {
 }
 
 /* === Hero Section === */
+
+.aps-hero-welcome {
+  color: white;
+  font-size: 3.2em;
+  font-weight: bold;
+  margin-bottom: 0.3em;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+.aps-hero-tagline {
+  color: white;
+  font-size: 1.8em;
+  font-weight: 300;
+  margin-bottom: 1em;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+
 
 
 .aps-hero-fullscreen {
@@ -228,7 +266,6 @@ body.fade-out {
 .aps-enter-button:hover {
   background-color: #FFC914;
 }
-
 
 
 /* === Layout Elements === */
@@ -325,8 +362,6 @@ p {
   margin-top: 7px;
 }
 
-
-
 .aps-h2 {
   all: unset;
   font-size: 2.25rem;
@@ -390,67 +425,47 @@ p {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.footer-headshot {
-  border-radius: 5px;
-  margin-bottom: 9px;
-  width: 121px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* === Footer Styles === */
-footer.footer {
-  background-color: #F7F9FB;
-  color: #4E8098;
-  padding: 4rem 0 2rem 0;
-  font-size: 1.1rem;
+#aps-footer {
+  background-color: #f7f9fb;
+  color: #2a628f;
+  font-size: 1.05rem;
   margin-top: 5rem;
+  border-top: 2px solid #d8e2ec;
 }
 
-footer h3,
-footer h4,
-footer strong {
-  color: #222222;
-  font-size: 1.5rem;
+#aps-footer .aps-container {
+  max-width: 1362px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+#aps-footer h3 {
+  font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: #222;
 }
 
-footer p,
-footer a {
-  color: #4E8098;
+#aps-footer p,
+#aps-footer a {
+  color: #4e8098;
   line-height: 1.6;
-  text-decoration: none;
 }
 
-footer a:hover {
-  color: #FF7F11;
+#aps-footer a:hover {
+  color: #ff7f11;
   text-decoration: underline;
 }
 
-footer .footer-logo {
-  max-width: 260px;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
-}
-
-.footer-link {
-  color: #4E8098 !important;
-}
-
-.colophon {
-  background-color: #2A628F;
-  color: #FFFFFF;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 0;
+.aps-colophon {
+  background-color: #2a628f;
+  color: #ffffff;
+  padding: 16px 0;
   font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-align: center;
+  margin: 0;
 }
-
 
 
 /* === Responsive Adjustments === */

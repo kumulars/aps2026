@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container aps-container block-content">
+    <h1 class="main-page-header">Symposium Proceedings Archive</h1>
+
+    {% if page.intro_text %}
+        <div class="intro-text mb-4">
+            {{ page.intro_text|richtext }}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {% for item in proceedings %}
+            <div class="col-sm-6 col-md-4 mb-4">
+                <div class="thumbnail" style="border: none;">
+                    {% if item.cover_image %}
+                        {% image item.cover_image fill-360x500 as cover %}
+                        <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-responsive aps-img">
+                    {% endif %}
+                    <div class="caption-wrapper">
+                        <div class="caption">
+                            <h2 style="margin-top: 9px;">APS {{ item.symposium_year }}</h3>
+                            {% if item.symposium_theme %}
+                                <p><strong>{{ item.symposium_theme }}</strong></p>
+                            {% endif %}
+                            <p>{{ item.symposium_venue }}</p>
+
+                            {% with chairs=0 %}
+                                {% if item.symposium_chair_1_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
+                                {% if item.symposium_chair_2_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
+                                {% if item.symposium_chair_3_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
+
+                                {% if item.symposium_chair_1_name or item.symposium_chair_2_name or item.symposium_chair_3_name %}
+                                    <p><strong>
+                                        {% if chairs > 1 %}Chairs{% else %}Chair{% endif %}
+                                    </strong><br/>
+                                    {% if item.symposium_chair_1_name %}
+                                        {{ item.symposium_chair_1_name }}, {{ item.symposium_chair_1_institution }}<br/>
+                                    {% endif %}
+                                    {% if item.symposium_chair_2_name %}
+                                        {{ item.symposium_chair_2_name }}, {{ item.symposium_chair_2_institution }}<br/>
+                                    {% endif %}
+                                    {% if item.symposium_chair_3_name %}
+                                        {{ item.symposium_chair_3_name }}, {{ item.symposium_chair_3_institution }}
+                                    {% endif %}
+                                    </p>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if forloop.counter|divisibleby:3 %}
+                <div class="clearfix visible-md-block visible-lg-block"></div>
+            {% endif %}
+            {% if forloop.counter|divisibleby:2 %}
+                <div class="clearfix visible-sm-block"></div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

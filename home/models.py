@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils.functional import cached_property
+from wagtail.documents.models import Document
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.fields import StreamField
@@ -16,6 +17,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet
 from modelcluster.models import ParentalKey, ClusterableModel
 from wagtail import blocks
+
 
 class NewsItemCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -60,11 +62,16 @@ class PeopleIndexPage(Page):
 
         councilors = Person.objects.filter(category="Councilor").order_by("last_name")
 
+        # ➕ Add staff (Lauren and Lars)
+        staff = Person.objects.filter(category__in=["Society Manager", "Web Developer"]).order_by("last_name")
+
         def chunked(queryset, size):
             return [queryset[i:i + size] for i in range(0, len(queryset), size)]
 
         context["officer_rows"] = chunked(officers_ordered, 6)
         context["councilor_rows"] = chunked(list(councilors), 6)
+        context["staff_rows"] = chunked(list(staff), 6)
+
         return context
 
     class Meta:
@@ -178,7 +185,6 @@ class Person(ClusterableModel):
         FieldPanel("service_end_date"),
         FieldPanel("person_image", widget=AdminImageChooser),
         InlinePanel("committee_roles", label="Committee Roles"),
-        InlinePanel("obituary", label="Obituary", max_num=1),
     ]
 
     def image_thumb(self):
@@ -255,7 +261,7 @@ class PastPresidentsPage(Page):
 
 
 class Obituary(models.Model):
-    person = ParentalKey("Person", on_delete=models.CASCADE, related_name="obituary", unique=True)
+    person = models.OneToOneField("Person", on_delete=models.CASCADE, related_name="obituary")
     obituary_id = models.IntegerField()
     image = models.ForeignKey(
         Image,
@@ -343,6 +349,18 @@ class IntroPage(Page):
 
     template = "home/intro_page.html"
 
+class HighlightPanelIndexPage(Page):
+    template = "home/highlight_panel_index_page.html"
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["highlight_panels"] = HighlightPanel.objects.filter(is_archived=False).order_by("-sort_order")
+        return context
+
+    class Meta:
+        verbose_name = "Highlight Panel Index Page"
+
+
 @register_snippet
 class HighlightPanel(ClusterableModel):
     COLUMN_CHOICES = [
@@ -365,6 +383,8 @@ class HighlightPanel(ClusterableModel):
     blank=True)
     column = models.CharField(max_length=10, choices=COLUMN_CHOICES, default="middle")
     slug = models.SlugField(unique=True, help_text="Used to generate the detail page URL")
+    month = models.CharField(max_length=20, blank=True, help_text="Month this feature was published")
+    year = models.CharField(max_length=4, blank=True, help_text="Year this feature was published")
     is_lab_with_tabs = models.BooleanField(default=False)
 
     # Add these fields to the HighlightPanel model
@@ -512,6 +532,8 @@ class HighlightPanel(ClusterableModel):
         FieldPanel("html_body"),
         FieldPanel("column"),
         FieldPanel("slug"),
+        FieldPanel("month"),
+        FieldPanel("year"),
         FieldPanel("is_lab_with_tabs"),
         FieldPanel("tab1_title"),
         FieldPanel("tab1_left_content"),
@@ -548,4 +570,68 @@ class HighlightPanel(ClusterableModel):
     def __str__(self):
         return self.title
 
+@register_snippet
+class SymposiumProceeding(models.Model):
+    symposium_year = models.CharField(max_length=4)
+    symposium_theme = models.CharField(max_length=255, blank=True)
+    symposium_venue = models.CharField(max_length=255, blank=True)
 
+    symposium_chair_1_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_1_institution = models.CharField(max_length=255, blank=True)
+    symposium_chair_2_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_2_institution = models.CharField(max_length=255, blank=True)
+    symposium_chair_3_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_3_institution = models.CharField(max_length=255, blank=True)
+
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    program_book = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel("symposium_year"),
+        FieldPanel("symposium_theme"),
+        FieldPanel("symposium_venue"),
+
+        FieldPanel("symposium_chair_1_name"),
+        FieldPanel("symposium_chair_1_institution"),
+        FieldPanel("symposium_chair_2_name"),
+        FieldPanel("symposium_chair_2_institution"),
+        FieldPanel("symposium_chair_3_name"),
+        FieldPanel("symposium_chair_3_institution"),
+
+        FieldPanel("cover_image", widget=AdminImageChooser),
+        FieldPanel("program_book"),
+    ]
+
+    def __str__(self):
+        return f"APS {self.symposium_year} Proceedings"
+
+class ProceedingsIndexPage(Page):
+    template = "home/proceedings_index_page.html"
+
+    intro_text = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"]
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro_text"),
+    ]
+
+    @cached_property
+    def proceedings(self):
+        return SymposiumProceeding.objects.all().order_by("-symposium_year")
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["proceedings"] = self.proceedings
+        return context

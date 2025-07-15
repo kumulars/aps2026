@@ -6,6 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils.functional import cached_property
+from wagtail.documents.models import Document
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.fields import StreamField
@@ -17,6 +18,15 @@ from wagtail.snippets.views.snippets import SnippetViewSet
 from modelcluster.models import ParentalKey, ClusterableModel
 from wagtail import blocks
 
+
+class NewsItemCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "News Item Categories"
 
 
 class HomePage(Page):
@@ -89,8 +99,17 @@ class NewsResearchItem(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    category = models.ForeignKey(
+    "home.NewsItemCategory",
+    null=True,
+    blank=True,
+    on_delete=models.SET_NULL,
+    related_name="news_items",
+    )
+
     panels = [
         FieldPanel("news_item_entry_date"),
+        FieldPanel("category"),
         FieldPanel("news_item_pi_first_name"),
         FieldPanel("news_item_pi_last_name"),
         FieldPanel("news_item_pi_title"),
@@ -104,7 +123,7 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_full_title"),
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
-        FieldPanel("news_item_journal_url"),
+        FieldPanel("news_item_journal_url"),        
     ]
 
     def __str__(self):
@@ -298,8 +317,23 @@ class NewsResearchIndexPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        items = NewsResearchItem.objects.all().order_by("-id")
+
+        selected_category = request.GET.get("category")
+        if selected_category:
+            items = NewsResearchItem.objects.filter(
+                category__name=selected_category
+            ).order_by("-id")
+        else:
+            items = NewsResearchItem.objects.all().order_by("-id")
+
+        # Chunk items into rows of 6
+        def chunked(qs, size):
+            return [qs[i:i+size] for i in range(0, len(qs), size)]
+
         context["news_rows"] = chunked(list(items), 6)
+        context["categories"] = NewsItemCategory.objects.all().order_by("name")
+        context["selected_category"] = selected_category
+
         return context
 
 class IntroPage(Page):
@@ -516,4 +550,68 @@ class HighlightPanel(ClusterableModel):
     def __str__(self):
         return self.title
 
+@register_snippet
+class SymposiumProceeding(models.Model):
+    symposium_year = models.CharField(max_length=4)
+    symposium_theme = models.CharField(max_length=255, blank=True)
+    symposium_venue = models.CharField(max_length=255, blank=True)
 
+    symposium_chair_1_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_1_institution = models.CharField(max_length=255, blank=True)
+    symposium_chair_2_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_2_institution = models.CharField(max_length=255, blank=True)
+    symposium_chair_3_name = models.CharField(max_length=255, blank=True)
+    symposium_chair_3_institution = models.CharField(max_length=255, blank=True)
+
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    program_book = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel("symposium_year"),
+        FieldPanel("symposium_theme"),
+        FieldPanel("symposium_venue"),
+
+        FieldPanel("symposium_chair_1_name"),
+        FieldPanel("symposium_chair_1_institution"),
+        FieldPanel("symposium_chair_2_name"),
+        FieldPanel("symposium_chair_2_institution"),
+        FieldPanel("symposium_chair_3_name"),
+        FieldPanel("symposium_chair_3_institution"),
+
+        FieldPanel("cover_image", widget=AdminImageChooser),
+        FieldPanel("program_book"),
+    ]
+
+    def __str__(self):
+        return f"APS {self.symposium_year} Proceedings"
+
+class ProceedingsIndexPage(Page):
+    template = "home/proceedings_index_page.html"
+
+    intro_text = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"]
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro_text"),
+    ]
+
+    @cached_property
+    def proceedings(self):
+        return SymposiumProceeding.objects.all().order_by("-symposium_year")
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["proceedings"] = self.proceedings
+        return context

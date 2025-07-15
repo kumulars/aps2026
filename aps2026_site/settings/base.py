@@ -121,7 +121,9 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-WAGTAIL_ADMIN_BASE_URL = "/"
+WAGTAILADMIN_BASE_URL = "http://localhost:8000"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 WAGTAILDOCS_EXTENSIONS = [
     "csv", "docx", "key", "odt", "pdf", "pptx", "rtf", "txt", "xlsx", "zip"

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+  <section class="aps-highlight-archive">
+    <div class="aps-container block-content">
+      <h1 class="main-page-header">Lab of the Month Archive</h1>
+<div class="row">
+  {% for panel in highlight_panels %}
+    <div class="col-md-3">
+      <div>
+        <h4>{{ panel.title|safe }}</h4>
+        {% if panel.month or panel.year %}
+          <p>
+            {{ panel.month }} {{ panel.year }}
+          </p>
+        {% endif %}
+        {% if panel.image %}
+          <img src="{{ panel.image.file.url }}" class="img-responsive aps-img" alt="{{ panel.title }}">
+        {% endif %}
+        <div>
+          {{ panel.html_body|safe }}
+        </div>
+        <a href="{{ panel.get_absolute_url }}" class="btn btn-sm ">View Full Feature →</a>
+      </div>
+    </div>
+    {% if forloop.counter|divisibleby:4 %}
+      </div><div class="row">
+    {% endif %}
+  {% endfor %}
+</div>
+    </div>
+  </section>
+{% endblock %}

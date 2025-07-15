@@ -1,7 +1,7 @@
 from wagtail.snippets.views.snippets import SnippetViewSet
 from wagtail.snippets.models import register_snippet
 from home.models import Person, NewsResearchItem, NewsItemCategory
-
+from home.models import SymposiumProceeding
 
 # Custom admin view for Person
 class PersonViewSet(SnippetViewSet):
@@ -33,7 +33,12 @@ class NewsResearchItemViewSet(SnippetViewSet):
     ]
     list_per_page = 40
 
-
+class SymposiumProceedingViewSet(SnippetViewSet):
+    model = SymposiumProceeding
+    icon = "doc-full"
+    add_to_admin_menu = True
+    menu_label = "Symposium Proceedings"
+    menu_order = 300
 
 register_snippet(Person, viewset=PersonViewSet)
 register_snippet(NewsItemCategory, viewset=NewsItemCategoryViewSet)

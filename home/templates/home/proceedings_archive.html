@@ -1,0 +1,24 @@
+{% load static wagtailimages_tags %}
+
+<div class="aps-container block-content">
+  <h1 class="main-page-header">Symposium Proceedings Archive</h1>
+  <div class="row">
+    {% for item in proceedings %}
+      <div class="col-md-4 text-center mb-4">
+        {% if item.symposium_image %}
+          <a href="{{ item.symposium_pdf.url }}" target="_blank">
+            {% image item.symposium_image width-300 %}
+          </a>
+        {% endif %}
+        <h3 class="tertiary-header mt-2">{{ item.symposium_year }}</h3>
+        <p class="theme">{{ item.symposium_theme }}</p>
+        <p class="venue">{{ item.symposium_venue }}</p>
+        <p class="chairs">
+          {{ item.symposium_chair_1_name }}, {{ item.symposium_chair_1_institution }}<br>
+          {{ item.symposium_chair_2_name }}, {{ item.symposium_chair_2_institution }}<br>
+          {{ item.symposium_chair_3_name }}, {{ item.symposium_chair_3_institution }}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
