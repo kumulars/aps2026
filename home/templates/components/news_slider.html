@@ -1,0 +1,81 @@
+<div class="aps-news-slider">
+  <div class="slider-wrapper">
+      <button class="nav-arrow nav-left">&#10094;</button>
+      <div class="slider-container">
+        <div class="slider-track" id="sliderTrack"></div>
+      </div>
+      <button class="nav-arrow nav-right">&#10095;</button>
+  </div>
+</div>
+
+  <script>
+    // Namespaced JavaScript to avoid conflicts
+    (function() {
+      const track = document.getElementById("sliderTrack");
+      
+      // Sample data - replace with your Wagtail news items
+      const originalSlides = Array.from({length: 15}, (_, i) => ({
+        img: "https://via.placeholder.com/300x200?text=Slide+" + (i+1),
+        title: "News Item " + (i+1),
+        desc: "Reflecting work in Lab #" + (i+1),
+        url: "#" // Add URL field for linking to actual news items
+      }));
+
+      const slidesPerView = window.innerWidth < 768 ? 1 : 4;
+      let offset = slidesPerView;
+
+      function createSlide(data) {
+        const slide = document.createElement("div");
+        slide.className = "slide";
+        slide.innerHTML = `
+          <div class="card">
+            <a href="${data.url}" class="news-item-link">
+              <img src="${data.img}" alt="${data.title}">
+              <h4>${data.title}</h4>
+              <p>${data.desc}</p>
+            </a>
+          </div>`;
+        return slide;
+      }
+
+      // Add clones for infinite looping
+      const clonesBefore = originalSlides.slice(-slidesPerView);
+      const clonesAfter = originalSlides.slice(0, slidesPerView);
+      const allSlides = [...clonesBefore, ...originalSlides, ...clonesAfter];
+
+      allSlides.forEach(data => {
+        track.appendChild(createSlide(data));
+      });
+
+      function updateSlider(move) {
+        offset += move;
+        track.style.transition = "transform 0.6s ease";
+        track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+
+        setTimeout(() => {
+          if (offset >= originalSlides.length + slidesPerView) {
+            track.style.transition = "none";
+            offset = slidesPerView;
+            track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+          } else if (offset < slidesPerView) {
+            track.style.transition = "none";
+            offset = originalSlides.length + slidesPerView - 1;
+            track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+          }
+        }, 650);
+      }
+
+      // Set initial transform
+      track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+
+      // Event listeners with namespace protection
+      const leftArrow = document.querySelector(".aps-news-slider .nav-left");
+      const rightArrow = document.querySelector(".aps-news-slider .nav-right");
+      
+      if (leftArrow) leftArrow.addEventListener("click", () => updateSlider(-1));
+      if (rightArrow) rightArrow.addEventListener("click", () => updateSlider(1));
+
+      // Autoplay
+      setInterval(() => updateSlider(1), 5000);
+    })();
+  </script>

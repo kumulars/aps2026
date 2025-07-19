@@ -6,17 +6,23 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils.functional import cached_property
-from wagtail.documents.models import Document
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+
 from wagtail.models import Page
-from wagtail.fields import RichTextField
-from wagtail.fields import StreamField
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.models import Image
 from wagtail.images.widgets import AdminImageChooser
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
 from modelcluster.models import ParentalKey, ClusterableModel
-from wagtail import blocks
+
+import requests
+from datetime import datetime, timedelta
+
 
 
 class NewsItemCategory(models.Model):
@@ -29,10 +35,18 @@ class NewsItemCategory(models.Model):
         verbose_name_plural = "News Item Categories"
 
 
+
+
+
+
 class HomePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
-        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:6]
+        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:15]
+        # Add featured items for hero slider (top 5 most recent with images)
+        context["hero_news_items"] = NewsResearchItem.objects.filter(
+            news_item_image__isnull=False
+        ).order_by("-id")[:5]
         context["middle_column_items"] = HighlightPanel.objects.filter(
             column="middle", is_archived=False).order_by("sort_order")
         context["right_column_items"] = HighlightPanel.objects.filter(
@@ -635,3 +649,382 @@ class ProceedingsIndexPage(Page):
         context = super().get_context(request)
         context["proceedings"] = self.proceedings
         return context
+
+class ResearchArea(models.Model):
+    """Research areas/specializations for researchers"""
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
+@register_snippet
+class Researcher(models.Model):
+    """Core researcher model"""
+    
+    # Basic Information
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    title = models.CharField(max_length=200, blank=True, help_text="e.g., Professor, Associate Professor")
+    
+    # Institution Details
+    institution = models.CharField(max_length=200)
+    department = models.CharField(max_length=200, blank=True)
+    
+    # Geographic Information
+    country = models.CharField(max_length=100, default="USA")
+    state_province = models.CharField(max_length=100, blank=True, help_text="State (US) or Province (Canada)")
+    city = models.CharField(max_length=100, blank=True)
+    
+    # Contact & Web Presence
+    website_url = models.URLField(blank=True, help_text="Personal or lab website")
+    institutional_email = models.EmailField(blank=True)
+    orcid_id = models.CharField(max_length=50, blank=True, help_text="ORCID identifier (e.g., 0000-0000-0000-0000)")
+    
+    # PubMed Integration
+    pubmed_search_term = models.CharField(max_length=200, blank=True, 
+                                        help_text="Search term for PubMed (e.g., 'Smith J[Author]')")
+    pubmed_url = models.URLField(blank=True)
+    
+    # Research Areas
+    research_areas = models.ManyToManyField(ResearchArea, blank=True)
+    research_keywords = models.TextField(blank=True, help_text="Comma-separated keywords")
+    
+    # Administrative Fields
+    is_active = models.BooleanField(default=True, help_text="Display in public directory")
+    is_verified = models.BooleanField(default=False, help_text="Verified by admin")
+    verification_token = models.CharField(max_length=100, blank=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_verified = models.DateTimeField(null=True, blank=True)
+    last_link_check = models.DateTimeField(null=True, blank=True)
+    
+    # Status Tracking
+    website_status = models.CharField(max_length=20, choices=[
+        ('unknown', 'Unknown'),
+        ('active', 'Active'),
+        ('broken', 'Broken Link'),
+        ('moved', 'Moved/Redirected'),
+        ('inactive', 'Inactive')
+    ], default='unknown')
+    
+    # Notes
+    admin_notes = models.TextField(blank=True, help_text="Internal notes for administrators")
+    public_bio = models.TextField(blank=True, help_text="Optional public biography")
+    
+    panels = [
+        MultiFieldPanel([
+            FieldPanel('first_name'),
+            FieldPanel('last_name'),
+            FieldPanel('title'),
+        ], heading="Personal Information"),
+        
+        MultiFieldPanel([
+            FieldPanel('institution'),
+            FieldPanel('department'),
+            FieldPanel('country'),
+            FieldPanel('state_province'),
+            FieldPanel('city'),
+        ], heading="Institution"),
+        
+        MultiFieldPanel([
+            FieldPanel('website_url'),
+            FieldPanel('institutional_email'),
+            FieldPanel('orcid_id'),
+        ], heading="Contact & Web Presence"),
+        
+        MultiFieldPanel([
+            FieldPanel('pubmed_search_term'),
+            FieldPanel('pubmed_url'),
+        ], heading="PubMed Information"),
+        
+        MultiFieldPanel([
+            FieldPanel('research_areas'),
+            FieldPanel('research_keywords'),
+            FieldPanel('public_bio'),
+        ], heading="Research Information"),
+        
+        MultiFieldPanel([
+            FieldPanel('is_active'),
+            FieldPanel('is_verified'),
+            FieldPanel('website_status'),
+            FieldPanel('admin_notes'),
+        ], heading="Administrative"),
+    ]
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.institution})"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def display_name(self):
+        if self.title:
+            return f"{self.title} {self.full_name}"
+        return self.full_name
+
+    @property
+    def location_display(self):
+        parts = []
+        if self.city:
+            parts.append(self.city)
+        if self.state_province:
+            parts.append(self.state_province)
+        if self.country and self.country != "USA":
+            parts.append(self.country)
+        return ", ".join(parts) if parts else self.country
+
+    def get_pubmed_url(self):
+        """Generate PubMed URL from search term"""
+        if self.pubmed_search_term:
+            base_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
+            return f"{base_url}?term={self.pubmed_search_term}"
+        return self.pubmed_url
+
+    def check_website_status(self):
+        """Check if website URL is accessible"""
+        if not self.website_url:
+            self.website_status = 'unknown'
+            return False
+            
+        try:
+            response = requests.head(self.website_url, timeout=10, allow_redirects=True)
+            if response.status_code == 200:
+                self.website_status = 'active'
+                success = True
+            elif 300 <= response.status_code < 400:
+                self.website_status = 'moved'
+                success = True
+            else:
+                self.website_status = 'broken'
+                success = False
+        except requests.RequestException:
+            self.website_status = 'broken'
+            success = False
+        
+        self.last_link_check = timezone.now()
+        self.save(update_fields=['website_status', 'last_link_check'])
+        return success
+
+    def needs_verification(self):
+        """Check if researcher info needs verification"""
+        if not self.last_verified:
+            return True
+        
+        # Needs verification if it's been more than 2 years
+        cutoff = timezone.now() - timedelta(days=730)
+        return self.last_verified < cutoff
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+        unique_together = ['first_name', 'last_name', 'institution']
+
+
+class PeptideLinksIndexPage(Page):
+    """Main directory page"""
+    
+    intro_text = RichTextField(
+        default="""
+        <p>This site provides a directory of principal investigators in peptide science at academic institutions, 
+        government laboratories, and companies who have research-oriented web pages. It serves the peptide science 
+        community by connecting researchers across institutions and facilitating collaboration.</p>
+        
+        <p>The field of peptides is interdisciplinary, spanning chemistry, biochemistry, molecular biology, medicine, 
+        pharmaceutical sciences, materials science, and engineering. While we cannot include every researcher who 
+        uses peptides, we aim to provide a comprehensive directory of active peptide scientists.</p>
+        """
+    )
+    
+    submission_instructions = RichTextField(
+        default="""
+        <p>If you are a peptide scientist and principal investigator with a web page at your institution, 
+        you may submit your information for inclusion in this directory. Please provide your name, 
+        institution, research focus, and website URL.</p>
+        """
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro_text'),
+        FieldPanel('submission_instructions'),
+    ]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # Get search/filter parameters
+        search_query = request.GET.get('search', '')
+        country_filter = request.GET.get('country', '')
+        state_filter = request.GET.get('state', '')
+        research_area_filter = request.GET.get('research_area', '')
+        
+        # Base queryset
+        researchers = Researcher.objects.filter(is_active=True)
+        
+        # Apply filters
+        if search_query:
+            researchers = researchers.filter(
+                models.Q(first_name__icontains=search_query) |
+                models.Q(last_name__icontains=search_query) |
+                models.Q(institution__icontains=search_query) |
+                models.Q(research_keywords__icontains=search_query)
+            )
+        
+        if country_filter:
+            researchers = researchers.filter(country=country_filter)
+            
+        if state_filter:
+            researchers = researchers.filter(state_province=state_filter)
+            
+        if research_area_filter:
+            researchers = researchers.filter(research_areas__slug=research_area_filter)
+        
+        # Group by location for display
+        researchers_by_location = {}
+        for researcher in researchers.select_related().prefetch_related('research_areas'):
+            if researcher.country == 'USA':
+                location_key = researcher.state_province or 'Unknown State'
+            else:
+                location_key = researcher.country
+                
+            if location_key not in researchers_by_location:
+                researchers_by_location[location_key] = []
+            researchers_by_location[location_key].append(researcher)
+        
+        # Custom sorting function for locations
+        def sort_locations(location_item):
+            """
+            Custom sorting to match the original peptidelinks.net structure:
+            1. US states first (alphabetically)
+            2. Canada second  
+            3. All other countries alphabetically
+            """
+            location_name, _ = location_item
+            
+            # Check if it's a US state (not in country list)
+            # US states will be anything that's not a recognized country
+            known_countries = {
+                'Canada', 'Australia', 'Austria', 'Brazil', 'Chile', 'China', 'Cuba', 
+                'Denmark', 'France', 'Germany', 'Greece', 'Iceland', 'India', 'Ireland', 
+                'Israel', 'Italy', 'Japan', 'Netherlands', 'New Zealand', 'Pakistan', 
+                'Portugal', 'Scotland', 'Singapore', 'South Korea', 'Spain', 'Sweden', 
+                'Switzerland', 'U.K.', 'UK', 'United Kingdom', 'Vietnam'
+                # Add more countries as needed
+            }
+            
+            if location_name not in known_countries and location_name != 'Unknown State':
+                # This is likely a US state
+                return (0, location_name)  # Sort order 0 for US states
+            elif location_name == 'Canada':
+                return (1, location_name)  # Sort order 1 for Canada
+            else:
+                # All other countries
+                return (2, location_name)  # Sort order 2 for other countries
+        
+        # Sort locations using custom function
+        sorted_locations = sorted(researchers_by_location.items(), key=sort_locations)
+        
+        # Sort researchers within each location
+        for location, researcher_list in sorted_locations:
+            researcher_list.sort(key=lambda r: (r.last_name, r.first_name))
+        
+        # Get filter options
+        countries = Researcher.objects.filter(is_active=True).values_list(
+            'country', flat=True).distinct().order_by('country')
+        states = Researcher.objects.filter(is_active=True, country='USA').values_list(
+            'state_province', flat=True).distinct().order_by('state_province')
+        research_areas = ResearchArea.objects.all()
+        
+        context.update({
+            'researchers_by_location': sorted_locations,
+            'search_query': search_query,
+            'countries': countries,
+            'states': states,
+            'research_areas': research_areas,
+            'selected_country': country_filter,
+            'selected_state': state_filter,
+            'selected_research_area': research_area_filter,
+            'total_researchers': researchers.count(),
+        })
+        
+        return context
+
+    class Meta:
+        verbose_name = "PeptideLinks Directory"
+
+
+class ResearcherSubmissionFormField(AbstractFormField):
+    """Form fields for researcher submission"""
+    page = models.ForeignKey('ResearcherSubmissionPage', on_delete=models.CASCADE, related_name='form_fields')
+
+
+class ResearcherSubmissionPage(AbstractEmailForm):
+    """Page for researchers to submit their information"""
+    
+    intro = RichTextField(
+        default="""
+        <p>Use this form to submit your information for inclusion in the PeptideLinks directory. 
+        All submissions are reviewed before being added to the public directory.</p>
+        """
+    )
+    
+    thank_you_text = RichTextField(
+        default="""
+        <p>Thank you for your submission! We will review your information and add you to the 
+        directory once verified. You will receive a confirmation email when your listing is live.</p>
+        """
+    )
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Form Fields"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldPanel('to_address'),
+            FieldPanel('from_address'),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
+
+    def process_form_submission(self, form):
+        """Process form submission and create pending researcher record"""
+        submission = super().process_form_submission(form)
+        
+        # Extract form data
+        form_data = {field.clean_name: field.value for field in submission.get_data()}
+        
+        # Create a pending researcher record
+        researcher = Researcher(
+            first_name=form_data.get('first_name', ''),
+            last_name=form_data.get('last_name', ''),
+            title=form_data.get('title', ''),
+            institution=form_data.get('institution', ''),
+            department=form_data.get('department', ''),
+            country=form_data.get('country', 'USA'),
+            state_province=form_data.get('state_province', ''),
+            website_url=form_data.get('website_url', ''),
+            institutional_email=form_data.get('email', ''),
+            research_keywords=form_data.get('research_keywords', ''),
+            public_bio=form_data.get('bio', ''),
+            is_active=False,  # Pending admin approval
+            is_verified=False,
+        )
+        researcher.save()
+        
+        return submission
+
+    class Meta:
+        verbose_name = "Researcher Submission Form"

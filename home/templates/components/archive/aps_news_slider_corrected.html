@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>APS News Slider - Correct Slide Movement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; }
+    .slider-wrapper {
+      position: relative;
+      width: 100vw;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+    .slider-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      position: relative;
+      padding: 40px 0;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.6s ease;
+      will-change: transform;
+    }
+    .slide {
+      flex: 0 0 25%;
+      box-sizing: border-box;
+      padding: 0 10px;
+    }
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      height: 100%;
+    }
+    .card img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .card h4 {
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      font-size: 2em;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .nav-left { left: 0; }
+    .nav-right { right: 0; }
+
+    @media (max-width: 768px) {
+      .slide { flex: 0 0 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="slider-wrapper">
+    <button class="nav-arrow nav-left">&#10094;</button>
+    <div class="slider-container">
+      <div class="slider-track" id="sliderTrack"></div>
+    </div>
+    <button class="nav-arrow nav-right">&#10095;</button>
+  </div>
+
+  <script>
+    const track = document.getElementById("sliderTrack");
+    const originalSlides = Array.from({length: 15}, (_, i) => ({
+      img: "https://via.placeholder.com/300x200?text=Slide+" + (i+1),
+      title: "News Item " + (i+1),
+      desc: "Reflecting work in Lab #" + (i+1)
+    }));
+
+    const slidesPerView = window.innerWidth < 768 ? 1 : 4;
+    let offset = slidesPerView;
+
+    function createSlide(data) {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+      slide.innerHTML = `
+        <div class="card">
+          <img src="${data.img}" alt="${data.title}">
+          <h4>${data.title}</h4>
+          <p>${data.desc}</p>
+        </div>`;
+      return slide;
+    }
+
+    // Add clones for looping
+    const clonesBefore = originalSlides.slice(-slidesPerView);
+    const clonesAfter = originalSlides.slice(0, slidesPerView);
+    const allSlides = [...clonesBefore, ...originalSlides, ...clonesAfter];
+
+    allSlides.forEach(data => {
+      track.appendChild(createSlide(data));
+    });
+
+    function updateSlider(move) {
+      offset += move;
+      track.style.transition = "transform 0.6s ease";
+      track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+
+      setTimeout(() => {
+        if (offset >= originalSlides.length + slidesPerView) {
+          track.style.transition = "none";
+          offset = slidesPerView;
+          track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+        } else if (offset < slidesPerView) {
+          track.style.transition = "none";
+          offset = originalSlides.length + slidesPerView - 1;
+          track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+        }
+      }, 650);
+    }
+
+    // Set initial transform
+    track.style.transform = `translateX(-${offset * (100 / slidesPerView)}%)`;
+
+    document.querySelector(".nav-left").addEventListener("click", () => updateSlider(-1));
+    document.querySelector(".nav-right").addEventListener("click", () => updateSlider(1));
+
+    // Autoplay
+    setInterval(() => updateSlider(1), 5000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags widget_tags %}
+
+{% block content %}
+<div class="aps-container block-content">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 class="main-page-header">{{ page.title }}</h1>
+            
+            <div class="submission-intro">
+                {{ page.intro|safe }}
+            </div>
+
+            <form action="{% pageurl page %}" method="POST" class="researcher-submission-form">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="first_name" class="required">First Name</label>
+                                <input type="text" name="first_name" id="first_name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="last_name" class="required">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Professional Title</label>
+                        <input type="text" name="title" id="title" class="form-control" 
+                               placeholder="e.g., Professor, Associate Professor, Principal Scientist">
+                        <small class="form-text text-muted">Optional: Your current position/title</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="required">Institutional Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                        <small class="form-text text-muted">Please use your institutional email address</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Institution Information</h3>
+                    <div class="form-group">
+                        <label for="institution" class="required">Institution</label>
+                        <input type="text" name="institution" id="institution" class="form-control" required
+                               placeholder="e.g., University of California, Irvine">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department/Division</label>
+                        <input type="text" name="department" id="department" class="form-control"
+                               placeholder="e.g., Department of Chemistry">
+                        <small class="form-text text-muted">Optional: Your specific department or division</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="country" class="required">Country</label>
+                                <select name="country" id="country" class="form-control" required>
+                                    <option value="">Select Country</option>
+                                    <option value="USA" selected>United States</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="France">France</option>
+                                    <option value="Japan">Japan</option>
+                                    <option value="China">China</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="state_province">State/Province</label>
+                                <input type="text" name="state_province" id="state_province" class="form-control"
+                                       placeholder="e.g., California, Ontario">
+                                <small class="form-text text-muted">Required for US and Canada</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Web Presence</h3>
+                    <div class="form-group">
+                        <label for="website_url" class="required">Personal/Lab Website</label>
+                        <input type="url" name="website_url" id="website_url" class="form-control" required
+                               placeholder="https://www.yourlab.edu/~yourname/">
+                        <small class="form-text text-muted">Your institutional research page or lab website</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orcid_id">ORCID ID</label>
+                        <input type="text" name="orcid_id" id="orcid_id" class="form-control"
+                               placeholder="0000-0000-0000-0000" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}">
+                        <small class="form-text text-muted">Optional: Your ORCID identifier (format: 0000-0000-0000-0000)</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Research Information</h3>
+                    <div class="form-group">
+                        <label for="research_keywords">Research Keywords</label>
+                        <textarea name="research_keywords" id="research_keywords" class="form-control" rows="3"
+                                  placeholder="e.g., antimicrobial peptides, drug delivery, peptide synthesis, protein folding"></textarea>
+                        <small class="form-text text-muted">Optional: Comma-separated keywords describing your research focus</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Brief Research Description</label>
+                        <textarea name="bio" id="bio" class="form-control" rows="4"
+                                  placeholder="Brief description of your research interests and focus areas..."></textarea>
+                        <small class="form-text text-muted">Optional: A short description of your research (will be displayed publicly)</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Additional Information</h3>
+                    <div class="form-group">
+                        <label for="comments">Comments</label>
+                        <textarea name="comments" id="comments" class="form-control" rows="3"
+                                  placeholder="Any additional information or special requests..."></textarea>
+                        <small class="form-text text-muted">Optional: Any additional information for the administrators</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success btn-lg">Submit for Review</button>
+                    <a href="{% pageurl page.get_parent %}" class="btn btn-secondary">Cancel</a>
+                </div>
+
+                <div class="submission-note">
+                    <p><strong>Note:</strong> All submissions are reviewed before being added to the public directory. 
+                    You will receive a confirmation email once your listing is approved and live.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Researcher Submission Form Styles */
+.submission-intro {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #FF7F11;
+}
+
+.researcher-submission-form {
+    background: #ffffff;
+    padding: 30px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.form-section {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+.form-section h3 {
+    color: #1D3557;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-group label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px 12px;
+    font-size: 1em;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #FF7F11;
+    box-shadow: 0 0 0 0.2rem rgba(255, 127, 17, 0.25);
+    outline: 0;
+}
+
+.form-text {
+    margin-top: 5px;
+    font-size: 0.875em;
+}
+
+.form-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+}
+
+.form-actions .btn {
+    margin: 0 10px;
+    padding: 12px 30px;
+    font-size: 1.1em;
+}
+
+.submission-note {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
+    border-radius: 4px;
+    color: #004085;
+}
+
+/* Success Message Styling */
+.success-message {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Error Message Styling */
+.error-message {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .researcher-submission-form {
+        padding: 20px;
+    }
+    
+    .form-actions .btn {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+</style>
+
+<script>
+// Form enhancement JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // Country/State dependency
+    const countrySelect = document.getElementById('country');
+    const stateField = document.getElementById('state_province');
+    
+    countrySelect.addEventListener('change', function() {
+        if (this.value === 'USA' || this.value === 'Canada') {
+            stateField.setAttribute('required', 'required');
+            stateField.previousElementSibling.classList.add('required');
+        } else {
+            stateField.removeAttribute('required');
+            stateField.previousElementSibling.classList.remove('required');
+        }
+    });
+    
+    // ORCID format validation
+    const orcidField = document.getElementById('orcid_id');
+    orcidField.addEventListener('input', function() {
+        let value = this.value.replace(/[^0-9]/g, '');
+        if (value.length > 0) {
+            value = value.match(/.{1,4}/g).join('-');
+            if (value.length > 19) {
+                value = value.substring(0, 19);
+            }
+        }
+        this.value = value;
+    });
+    
+    // Form validation feedback
+    const form = document.querySelector('.researcher-submission-form');
+    form.addEventListener('submit', function(e) {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(function(field) {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+        }
+    });
+});
+</script>
+{% endblock %}

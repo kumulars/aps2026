@@ -15,16 +15,25 @@
         {% for item in proceedings %}
             <div class="col-sm-6 col-md-4 mb-4">
                 <div class="thumbnail" style="border: none;">
-                    {% if item.cover_image %}
+
+                    {% if item.cover_image and item.program_book %}
+                        {% image item.cover_image fill-360x500 as cover %}
+                        <a href="{{ item.program_book.url }}" target="_blank">
+                            <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-responsive aps-img">
+                        </a>
+                    {% elif item.cover_image %}
                         {% image item.cover_image fill-360x500 as cover %}
                         <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-responsive aps-img">
                     {% endif %}
+
                     <div class="caption-wrapper">
                         <div class="caption">
-                            <h2 style="margin-top: 9px;">APS {{ item.symposium_year }}</h3>
+                            <h2 style="margin-top: 9px;">APS {{ item.symposium_year }}</h2>
+
                             {% if item.symposium_theme %}
                                 <p><strong>{{ item.symposium_theme }}</strong></p>
                             {% endif %}
+
                             <p>{{ item.symposium_venue }}</p>
 
                             {% with chairs=0 %}

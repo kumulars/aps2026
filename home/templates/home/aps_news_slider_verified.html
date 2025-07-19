@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>APS News Slider Verified</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fff; }
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      background: #f6f6f6;
+      padding: 20px 0;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+      will-change: transform;
+    }
+    .carousel-slide {
+      flex: 0 0 25%;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+    .carousel-slide-inner {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: center;
+      height: 180px;
+    }
+    .carousel-slide img {
+      max-width: 100%;
+      height: auto;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border: 1px solid #ccc;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .carousel-arrow.left { left: 10px; }
+    .carousel-arrow.right { right: 10px; }
+  </style>
+</head>
+<body>
+<div class="carousel-container">
+  <div class="carousel-arrow left" onclick="moveSlide(-1)">&#9664;</div>
+  <div class="carousel-track" id="carouselTrack">
+    <!-- 15 dummy slides -->
+    
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+1" alt="News Item 1">
+        <h4>News Item 1</h4>
+        <p>Reflecting work in Lab #1</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+2" alt="News Item 2">
+        <h4>News Item 2</h4>
+        <p>Reflecting work in Lab #2</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+3" alt="News Item 3">
+        <h4>News Item 3</h4>
+        <p>Reflecting work in Lab #3</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+4" alt="News Item 4">
+        <h4>News Item 4</h4>
+        <p>Reflecting work in Lab #4</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+5" alt="News Item 5">
+        <h4>News Item 5</h4>
+        <p>Reflecting work in Lab #5</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+6" alt="News Item 6">
+        <h4>News Item 6</h4>
+        <p>Reflecting work in Lab #6</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+7" alt="News Item 7">
+        <h4>News Item 7</h4>
+        <p>Reflecting work in Lab #7</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+8" alt="News Item 8">
+        <h4>News Item 8</h4>
+        <p>Reflecting work in Lab #8</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+9" alt="News Item 9">
+        <h4>News Item 9</h4>
+        <p>Reflecting work in Lab #9</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+10" alt="News Item 10">
+        <h4>News Item 10</h4>
+        <p>Reflecting work in Lab #10</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+11" alt="News Item 11">
+        <h4>News Item 11</h4>
+        <p>Reflecting work in Lab #11</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+12" alt="News Item 12">
+        <h4>News Item 12</h4>
+        <p>Reflecting work in Lab #12</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+13" alt="News Item 13">
+        <h4>News Item 13</h4>
+        <p>Reflecting work in Lab #13</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+14" alt="News Item 14">
+        <h4>News Item 14</h4>
+        <p>Reflecting work in Lab #14</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <div class="carousel-slide-inner">
+        <img src="https://via.placeholder.com/150x80?text=Slide+15" alt="News Item 15">
+        <h4>News Item 15</h4>
+        <p>Reflecting work in Lab #15</p>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-arrow right" onclick="moveSlide(1)">&#9654;</div>
+</div>
+<script>
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  let currentSlide = 0;
+
+  function moveSlide(direction) {
+    const visibleSlides = 4;
+    const totalSlides = slides.length;
+    const maxSlide = totalSlides - visibleSlides;
+    currentSlide += direction;
+    if (currentSlide < 0) currentSlide = maxSlide;
+    if (currentSlide > maxSlide) currentSlide = 0;
+    const slideWidth = slides[0].offsetWidth;
+    track.style.transform = `translateX(-${slideWidth * currentSlide}px)`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="aps-container block-content">
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="main-page-header">{{ page.title }}</h1>
+            <div class="peptidelinks-intro">
+                {{ page.intro_text|safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="peptidelinks-search-section">
+                <form method="get" class="peptidelinks-search-form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" 
+                                   name="search" 
+                                   value="{{ search_query }}" 
+                                   placeholder="Search researchers, institutions..." 
+                                   class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <select name="country" class="form-control">
+                                <option value="">All Countries</option>
+                                {% for country in countries %}
+                                <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
+                                    {{ country }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="state" class="form-control">
+                                <option value="">All States</option>
+                                {% for state in states %}
+                                <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>
+                                    {{ state }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="research_area" class="form-control">
+                                <option value="">All Research Areas</option>
+                                {% for area in research_areas %}
+                                <option value="{{ area.slug }}" {% if area.slug == selected_research_area %}selected{% endif %}>
+                                    {{ area.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a href="{{ page.url }}" class="btn btn-secondary">Clear</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="peptidelinks-results-summary">
+                <p><strong>{{ total_researchers }}</strong> researcher{{ total_researchers|pluralize }} found
+                {% if search_query %} for "<em>{{ search_query }}</em>"{% endif %}
+                {% if selected_country %} in {{ selected_country }}{% endif %}
+                {% if selected_state %}, {{ selected_state }}{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Researchers by Location -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="peptidelinks-directory">
+                {% for location, researchers in researchers_by_location %}
+                <div class="location-section">
+                    <h2 class="location-header">{{ location }}</h2>
+                    
+                    <div class="researchers-grid">
+                        {% for researcher in researchers %}
+                        <div class="researcher-card">
+                            <div class="researcher-info">
+                                <h4 class="researcher-name">
+                                    {% if researcher.website_url %}
+                                        <a href="{{ researcher.website_url }}" target="_blank" rel="noopener">
+                                            {{ researcher.display_name }}
+                                            <i class="external-link-icon">↗</i>
+                                        </a>
+                                    {% else %}
+                                        {{ researcher.display_name }}
+                                    {% endif %}
+                                </h4>
+                                
+                                <div class="researcher-institution">
+                                    {{ researcher.institution }}
+                                    {% if researcher.department %}
+                                        <br><small>{{ researcher.department }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if researcher.location_display %}
+                                <div class="researcher-location">
+                                    <small>{{ researcher.location_display }}</small>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="researcher-links">
+                                    {% if researcher.get_pubmed_url %}
+                                        <a href="{{ researcher.get_pubmed_url }}" target="_blank" rel="noopener" class="pubmed-link">
+                                            PubMed
+                                        </a>
+                                    {% endif %}
+                                    {% if researcher.orcid_id %}
+                                        <a href="https://orcid.org/{{ researcher.orcid_id }}" target="_blank" rel="noopener" class="orcid-link">
+                                            ORCID
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if researcher.research_areas.exists %}
+                                <div class="research-areas">
+                                    {% for area in researcher.research_areas.all %}
+                                        <span class="research-area-tag">{{ area.name }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                {% if researcher.public_bio %}
+                                <div class="researcher-bio">
+                                    <small>{{ researcher.public_bio|truncatewords:20 }}</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-results">
+                    <p>No researchers found matching your criteria. Try adjusting your search terms or filters.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission Information -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="peptidelinks-submission-info">
+                <hr class="aps-border">
+                {{ page.submission_instructions|safe }}
+                <p class="text-center">
+    {% if page.get_children.first %}
+        <a href="{% pageurl page.get_children.first %}" class="btn btn-success btn-lg">
+            Submit Your Information
+        </a>
+    {% else %}
+        <a href="#" class="btn btn-success btn-lg" onclick="alert('Submission form coming soon!')">
+            Submit Your Information
+        </a>
+    {% endif %}
+</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* PeptideLinks Directory Styles */
+.peptidelinks-intro {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #FF7F11;
+}
+
+.peptidelinks-search-section {
+    background: #ffffff;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.peptidelinks-search-form .form-control {
+    margin-bottom: 10px;
+}
+
+.peptidelinks-results-summary {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.location-section {
+    margin-bottom: 40px;
+}
+
+.location-header {
+    color: #1D3557;
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #FF7F11;
+}
+
+.researchers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.researcher-card {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.researcher-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.researcher-name {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    line-height: 1.3;
+}
+
+.researcher-name a {
+    color: #1D3557;
+    text-decoration: none;
+}
+
+.researcher-name a:hover {
+    color: #FF7F11;
+    text-decoration: underline;
+}
+
+.external-link-icon {
+    font-size: 0.8em;
+    opacity: 0.6;
+    margin-left: 4px;
+}
+
+.researcher-institution {
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.researcher-location {
+    color: #888;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.researcher-links {
+    margin: 10px 0;
+}
+
+.researcher-links a {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-right: 8px;
+    background: #FF7F11;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.85em;
+    transition: background-color 0.3s ease;
+}
+
+.researcher-links a:hover {
+    background: #e06d00;
+    color: white;
+    text-decoration: none;
+}
+
+.pubmed-link {
+    background: #337ab7 !important;
+}
+
+.pubmed-link:hover {
+    background: #286090 !important;
+}
+
+.orcid-link {
+    background: #a6ce39 !important;
+}
+
+.orcid-link:hover {
+    background: #8fb82d !important;
+}
+
+.research-areas {
+    margin: 10px 0;
+}
+
+.research-area-tag {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+
+.researcher-bio {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    color: #666;
+}
+
+.peptidelinks-submission-info {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .researchers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .peptidelinks-search-form .row > div {
+        margin-bottom: 10px;
+    }
+    
+    .peptidelinks-search-form .col-md-2,
+    .peptidelinks-search-form .col-md-3 {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

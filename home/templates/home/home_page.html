@@ -2,62 +2,54 @@
 {% load static wagtailcore_tags %}
 
 {% block content %}
-    <section class="aps-homepage-content">
-      <!-- Page Header: Keep this constrained -->
-      <div class="aps-container block-content">
-        <div class="row">
-          <div class="col-md-12">
-            <h1 class="main-page-header" style="margin-bottom: 0;">The American Peptide Society</h1>
-          </div>
+  <!-- Page Header Section -->
+  <section class="aps-homepage-content">
+    <div class="aps-container block-content">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="main-page-header" style="margin-bottom: 0;">The American Peptide Society</h1>
         </div>
       </div>
+    </div>
+  </section>
 
+  <!-- Slider - Completely isolated from Bootstrap -->
+{% include "components/news_hero_slider.html" %}
 
-
-      <!-- Remaining homepage content within normal container -->
-      <div class="aps-container block-content">
-        <div class="row">
-          <div class="col-md-3">
-            {% for item in news_items %}
-              <h4>{{ item.news_item_short_title }}</h4>
-              <a href="{{ item.get_absolute_url }}" class="news-item-link">
-                {% if item.news_item_image %}
-                  <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img">
-                {% endif %}
-                {{ item.news_item_blurb|safe }}
-              </a>
-              {% if not forloop.last %}<hr class="aps-border">{% endif %}
-            {% endfor %}
-          </div>
-
-          <div class="col-md-5" style="border-left: 1px solid #CCCCCC;">
-            {% for item in middle_column_items %}
-              <a href="{{ item.get_absolute_url }}" class="news-item-link">
-                <h4>{{ item.title }}</h4>
-                {% if item.image %}
-                  <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
-                {% endif %}
-                <div class="highlight-html-body">
-                  {{ item.html_body|safe }}
-                </div>
-              </a>
-              {% if not forloop.last %}<hr class="aps-border">{% endif %}
-            {% endfor %}
-          </div>
-
-          <div class="col-md-4" style="border-left: 1px solid #CCCCCC;">
-            {% for item in right_column_items %}
+  <!-- Main Content Section -->
+  <section class="aps-homepage-content">
+    <div class="aps-container block-content">
+      <div class="row">
+        <!-- Middle Column -->
+        <div class="col-md-6">
+          {% for item in middle_column_items %}
+            <a href="{{ item.get_absolute_url }}" class="news-item-link">
               <h4>{{ item.title }}</h4>
-              <a href="{{ item.get_absolute_url }}" class="news-item-link">
-                {% if item.image %}
-                  <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
-                {% endif %}
+              {% if item.image %}
+                <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
+              {% endif %}
+              <div class="highlight-html-body">
                 {{ item.html_body|safe }}
-              </a>
-              {% if not forloop.last %}<hr class="aps-border">{% endif %}
-            {% endfor %}
-          </div>
+              </div>
+            </a>
+            {% if not forloop.last %}<hr class="aps-border">{% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-6" style="border-left: 1px solid #CCCCCC;">
+          {% for item in right_column_items %}
+            <h4>{{ item.title }}</h4>
+            <a href="{{ item.get_absolute_url }}" class="news-item-link">
+              {% if item.image %}
+                <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
+              {% endif %}
+              {{ item.html_body|safe }}
+            </a>
+            {% if not forloop.last %}<hr class="aps-border">{% endif %}
+          {% endfor %}
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 {% endblock %}
