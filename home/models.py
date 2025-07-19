@@ -1028,3 +1028,78 @@ class ResearcherSubmissionPage(AbstractEmailForm):
 
     class Meta:
         verbose_name = "Researcher Submission Form"
+
+
+class MembersOnlyPage(Page):
+    """
+    A page type that restricts access to active APS members only
+    """
+    intro = RichTextField(
+        blank=True,
+        help_text="Introduction text for members"
+    )
+    
+    body = RichTextField(
+        blank=True,
+        features=['h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ul', 'ol', 'blockquote', 'image', 'embed', 'document-link']
+    )
+    
+    member_resources = RichTextField(
+        blank=True,
+        help_text="Special resources available only to members"
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('body'),
+        FieldPanel('member_resources'),
+    ]
+
+    def serve(self, request):
+        """Override serve method to check member status"""
+        from django.shortcuts import redirect
+        from django.contrib import messages
+        from django.contrib.auth.decorators import login_required
+        from django.utils.decorators import method_decorator
+        from members.models import Member
+        
+        # Check if user is logged in
+        if not request.user.is_authenticated:
+            messages.info(request, 'Please log in to access member-only content.')
+            return redirect(f'/accounts/login/?next={request.path}')
+        
+        # Check if user is an active member
+        try:
+            member = Member.objects.get(user=request.user)
+            if member.status != 'active':
+                messages.warning(
+                    request,
+                    'Active membership required to access this content. '
+                    'Please renew your membership or contact us for assistance.'
+                )
+                return redirect('/members/dashboard/')
+        except Member.DoesNotExist:
+            messages.info(
+                request,
+                'Please complete your member profile to access this content.'
+            )
+            return redirect('/members/profile/')
+        
+        # If all checks pass, serve the page normally
+        return super().serve(request)
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # Add member-specific context
+        if request.user.is_authenticated:
+            try:
+                member = Member.objects.get(user=request.user)
+                context['member'] = member
+            except Member.DoesNotExist:
+                pass
+        
+        return context
+
+    class Meta:
+        verbose_name = "Members-Only Page"

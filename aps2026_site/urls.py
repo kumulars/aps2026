@@ -23,6 +23,12 @@ urlpatterns = [
     # Obituary detail pages
     path("obituaries/<slug:slug>/", views.obituary_detail_view, name="obituary_detail"),
 
+    # Allauth URLs for membership authentication
+    path("accounts/", include("allauth.urls")),
+    
+    # Member views
+    path("members/", include("members.urls")),
+
     # Wagtail's page routing — MUST come last
     path("", include(wagtail_urls)),
 ]

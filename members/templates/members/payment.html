@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Membership Payment{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header bg-primary text-white py-4 mb-4">
+                <div class="container">
+                    <h1 class="display-5">Membership Payment</h1>
+                    <p class="lead">Complete your APS membership payment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Current Member Info -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="bi bi-person-badge"></i> Member Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ member.full_name }}</p>
+                                <p><strong>Email:</strong> {{ member.email }}</p>
+                                {% if member.affiliation %}
+                                    <p><strong>Affiliation:</strong> {{ member.affiliation }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Current Status:</strong> 
+                                    <span class="badge bg-{% if member.status == 'active' %}success{% elif member.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                        {{ member.get_status_display }}
+                                    </span>
+                                </p>
+                                {% if member.membership_expires %}
+                                    <p><strong>Expires:</strong> {{ member.membership_expires|date:"F j, Y" }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Membership Levels -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-credit-card"></i> Select Membership Level</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for level in membership_levels %}
+                            <div class="card mb-3 membership-option" data-level-id="{{ level.id }}" data-amount="{{ level.annual_dues }}">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h6 class="card-title">{{ level.name }}</h6>
+                                            {% if level.description %}
+                                                <p class="card-text text-muted">{{ level.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <div class="d-flex flex-column align-items-end">
+                                                <h4 class="text-primary">${{ level.annual_dues }}</h4>
+                                                <small class="text-muted">per year</small>
+                                                <button class="btn btn-primary btn-sm mt-2 select-membership" 
+                                                        data-level-id="{{ level.id }}">
+                                                    Select This Level
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="alert alert-warning">
+                                <h6>No Membership Levels Available</h6>
+                                <p class="mb-0">Please contact the administrator to set up membership levels.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Payment Processing Note -->
+                <div class="alert alert-info mt-4">
+                    <h6><i class="bi bi-info-circle"></i> Payment Processing Note</h6>
+                    <p class="mb-2">
+                        <strong>Development Mode:</strong> Payment processing is currently in development. 
+                        In production, this would integrate with Stripe for secure payment processing.
+                    </p>
+                    <p class="mb-0">
+                        For testing purposes, you can use the "Mock Payment" button below to simulate a successful payment.
+                    </p>
+                </div>
+
+                <!-- Mock Payment for Development -->
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6><i class="bi bi-tools"></i> Development Testing</h6>
+                    </div>
+                    <div class="card-body">
+                        <p>Use this button to simulate a successful payment and activate your membership:</p>
+                        <a href="{% url 'mock_payment_success' %}" class="btn btn-warning">
+                            <i class="bi bi-check-circle"></i> Mock Payment Success
+                        </a>
+                        <small class="text-muted d-block mt-2">
+                            This button will be removed in production and replaced with real payment processing.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Back to Dashboard -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'member_dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.membership-option {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.membership-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.membership-option.selected {
+    border-color: #0d6efd;
+    background-color: #f8f9ff;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle membership selection
+    document.querySelectorAll('.select-membership').forEach(button => {
+        button.addEventListener('click', function() {
+            const levelId = this.dataset.levelId;
+            
+            // Remove previous selections
+            document.querySelectorAll('.membership-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Mark current selection
+            this.closest('.membership-option').classList.add('selected');
+            
+            // In production, this would trigger Stripe payment flow
+            console.log('Selected membership level:', levelId);
+        });
+    });
+});
+</script>
+{% endblock %}

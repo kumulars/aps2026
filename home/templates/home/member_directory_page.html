@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-memberdirectorypage{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header text-center py-4">
+                <h1 class="display-4">{{ page.title }}</h1>
+                {% if page.intro %}
+                    <p class="lead">{{ page.intro }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="search" class="form-label">Search Members</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   value="{{ search_query }}" placeholder="Name, affiliation, or research interests...">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="affiliation_type" class="form-label">Affiliation Type</label>
+                            <select class="form-select" id="affiliation_type" name="affiliation_type">
+                                <option value="">All Types</option>
+                                {% for value, label in affiliation_choices %}
+                                    <option value="{{ value }}" {% if affiliation_filter == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">Search</button>
+                            <a href="{% pageurl page %}" class="btn btn-outline-secondary">Clear</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Count -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <p class="text-muted">
+                Showing {{ members.count }} member{{ members.count|pluralize }} 
+                {% if search_query or affiliation_filter %}
+                    (filtered)
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Members Grid -->
+    <div class="row">
+        {% for member in members %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 member-card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {% if member.title %}{{ member.title }} {% endif %}{{ member.full_name }}
+                        </h5>
+                        
+                        {% if member.affiliation %}
+                            <p class="card-text">
+                                <i class="bi bi-building"></i> {{ member.affiliation }}
+                                {% if member.affiliation_type %}
+                                    <span class="badge bg-secondary ms-1">{{ member.get_affiliation_type_display }}</span>
+                                {% endif %}
+                            </p>
+                        {% endif %}
+
+                        {% if member.phd_year %}
+                            <p class="card-text">
+                                <i class="bi bi-mortarboard"></i> PhD {{ member.phd_year }}
+                            </p>
+                        {% endif %}
+
+                        {% if member.research_interests %}
+                            <p class="card-text">
+                                <i class="bi bi-lightbulb"></i> {{ member.research_interests|truncatewords:15 }}
+                            </p>
+                        {% endif %}
+
+                        <div class="member-contact">
+                            {% if member.email %}
+                                <a href="mailto:{{ member.email }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-envelope"></i> Contact
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>
+                            Member since 
+                            {% if member.join_date %}
+                                {{ member.join_date|date:"Y" }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <h4>No members found</h4>
+                    <p>Try adjusting your search criteria or <a href="{% pageurl page %}">clear all filters</a>.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination would go here if needed -->
+</div>
+
+<style>
+.member-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.member-contact {
+    margin-top: auto;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+</style>
+{% endblock %}

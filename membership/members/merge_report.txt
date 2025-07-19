@@ -1,0 +1,25 @@
+
+APS Membership Data Merge Report
+==============================
+
+Data Sources:
+- WordPress Export: 2040 records
+- Legacy Excel: 2159 records
+
+Merge Results:
+- Email-based matches: 399
+- Name-based matches: 195
+- Total enriched WordPress records: 594
+- WordPress-only records: 1453
+- Legacy-only records: 1565
+
+Data Quality Insights:
+- Match rate: 27.5%
+- Enrichment rate: 29.1%
+
+Recommended Next Steps:
+1. Review name-based matches with confidence < 0.9 for accuracy
+2. Implement re-engagement campaign for legacy-only members
+3. Update membership forms to capture PhD year and affiliation type
+4. Consider manual review of high-value unmatched legacy records
+        

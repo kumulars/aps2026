@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-membersonlypage{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header with member greeting -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header bg-success text-white py-4 mb-4">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="display-5">{{ page.title }}</h1>
+                            {% if member %}
+                                <p class="lead">Welcome, {{ member.first_name }}! This content is exclusively for APS members.</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge bg-success text-white fs-6">
+                                <i class="bi bi-people-fill"></i> Community Access
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Member info bar -->
+        {% if member %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <div>
+                            <strong>Community Member:</strong> <span class="badge bg-success">Full Access</span>
+                            | <strong>Joined:</strong> {{ member.created_at|date:"F Y" }}
+                            | <strong>Members Like You:</strong> 3,400+
+                        </div>
+                        <div class="ms-auto">
+                            <a href="/members/dashboard/" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Page intro -->
+        {% if page.intro %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="intro-content">
+                        {{ page.intro|richtext }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Main content -->
+        <div class="row">
+            {% if page.member_resources %}
+                <div class="col-lg-8 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="bi bi-file-text"></i> Member Content</h3>
+                        </div>
+                        <div class="card-body">
+                            {{ page.body|richtext }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member resources sidebar -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5><i class="bi bi-tools"></i> Member Resources</h5>
+                        </div>
+                        <div class="card-body">
+                            {{ page.member_resources|richtext }}
+                        </div>
+                    </div>
+
+                    <!-- Quick links -->
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h6><i class="bi bi-link-45deg"></i> Quick Links</h6>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="/members/directory/" class="list-group-item list-group-item-action">
+                                <i class="bi bi-people"></i> Member Directory
+                            </a>
+                            <a href="/members/profile/" class="list-group-item list-group-item-action">
+                                <i class="bi bi-person-gear"></i> Update Profile
+                            </a>
+                            <a href="/members/dashboard/" class="list-group-item list-group-item-action">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Full width content if no sidebar -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ page.body|richtext }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Community benefits reminder -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-light border-success border-2">
+                    <h6><i class="bi bi-heart-fill text-success"></i> Free Community Benefits</h6>
+                    <p class="mb-0">
+                        As an APS community member, you have full access to our research network, collaboration tools, 
+                        and professional resources - all completely free! Stay tuned for exciting premium features coming soon.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.intro-content {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.alert-info {
+    border-left: 4px solid #0dcaf0;
+}
+
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%) !important;
+}
+</style>
+{% endblock %}

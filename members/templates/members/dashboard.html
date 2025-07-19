@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Member Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header bg-primary text-white py-4 mb-4">
+                <div class="container">
+                    <h1 class="display-5">Welcome to APS, {{ member.first_name }}!</h1>
+                    <p class="lead">Your gateway to the global peptide science community</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-person-circle"></i> Member Menu</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'member_dashboard' %}" class="list-group-item list-group-item-action active">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                        <a href="{% url 'member_profile' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-person-gear"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'member_directory' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-people"></i> Member Directory
+                        </a>
+                        <!-- Future premium features - currently hidden -->
+                        {% comment %}
+                        <a href="{% url 'membership_payment' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-star"></i> Premium Features (Coming Soon)
+                        </a>
+                        {% endcomment %}
+                        <a href="/accounts/logout/" class="list-group-item list-group-item-action text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <!-- Welcome & Community Access Card -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="text-success"><i class="bi bi-check-circle-fill"></i> Your APS Membership</h4>
+                                        <p class="mb-2">
+                                            <span class="badge bg-success fs-6">Free Community Access</span>
+                                        </p>
+                                        <p class="mb-2">Welcome to the American Peptide Society! You now have full access to:</p>
+                                        <ul class="mb-0">
+                                            <li>Member directory and networking</li>
+                                            <li>Research collaboration opportunities</li>
+                                            <li>Community resources and discussions</li>
+                                            <li>Professional development content</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <div class="text-success">
+                                            <i class="bi bi-people-fill" style="font-size: 3rem;"></i>
+                                            <p class="small mt-2 mb-0">3,400+ Members</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Summary -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5><i class="bi bi-person-vcard"></i> Profile Summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ member.full_name }}</p>
+                                <p><strong>Email:</strong> {{ member.email }}</p>
+                                {% if member.affiliation %}
+                                    <p><strong>Affiliation:</strong> {{ member.affiliation }}</p>
+                                {% endif %}
+                                {% if member.phd_year %}
+                                    <p><strong>PhD Year:</strong> {{ member.phd_year }}</p>
+                                {% endif %}
+                                <a href="{% url 'member_profile' %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-pencil"></i> Edit Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5><i class="bi bi-graph-up"></i> Quick Stats</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <h3 class="text-primary">{{ member.created_at.year }}</h3>
+                                        <p class="text-muted">Member Since</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <h3 class="text-success">
+                                            {% if member.is_verified %}
+                                                <i class="bi bi-check-circle-fill"></i>
+                                            {% else %}
+                                                <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                                            {% endif %}
+                                        </h3>
+                                        <p class="text-muted">
+                                            {% if member.is_verified %}Verified{% else %}Unverified{% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Features & News -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-megaphone"></i> Community Updates</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-success">
+                                    <h6><i class="bi bi-heart-fill"></i> Welcome to the APS Community!</h6>
+                                    <p class="mb-0">
+                                        You're now part of a global network of peptide scientists. Explore the member directory, 
+                                        connect with colleagues, and participate in our research community - all completely free!
+                                    </p>
+                                </div>
+                                
+                                {% if not member.is_verified %}
+                                    <div class="alert alert-info">
+                                        <h6><i class="bi bi-envelope-check"></i> Verify Your Email</h6>
+                                        <p class="mb-0">
+                                            Please check your email and verify your account to ensure you receive all 
+                                            community updates and member communications.
+                                        </p>
+                                    </div>
+                                {% endif %}
+
+                                <div class="alert alert-light border-start border-primary border-4">
+                                    <h6><i class="bi bi-lightbulb"></i> Getting Started</h6>
+                                    <ul class="mb-0">
+                                        <li>Complete your profile to help others find and connect with you</li>
+                                        <li>Browse the member directory to discover research collaborators</li>
+                                        <li>Keep an eye out for future premium features coming soon!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

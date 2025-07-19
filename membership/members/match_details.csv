@@ -1,0 +1,595 @@
+match_type,confidence,wp_name,wp_email,legacy_name,legacy_email,legacy_phd_year,legacy_affiliation
+email_exact,1.0,Emanuel H. F. Escher,emanuel.escher@usherbrooke.ca,Emanuel H. F. Escher,emanuel.escher@usherbrooke.ca,1974,University of Sherbrooke
+email_exact,1.0,Alain Fournier,alain.fournier@iaf.inrs.ca,Alain Fournier,alain.fournier@iaf.inrs.ca,1984,INRS/UniversitÈ du QuÈbec
+email_exact,1.0,William D. Lubell,william.lubell@umontreal.ca,William D. Lubell,william.lubell@umontreal.ca,1989,UniversitÈ de MontrÈal
+email_exact,1.0,Matityahu M. Fridkin,mati.fridkin@weizmann.ac.il,Matityahu M. Fridkin,mati.fridkin@weizmann.ac.il,1968,The Weizmann Institute of Science
+email_exact,1.0,Paolo Rovero,paolo.rovero@unifi.it,Paolo Rovero,paolo.rovero@unifi.it,,U di Firenze; Polo Scientifico
+email_exact,1.0,Anna Maria Papini,annamaria.papini@unifi.it,Anna Maria Papini,annamaria.papini@unifi.it,1990,University of Firenze
+email_exact,1.0,Claudio Toniolo,claudio.toniolo@unipd.it,Claudio Toniolo,claudio.toniolo@unipd.it,1967,Dept. of Chemistry
+email_exact,1.0,Juergen Gerhardt,jgerhardt@cat-online.com,Juergen K.P. Gerhardt,jgerhardt@cat-online.com,,C.A.T. GmbH & Co. KG
+email_exact,1.0,Horst Kessler,kessler@ch.tum.de,Horst Kessler,kessler@ch.tum.de,,Dept. of Chemie Tech. Univ. Munich
+email_exact,1.0,Luis Moroder,moroder@biochem.mpg.de,Luis Moroder,moroder@biochem.mpg.de,1965,Max-Planck-Institut fur Biochemie
+email_exact,1.0,Gerardo Byk,gerardo.byk@biu.ac.il,Gerardo Byk,gerardo.byk@biu.ac.il,1990,Bar Ilan University/Dept of Chemistry
+email_exact,1.0,Tatiana Alexandrovna Gudasheva,tata-sosnovka@mail.ru,Tatiana Alexandrovna Gudasheva,tata-sosnovka@mail.ru,0,State Zakusov Institute of Pharmacology
+email_exact,1.0,Catherine Servis,ekaterini.servi@unil.ch,Catherine Servis,ekaterini.servi@unil.ch,0,University of Lausanne
+email_exact,1.0,M. Teresa M. Machini,mtmachini@iq.usp.br,M. Teresa M. Machini,mtmachini@iq.usp.br,none,University of S„o Paulo
+email_exact,1.0,Antonio Miranda,amiranda@unifesp.br,Antonio Miranda,amiranda@unifesp.br,1989,Universidade Federal de S„o Paulo - UNIFESP
+email_exact,1.0,Yoshio Hayashi,yhayashi@toyaku.ac.jp,Yoshio Hayashi,yhayashi@toyaku.ac.jp,1990,Tokyo Univ -Pharm & Life Sciences
+email_exact,1.0,Hisakazu Mihara,hmihara@bio.titech.ac.jp,Hisakazu Mihara,hmihara@bio.titech.ac.jp,1986,Tokyo Institute of Technology
+email_exact,1.0,Hidehiko D. Watanabe,watachem@mx4.tiki.ne.jp,Hidehiko D. Watanabe,watachem@mx4.tiki.ne.jp,0,Watanabe Chemical Ind.; Ltd.
+email_exact,1.0,Shiroh Futaki,futaki@scl.kyoto-u.ac.jp,Shiroh Futaki,futaki@scl.kyoto-u.ac.jp,0,Kyoto University
+email_exact,1.0,Jeffrey M. Becker,jbecker@utk.edu,Jeffrey M. Becker,jbecker@utk.edu,1972,University of Tennessee
+email_exact,1.0,John Mark Carter,geneva.fl@gmail.com,John Mark Carter,geneva.fl@gmail.com,1987,
+email_exact,1.0,Xuyuan Gu,xgu@nektar.com,Xuyuan Gu,xgu@nektar.com,0,Nektar Therapeutics
+email_exact,1.0,Ben M. Dunn,bdunn@ufl.edu,Ben M. Dunn,bdunn@ufl.edu,0,College of Medicine; Univ. of Florida
+email_exact,1.0,Roger Freidinger,rfreidinger@comcast.net,Roger Freidinger,rfreidinger@comcast.net,1975,
+email_exact,1.0,William Fuller,billfuller@san.rr.com,William Fuller,billfuller@san.rr.com,0,
+email_exact,1.0,Karolina Anna Lawitz,karolina@pepticon.se,Karolina Anna Lawitz,karolina@pepticon.se,0,Pepticon AB
+email_exact,1.0,Victor M. Garsky,vgarsky@verizon.net,Victor M. Garsky,vgarsky@verizon.net,1973,Consultant
+email_exact,1.0,Satish D. Joshi,peptides@aol.com,Satish D. Joshi,peptides@aol.com,1977,Peptisyntha; Inc.
+email_exact,1.0,Pravin T. P. Kaumaya,kaumaya.1@osu.edu,Pravin T. P. Kaumaya,kaumaya.1@osu.edu,0,The Ohio State University
+email_exact,1.0,Thomas J. Lobl,tlobl@aemf.org,Thomas J. Lobl,tlobl@aemf.org,0,NeuroSystec Corp.
+email_exact,1.0,Alexander R. Mitchell,bimitchell@comcast.net,Alexander R. Mitchell,bimitchell@comcast.net,1969,Lawrence Livermore Laboratory (Retired)
+email_exact,1.0,Henry I. Mosberg,him@umich.edu,Henry I. Mosberg,him@umich.edu,1977,University of Michigan
+email_exact,1.0,Laszlo Otvos,lotvos@comcast.net,Laszlo Otvos,lotvos@comcast.net,1985,OLPE; LLC
+email_exact,1.0,Hossain H. Saneii,hsaneii@aapptec.com,Hossain H. Saneii,hsaneii@aapptec.com,0,AAPPTec; LLC
+email_exact,1.0,Arnold C. Satterthwait,asat@sanfordburnham.org,Arnold C. Satterthwait,asat@sanfordburnham.org,0,Sanford Burnham Medical Research Institute
+email_exact,1.0,Derek Smith,dsmith@creighton.edu,D. David Smith,dsmith@creighton.edu,0,Creighton Sch. of Medicine;BioMed Sci
+email_exact,1.0,Michael S. Verlander,verlanderm@aol.com,Michael S. Verlander,verlanderm@aol.com,1970,Jeff Yuen and Associates
+email_exact,1.0,Jane Aldrich,jaldrich@cop.ufl.edu,Jane V. Aldrich,jaldrich@cop.ufl.edu,0,University of Florida
+email_exact,1.0,Lenore M. Martin,martin@uri.edu,Lenore M. Martin,martin@uri.edu,1989,Univ of Rhode Island; Cell & Mol Biol Dept
+email_exact,1.0,Jane Dyson,dyson@scripps.edu,H. Jane Dyson,dyson@scripps.edu,,Dept. of Molecular Biology MB2
+email_exact,1.0,Maria Ngu-Schwemlein,schwemleinmn@wssu.edu,Maria Ngu-Schwemlein,schwemleinmn@wssu.edu,89,Winston-Salem State University - Chem Dept
+email_exact,1.0,Sudhanand Prasad,drsudhanand@gmail.com,Sudhanand Prasad,drsudhanand@gmail.com,1992,Vyome Biosciences
+email_exact,1.0,Chuan-Fa Liu,cfliu@ntu.edu.sg,Chuan-Fa Liu,cfliu@ntu.edu.sg,0,Nanyang Technological University
+email_exact,1.0,Kit S. Lam,kslam@ucdavis.edu,Kit S. Lam,kslam@ucdavis.edu,0,University of California Davis
+email_exact,1.0,Deborah L. Heyl-Clegg,dheylcle@emich.edu,Deborah L. Heyl-Clegg,dheylcle@emich.edu,1991,Eastern Michigan University
+email_exact,1.0,Sandor Lovas,slovas@creighton.edu,Sandor Lovas,slovas@creighton.edu,1985,Creighton Sch. of Medicine;BioMed Sci
+email_exact,1.0,Jean Chmielewski,chml@purdue.edu,Jean A. Chmielewski,chml@purdue.edu,,Department of Chemistry
+email_exact,1.0,Michal Lebl,michallebl@gmail.com,Michal Lebl,michallebl@gmail.com,1978,Spyder Institute LLC
+email_exact,1.0,Gil Fridkin,gilfridkin@gmail.com,Gil Fridkin,gilfridkin@gmail.com,0,Weizmann Institiute of science
+email_exact,1.0,Ching-Hsuan Tung,cht2018@med.cornell.edu,Ching-Hsuan Tung,cht2018@med.cornell.edu,0,Weill Cornell Medical College
+email_exact,1.0,Heng Wei Chang,chang@csbio.com,Heng Wei Chang,chang@csbio.com,,C S Bio Co.
+email_exact,1.0,Shrikumar A. Nair,snair@affinergy.com,Shrikumar A. Nair,snair@affinergy.com,1995,Affinergy; Inc.
+email_exact,1.0,Nagana A. Goud,naganagoud1@gmail.com,Nagana A. Goud,naganagoud1@gmail.com,1968,Auro Peptides Limited
+email_exact,1.0,Alberto Spisni,aspin@unipr.it,Alberto Spisni,aspin@unipr.it,1972,U Parma; Dept Exp Med; Chem/BioChem
+email_exact,1.0,Krzysztof Darlak,kdarlak@aileronrx.com,Krzysztof Darlak,kdarlak@aileronrx.com,none,Aileron Therapeutics
+email_exact,1.0,Maria Kempe,maria.kempe@med.lu.se,Maria Kempe,maria.kempe@med.lu.se,,Dept of Experimental Medical Science
+email_exact,1.0,Peter White,peter.white@merckgroup.com,Peter White,peter.white@merckgroup.com,0,Merck Chemicals
+email_exact,1.0,Masayuki Fujii,mfujii@fuk.kindai.ac.jp,Masayuki Fujii,mfujii@fuk.kindai.ac.jp,0,Kinki University
+email_exact,1.0,Christine B. Karim,karim002@umn.edu,Christine B. Karim,karim002@umn.edu,1986,University of Minnesota
+email_exact,1.0,Claudio Mapelli,claudio.mapelli@merck.com,Claudio Mapelli,claudio.mapelli@merck.com,1983,Bristol-Myers Squibb
+email_exact,1.0,John D. Wade,john.wade@florey.edu.au,John D. Wade,john.wade@florey.edu.au,0,Howard Florey Institute
+email_exact,1.0,Devendra B. Trivedi,adtrivedi@comcast.net,Devendra B. Trivedi,adtrivedi@comcast.net,none,University of Arizona
+email_exact,1.0,Carrie Haskell-Luevano,chaskell@umn.edu,Carrie Haskell-Luevano,chaskell@umn.edu,none,University of Minnesota
+email_exact,1.0,Arthur Felix,afelix@ramapo.edu,Arthur Felix,afelix@ramapo.edu,1964,Ramapo College New Jersey
+email_exact,1.0,Charles M. Deber,deber@sickkids.ca,Charles M. Deber,deber@sickkids.ca,0,University of Toronto
+email_exact,1.0,Maurice Manning,maurice.manning@utoledo.edu,Maurice Manning,maurice.manning@utoledo.edu,1961,The University of Toledo Health Science Campus
+email_exact,1.0,Garland R. Marshall,garland@biochem.wustl.edu,Garland R. Marshall,garland@biochem.wustl.edu,1966,Washington U; BioChem
+email_exact,1.0,John Smith,jas@uab.edu,John A. Smith,jas@uab.edu,1978,U of Alabama at Birmingham- Pathology
+email_exact,1.0,Richard D. Dimarchi,rdimarch@indiana.edu,Richard D. Dimarchi,rdimarch@indiana.edu,1978,Indiana U - Chem A508
+email_exact,1.0,Lila M. Gierasch,gierasch@biochem.umass.edu,Lila M. Gierasch,gierasch@biochem.umass.edu,0,Dept Biochem & Mol Bio - U Mass
+email_exact,1.0,James P. Tam,jptam@ntu.edu.sg,James P. Tam,jptam@ntu.edu.sg,0,Nanyang Technological University
+email_exact,1.0,George Barany,barany@umn.edu,George Barany,barany@umn.edu,0,University of Minnesota-Twin Cities
+email_exact,1.0,Peter W. Schiller,schillp@ircm.qc.ca,Peter W. Schiller,schillp@ircm.qc.ca,1971,Lab of ChemBio Peptide Research
+email_exact,1.0,Robert S. Hodges,robert.hodges@ucdenver.edu,Robert S. Hodges,robert.hodges@ucdenver.edu,1971,University of Colorado Denver
+email_exact,1.0,William F. Degrado,bill.degrado@ucsf.edu,William F. Degrado,bill.degrado@ucsf.edu,0,U of PA Sch of Med Dept Biochem/Biophysics
+email_exact,1.0,Teresa M. Kubiak,terkubiak@aol.com,Teresa M. Kubiak,terkubiak@aol.com,1978,Retiree
+email_exact,1.0,N. Leo Benoiton,benoiton@uottawa.ca,N. Leo Benoiton,benoiton@uottawa.ca,0,
+email_exact,1.0,Shai Rahimipour,rahimis@biu.ac.il,Shai Rahimipour,rahimis@biu.ac.il,0,Bar-Ilan University
+email_exact,1.0,Rao Makineni,makinenir@aol.com,Rao Makineni,makinenir@aol.com,0,
+email_exact,1.0,Harold A. Scheraga,has5@cornell.edu,Harold A. Scheraga,has5@cornell.edu,1946,Baker Lab of Chemistry
+email_exact,1.0,Victor J. Hruby,hruby@email.arizona.edu,Victor J. Hruby,hruby@email.arizona.edu,1965,Univ of Arizona - Chem Dept
+email_exact,1.0,Daniel F. Veber,veberdf@comcast.net,Daniel F. Veber,veberdf@comcast.net,,
+email_exact,1.0,Paolo Grieco,paolo.grieco@unina.it,Paolo Grieco,paolo.grieco@unina.it,1993,University of Naples Federico II
+email_exact,1.0,Henriette A. Remmer,hremmer@umich.edu,Henriette A. Remmer,hremmer@umich.edu,1994,U of Michigan Biomedical Research Core
+email_exact,1.0,Norbert Sewald,norbert.sewald@uni-bielefeld.de,Norbert Sewald,norbert.sewald@uni-bielefeld.de,1991,Department of Chemistry
+email_exact,1.0,Dewey G. Mccafferty,dewey.mccafferty@duke.edu,Dewey G. Mccafferty,dewey.mccafferty@duke.edu,1995,Duke University
+email_exact,1.0,Thomas Vorherr,thomas.vorherr@novartis.com,Thomas Vorherr,thomas.vorherr@novartis.com,0,Novartis Pharma
+email_exact,1.0,Witold Neugebauer,witold.neugebauer@usherbrooke.ca,Witold Neugebauer,witold.neugebauer@usherbrooke.ca,0,UniversitÈ de Sherbrooke
+email_exact,1.0,Oleg Melnyk,oleg.melnyk@ibl.fr,Oleg Melnyk,oleg.melnyk@ibl.fr,0,CNRS
+email_exact,1.0,Judit Erchegyi,jerchegyi@salk.edu,Judit Erchegyi,jerchegyi@salk.edu,0,The Salk Institute
+email_exact,1.0,Jozsef Gulyas,gulyas@salk.edu,Jozsef Gulyas,gulyas@salk.edu,0,The Salk Institute
+email_exact,1.0,Philip Dawson,dawson@scripps.edu,Philip E. Dawson,dawson@scripps.edu,1996,The Scripps Research Institute
+email_exact,1.0,Julio C. Calvo,julioccalvo@yahoo.com,Julio C. Calvo,julioccalvo@yahoo.com,2003,Unniversidad Distrital Fco.  Jose de Caldas
+email_exact,1.0,Guoxia Han,guoxiahan@yahoo.com,Guoxia Han,guoxiahan@yahoo.com,0,Boao Pharma
+email_exact,1.0,John Paul Malkinson,j.malkinson@ucl.ac.uk,John Paul Malkinson,j.malkinson@ucl.ac.uk,0,UCL School of Pharmacy
+email_exact,1.0,Nishith Chaturvedi,nishithchaturvedi@gmail.com,Nishith Chaturvedi,nishithchaturvedi@gmail.com,1966,Sun Pharmaceutical Ind Ltd
+email_exact,1.0,James Dixon,jddixon@rocketmail.com,James D. Dixon,jddixon@rocketmail.com,1990,Purification Systems; Inc.
+email_exact,1.0,Jack J. Hawiger,jack.hawiger@vanderbilt.edu,Jack J. Hawiger,jack.hawiger@vanderbilt.edu,0,Vanderbilt U; Microbio & Immunol
+email_exact,1.0,Michael R. Carrasco,mcarrasco@scu.edu,Michael R. Carrasco,mcarrasco@scu.edu,0,Santa Clara University
+email_exact,1.0,Kazimierz Wisniewski,kazimierz.wisniewski@ferring.com,Kazimierz Wisniewski,kazimierz.wisniewski@ferring.com,0,Ferring Research Institute
+email_exact,1.0,Hiroaki Taguchi,taguchi@suzuka-u.ac.jp,Hiroaki Taguchi,taguchi@suzuka-u.ac.jp,1997,Suzuka University of Medical Science
+email_exact,1.0,Jerry Ryan Holder,jholder@amgen.com,Jerry Ryan Holder,jholder@amgen.com,0,Amgen; Inc.
+email_exact,1.0,Judit Tulla Puche,judit.tulla@ub.edu,Judit Tulla Puche,judit.tulla@ub.edu,2004,University of Barcelona
+email_exact,1.0,Ved Srivastava,vedsrivastava1@yahoo.com,Ved Srivastava,vedsrivastava1@yahoo.com,1984,Intarcia Therapeutics
+email_exact,1.0,Fabio Gallazzi,gallazzif@missouri.edu,Fabio Gallazzi,gallazzif@missouri.edu,1996,Missouri University
+email_exact,1.0,Rob Liskamp,robert.liskamp@glasgow.ac.uk,Rob Liskamp,robert.liskamp@glasgow.ac.uk,0,University of Glasgow
+email_exact,1.0,Svetlana Mojsov,mojsov@mail.rockefeller.edu,Svetlana Mojsov,mojsov@mail.rockefeller.edu,0,Cellular Physiology & Immunology
+email_exact,1.0,Ted Gauthier,tgauthier@agcenter.lsu.edu,Ted Gauthier,tgauthier@agcenter.lsu.edu,2001,Louisiana State University & Agricultural/Mechanical College
+email_exact,1.0,Ruiwu Liu,rwliu@ucdavis.edu,Ruiwu Liu,rwliu@ucdavis.edu,0,University of California Davis
+email_exact,1.0,Jaroslav Sebestik,sebestik@uochb.cas.cz,Jaroslav Sebestik,sebestik@uochb.cas.cz,2006,Inst of Org Chem & Biochem vvi; AS CR
+email_exact,1.0,Les Miranda,lesm@amgen.com,Les Miranda,lesm@amgen.com,1997,Amgen; Inc. - Therapeutic Discovery
+email_exact,1.0,Aphrodite Kapurniotu,akapurniotu@wzw.tum.de,Aphrodite Kapurniotu,akapurniotu@wzw.tum.de,0,Technische Universit‰t M¸nchen
+email_exact,1.0,Marcey Waters,mlwaters@email.unc.edu,Marcey Waters,mlwaters@email.unc.edu,0,UNC Chapel Hill
+email_exact,1.0,James Nowick,jsnowick@uci.edu,James S. Nowick,jsnowick@uci.edu,,Chem Dept; UC Irvine
+email_exact,1.0,Jyotindra Bhatt,jjbhatt@hotmail.com,Jyotindra J. Bhatt,jjbhatt@hotmail.com,1994,KSKV Kachchh University
+email_exact,1.0,Bradley Nilsson,nilsson@chem.rochester.edu,Bradley Nilsson,nilsson@chem.rochester.edu,2003,University of Rochester
+email_exact,1.0,Jin Niu,jniu@sarepta.com,Jin Niu,jniu@sarepta.com,1997,Sarepta Therapeutics; Inc
+email_exact,1.0,Jun Wang,chemjwang@yahoo.com,Jun Wang,chemjwang@yahoo.com,1999,CS BIO Company
+email_exact,1.0,Daniel Cline,clined99@hotmail.com,Daniel Cline,clined99@hotmail.com,2005,Fujirebio Diagnostics; Inc.
+email_exact,1.0,Christine Joseph,cjoseph6@jhmi.edu,Christine Joseph,cjoseph6@jhmi.edu,0,John Hopkins University
+email_exact,1.0,Ashok Khatri,khatria@helix.mgh.harvard.edu,Ashok Khatri,khatria@helix.mgh.harvard.edu,1991,Harvard Medical School/MGH
+email_exact,1.0,Piotr Mroz,pamroz@indiana.edu,Piotr Mroz,pamroz@indiana.edu,0,Indiana University
+email_exact,1.0,Satendra Chauhan,schauhan@pepnet.com,Satendra Chauhan,schauhan@pepnet.com,1988,Peptides International
+email_exact,1.0,Minying Cai,mcai@email.arizona.edu,Minying Cai,mcai@email.arizona.edu,none,University of Arizona
+email_exact,1.0,Chengwei Wu,chengwei_wu@merck.com,Chengwei Wu,chengwei_wu@merck.com,0,Merck Research Laboratories
+email_exact,1.0,Roger Stromberg,roger.stromberg@ki.se,Roger Stromberg,roger.stromberg@ki.se,1987,Karolinska Institutet
+email_exact,1.0,Joseph Taulane,jptaulane@ucsd.edu,Joseph Taulane,jptaulane@ucsd.edu,0,UCSD
+email_exact,1.0,Xiaohe Tong,tong@cpcscientific.com,Xiaohe Tong,tong@cpcscientific.com,0,CPC Scientific Inc.
+email_exact,1.0,Haydn Ball,haydn.ball@utsouthwestern.edu,Haydn Ball,haydn.ball@utsouthwestern.edu,none,UT Southwestern
+email_exact,1.0,Jung-Mo Ahn,jungmo.ahn@utdallas.edu,Jung-Mo Ahn,jungmo.ahn@utdallas.edu,2000,University of Texas at Dallas
+email_exact,1.0,Lenka Zakova,zakova@uochb.cas.cz,Lenka Zakova,zakova@uochb.cas.cz,none,Inst. Organic Chem & BioChem
+email_exact,1.0,Marta De Zotti,marta.dezotti@unipd.it,Marta Dezotti,marta.dezotti@unipd.it,0,Dept. of Chemistry - University of Padova
+email_exact,1.0,Soumendra Rana,soumendra@iitbbs.ac.in,Soumendra Rana,soumendra@iitbbs.ac.in,2007,Indian Institute of Technology Bhubaneswar
+email_exact,1.0,Channa Basava,channa.basava@emdmillipore.com,Channa Basava,channa.basava@emdmillipore.com,1976,EMD Millipore
+email_exact,1.0,Mark Cava,rsp@amino-acids.com,Mark Cava,rsp@amino-acids.com,0,RSP Amino Acids; LLC
+email_exact,1.0,Stephen Kent,skent@uchicago.edu,Stephen Kent,skent@uchicago.edu,0,University of Chicago
+email_exact,1.0,David Lawrence,lawrencd@email.unc.edu,David Lawrence,lawrencd@email.unc.edu,1982,The University of North Carolina at Chapel Hill
+email_exact,1.0,Krista Wilson,k.wilson@wingate.edu,Krista Wilson,k.wilson@wingate.edu,2008,Wingate University
+email_exact,1.0,Robert N. Ben,rben@uottawa.ca,Robert N. Ben,rben@uottawa.ca,0,University of Ottawa
+email_exact,1.0,Paul Harris,paul.harris@auckland.ac.nz,Paul Harris,paul.harris@auckland.ac.nz,0,U of Auckland; Dept. of Chemistry
+email_exact,1.0,Weijie Fang,fweijie2003@hotmail.com,Weijie Fang,fweijie2003@hotmail.com,2009,Zhejiang University
+email_exact,1.0,James Cain,james.cain@ptipep.com,James Cain,james.cain@ptipep.com,2010,Protein Technologies Inc.
+email_exact,1.0,Neal Zondlo,zondlo@udel.edu,Neal Zondlo,zondlo@udel.edu,1999,University of Delaware
+email_exact,1.0,Mark Distefano,diste001@umn.edu,Mark Distefano,diste001@umn.edu,0,University of Minnesota
+email_exact,1.0,Paolo Ingallinella,paolo.ingallinella@diasorin.it,Paolo Ingallinella,paolo.ingallinella@diasorin.it,0,DiaSorin SpA
+email_exact,1.0,Saburo Aimoto,aimoto@protein.osaka-u.ac.jp,Saburo Aimoto,aimoto@protein.osaka-u.ac.jp,1977,Osaka University
+email_exact,1.0,Krzysztof Krajewski,kka@med.unc.edu,Krzysztof Krajewski,kka@med.unc.edu,2001,University of NC Dept Biochemistry/Biophysics
+email_exact,1.0,Zhanna Potetinova,potetinov@hotmail.com,Zhanna Potetinova,potetinov@hotmail.com,none,The City University of New York; College of Staten Island
+email_exact,1.0,Christian Becker,christian.becker@univie.ac.at,Christian Becker,christian.becker@univie.ac.at,0,University of Vienna/Institute of Biological Chemistry
+email_exact,1.0,Andrea Caporale,caporaleandrea74@gmail.com,Andrea Caporale,caporaleandrea74@gmail.com,2007,Universit‡ di Napoli Federico II
+email_exact,1.0,Yoshio Hamada,pynden@gmail.com,Yoshio Hamada,pynden@gmail.com,none,Kobe Gakuin University
+email_exact,1.0,Hironobu Hojo,hojo@protein.osaka-u.ac.jp,Hironobu Hojo,hojo@protein.osaka-u.ac.jp,none,Institute for Protein Research; Osaka University
+email_exact,1.0,Shunzi Li,li.shunzi@yahoo.com,Shunzi Li,li.shunzi@yahoo.com,2002,PolyPeptide Laboratories; Inc.
+email_exact,1.0,Rita Majerle,rmajerle01@hamline.edu,Rita Majerle,rmajerle01@hamline.edu,1990,Hamline University
+email_exact,1.0,Justin Murray,jkmurray@amgen.com,Justin Murray,jkmurray@amgen.com,2006,Amgen; Inc.
+email_exact,1.0,Nicole Sampson,nicole.sampson@stonybrook.edu,Nicole Sampson,nicole.sampson@stonybrook.edu,,Stony Brook University
+email_exact,1.0,Anne Pernille Tofteng Shelton,pts@zp.dk,Anne Pernille Tofteng Shelton,pts@zp.dk,0,Zealand Pharma
+email_exact,1.0,Kinya Tomizaki,tomizaki@rins.ryukoku.ac.jp,Kinya Tomizaki,tomizaki@rins.ryukoku.ac.jp,0,Ryukoku University
+email_exact,1.0,Thomas Hoeg-Jensen,tshj@novonordisk.com,Thomas Hoeg-Jensen,tshj@novonordisk.com,1995,Novo Nordisk A/S
+email_exact,1.0,Cristina Clement,clement.cristina624@gmail.com,Cristina Clement,clement.cristina624@gmail.com,2006,Albert Einstein College of Medicine
+email_exact,1.0,Weibo Cai,wcai@uwhealth.org,Weibo Cai,wcai@uwhealth.org,0,University of Wisconsin - Madison
+email_exact,1.0,Marc Devocelle,mdevocelle@rcsi.ie,Marc Devocelle,mdevocelle@rcsi.ie,0,Royal College of Surgeons in Ireland
+email_exact,1.0,Lindon Young,lindonyo@pcom.edu,Lindon Young,lindonyo@pcom.edu,0,Philadelphia College of Osteopathic Med
+email_exact,1.0,Norman Metanis,metanis@mail.huji.ac.il,Norman Metanis,metanis@mail.huji.ac.il,none,The Hebrew University of Jerusalem
+email_exact,1.0,Paul Watt,paul.watt@telethonkids.org.au,Paul Watt,paul.watt@telethonkids.org.au,1991,Telethon Kids Institute
+email_exact,1.0,Paul Alewood,p.alewood@imb.uq.edu.au,Paul Alewood,p.alewood@imb.uq.edu.au,none,The University of Queensland
+email_exact,1.0,Jan Lukszo,jlukszo@nih.gov,Jan Lukszo,jlukszo@nih.gov,,
+email_exact,1.0,James Nowick,jsnowick@uci.edu,James Nowick,jsnowick@uci.edu,,
+email_exact,1.0,Jorge Alsina-Fernandez,alsina-fernandez_jorge@lilly.com,Jordi Alsina-Fernandez,alsina-fernandez_jorge@lilly.com,0,Eli Lilly and Company
+email_exact,1.0,Jennifer Ottesen,ottesen.1@osu.edu,Jennifer Ottesen,ottesen.1@osu.edu,0,The Ohio State University
+email_exact,1.0,Pravin T. P. Kaumaya,kaumaya.1@osu.edu,Pravin Kaumaya,kaumaya.1@osu.edu,,The Ohio State University
+email_exact,1.0,Matthew Saderholm,saderholmm@berea.edu,Matthew Saderholm,saderholmm@berea.edu,1998,Berea College
+email_exact,1.0,Vijaya Pattabiraman,vrpattabiraman@org.chem.ethz.ch,Vijaya Pattabiraman,vrpattabiraman@org.chem.ethz.ch,2008,ETH Zurich
+email_exact,1.0,Fa Liu,falx@novonordisk.com,Fa Liu,falx@novonordisk.com,0,Novo Nordisk
+email_exact,1.0,Yuchen Chen,ychen@affinergy.com,Yuchen Chen,ychen@affinergy.com,0,Affinergy; Inc.
+email_exact,1.0,Tamaki Kato,tmkato@life.kyutech.ac.jp,Tamaki Kato,tmkato@life.kyutech.ac.jp,0,Kyushu Institute of Technology
+email_exact,1.0,Timothy Omara,timothy.omara@itochu-ca.com,Timothy Omara,timothy.omara@itochu-ca.com,0,Itochu Chemicals America
+email_exact,1.0,Daisuke Takahashi,daisuke_takahashi@ajinomoto.com,Daisuke Takahashi,daisuke_takahashi@ajinomoto.com,0,Ajinomoto Co.; Inc
+email_exact,1.0,Henry I. Mosberg,him@umich.edu,Henry Mosberg,him@umich.edu,,University of Michigan
+email_exact,1.0,Wilfred Van Der Donk,vddonk@illinois.edu,Wilfred Van Der Donk,vddonk@illinois.edu,1994,Howard Hughes Medical Institute and the University of Illinois at Urbana-Champaign
+email_exact,1.0,Christopher Rhodes,chris.rhodes45@gmail.com,Christopher Rhodes,chris.rhodes45@gmail.com,1990,Christopher A. Rhodes & Associates LLC dba Drug Delivery Experts
+email_exact,1.0,David Perrin,dperrin@chem.ubc.ca,David Perrin,dperrin@chem.ubc.ca,none,Chemistry Department; UBC
+email_exact,1.0,Mande Holford,mholford@hunter.cuny.edu,Mande Holford,mholford@hunter.cuny.edu,2003,Hunter College/ The American Museum of Natural History/Weill Cornell Medical Col
+email_exact,1.0,Ikao Fujii,fujii@b.s.osakafu-u.ac.jp,Ikao Fujii,fujii@b.s.osakafu-u.ac.jp,0,Osaka Prefecture University
+email_exact,1.0,Bradley Pentelute,blp@mit.edu,Bradley Pentelute,blp@mit.edu,2008,MIT
+email_exact,1.0,Palgunachari Mayakonda,palgun@uab.edu,Palgunachari Mayakonda,palgun@uab.edu,1990,The University of Alabama at Birmingham
+email_exact,1.0,Alfonso Carotenuto,alfonso.carotenuto@unina.it,Alfonso Carotenuto,alfonso.carotenuto@unina.it,0,University of Naples
+email_exact,1.0,Beate Koksch,beate.koksch@fu-berlin.de,Beate Koksch,beate.koksch@fu-berlin.de,0,Freie Universitat Berlin
+email_exact,1.0,John Howl,j.howl@wlv.ac.uk,John Howl,j.howl@wlv.ac.uk,0,University of Wolverhampton
+email_exact,1.0,Jutta Eichler,jutta.eichler@fau.de,Jutta Eichler,jutta.eichler@fau.de,0,University of Erlangen-Nurnberg
+email_exact,1.0,Chaim Eidelman,chaim.eidelman@novetide.co.il,Chaim Eidelman,chaim.eidelman@novetide.co.il,1998,Novetide Ltd.
+email_exact,1.0,Kade Roberts,kade.roberts@monash.edu.au,Kade Roberts,kade.roberts@monash.edu.au,2003,Monash Institute of Pharmaceutical Sciences
+email_exact,1.0,Jeffrey Bode,jeffreybode@mac.com,Jeffrey Bode,jeffreybode@mac.com,2001,ETH Zurich
+email_exact,1.0,Mohammed Akhter Hossain,akhter.hossain@unimelb.edu.au,Mohammed Akhter Hossain,akhter.hossain@unimelb.edu.au,2001,The Florey; University of Melbourne
+email_exact,1.0,Chengwei Wu,chengwei_wu@merck.com,Chengwei Wu,chengwei_wu@merck.com,none,Merck Research Laboratories
+email_exact,1.0,Maria Bednarek,bednarekm@medimmune.com,Maria Bednarek,bednarekm@medimmune.com,0,MedImmune Ltd
+email_exact,1.0,Bernard Lammek,rekug@ug.edu.pl,Bernard Lammek,rekug@ug.edu.pl,0,University of Gdansk
+email_exact,1.0,Adam Prahl,ap@chem.univ.gda.pl,Adam Prahl,ap@chem.univ.gda.pl,o,University of Gdansk
+email_exact,1.0,Adam Prahl,ap@chem.univ.gda.pl,Dariusz Sobolewski,ap@chem.univ.gda.pl,0,UNIVERSITY OF GDANSK
+email_exact,1.0,Steve Flemer Jr,sflemer@uvm.edu,Steve Flemer Jr,sflemer@uvm.edu,2005,University of Vermont
+email_exact,1.0,Christian Gruber,christian.w.gruber@meduniwien.ac.at,Christian Gruber,christian.w.gruber@meduniwien.ac.at,0,Medical University of Vienna
+email_exact,1.0,William Pomerantz,wcp@umn.edu,William Pomerantz,wcp@umn.edu,0,University of Minnesota
+email_exact,1.0,Joshua Price,jlprice@chem.byu.edu,Joshua Price,jlprice@chem.byu.edu,2008,Brigham Young University
+email_exact,1.0,Sung Wook Yi,woogie@chem.ucla.edu,Sung Wook Yi,woogie@chem.ucla.edu,2008,UCLA
+email_exact,1.0,Guenther Loidl,guenther.loidl@bachem.com,Guenther Loidl,guenther.loidl@bachem.com,none,Bachem AG
+email_exact,1.0,Lenka Maletinska,maletin@uochb.cas.cz,Lenka Maletìnsk·,maletin@uochb.cas.cz,none,IOCB ASCR
+email_exact,1.0,David Sykora,david.sykora@vscht.cz,David Sykora,david.sykora@vscht.cz,none,University of Chemistry and Tecnology; Prague
+email_exact,1.0,Sylvie Rebuffat,rebuffat@mnhn.fr,Sylvie Rebuffat,rebuffat@mnhn.fr,none,CNRS-MNHN
+email_exact,1.0,Weislaw Klis,wieslaw.klis@sial.com,Weislaw Klis,wieslaw.klis@sial.com,none,Sigma-Aldrich
+email_exact,1.0,Dirk T.S. Rijkers,d.t.s.rijkers@uu.nl,Dirk T.S. Rijkers,d.t.s.rijkers@uu.nl,none,Utrecht University
+email_exact,1.0,Paolo Ruzza,paolo.ruzza@unipd.it,Paolo Ruzza,paolo.ruzza@unipd.it,none,CNR - ICB
+email_exact,1.0,Lauren Cline,apsoffice17@gmail.com,Lauren Cline,apsoffice17@gmail.com,none,American Peptide Society
+email_exact,1.0,Meritxell Teixid&Oacute;,meritxell.teixido@irbbarcelona.org,Meritxell Teixidû,meritxell.teixido@irbbarcelona.org,none,IRB Barcelona
+email_exact,1.0,Lajos Gera,lajos.gera@ucdenver.edu,Lajos Gera,lajos.gera@ucdenver.edu,none,University of Colorado Denver
+email_exact,1.0,Hirokazu Tamamura,tamamura.mr@tmd.ac.jp,Hirokazu Tamamura,tamamura.mr@tmd.ac.jp,none,Tokyo Medical and Dental University
+email_exact,1.0,Taku Yoshiya,t.yoshiya@peptide.co.jp,Taku Yoshiya,t.yoshiya@peptide.co.jp,none,Peptide Institute; Inc.
+email_exact,1.0,Mibel Aguilar,mibel.aguilar@monash.edu,Mibel Aguilar,mibel.aguilar@monash.edu,none,Monash University
+email_exact,1.0,Leah Cohen,leah.cohen@csi.cuny.edu,Leah Cohen,leah.cohen@csi.cuny.edu,none,College of Staten Island; CUNY
+email_exact,1.0,Hidehito Mukai,hmukai-endo@umin.ac.jp,Hidehito Mukai,hmukai-endo@umin.ac.jp,1990,Nagahama Institute of Bio-Science and Technology
+email_exact,1.0,Lars Bo Hansen,lbh@zp.dk,Lars Bo Hansen,lbh@zp.dk,none,Zealand Pharma
+email_exact,1.0,Frank Osterkamp,frank.osterkamp@3b-pharma.com,Frank Osterkamp,frank.osterkamp@3b-pharma.com,none,3B Pharmaceuticals
+email_exact,1.0,Anna Lucia Tornesello,annalucia.tornesello@primm.it,Anna Lucia Tornesello,annalucia.tornesello@primm.it,0,Primm srl
+email_exact,1.0,Karl ,klo2vf@virginia.edu,Karl Ocius,klo2vf@virginia.edu,,University of virginia
+email_exact,1.0,Samanthreddy ,kedikas2@nih.gov,Samanthreddy Kedika,kedikas2@nih.gov,,Post Doctoral Fellow
+email_exact,1.0,Xiaojun ,wang_xiaojun@lilly.com,Xiaojun Wang,wang_xiaojun@lilly.com,,Eli Lilly Co
+email_exact,1.0,Amar ,sarkar.93@osu.edu,Amar Sarkar,sarkar.93@osu.edu,,The Ohio State University
+email_exact,1.0,Elma ,elmanaranjoe@gmail.com,Elma Naranjo,elmanaranjoe@gmail.com,,PhD student
+email_exact,1.0,Rahi Masoom Reja,rahireja@mit.edu,Rahi Masoom Reja,rahireja@mit.edu,,Massachusetts Institute of Technology
+email_exact,1.0,Shambhawi ,shambhawi.gargi@gmail.com,Shambhawi .,shambhawi.gargi@gmail.com,,Higher degree by research scholar
+email_exact,1.0,Lin ,lin.chen@cordenpharma.com,Lin Chen,lin.chen@cordenpharma.com,,Corden Pharma Colorado
+email_exact,1.0,Paola ,pmg@zealandpharma.com,Paola Magotti,pmg@zealandpharma.com,,Principal scientist
+email_exact,1.0,Aniela Kempka,aniela.kempka@udesc.br,Aniela Kempka,aniela.kempka@udesc.br,,Santa Catarina State University
+email_exact,1.0,Poonam Ratrey,poonamratrey22@gmail.com,Poonam Ratrey,poonamratrey22@gmail.com,,Postdoctoral Researcher
+email_exact,1.0,Jignesh ,kamdar_jignesh@rediff.com,Jignesh Kamdar,kamdar_jignesh@rediff.com,,Assistant Professor
+email_exact,1.0,Grant ,grant@pagdinhealth.com,Grant Pagdin,grant@pagdinhealth.com,,MD
+email_exact,1.0,Andre Batista,andre.batista@revance.com,Andre Batista,andre.batista@revance.com,,Scientific Investigator
+email_exact,1.0,Haitham ,ha.mohamed@nrc.sci.eg,Haitham Yacoub,ha.mohamed@nrc.sci.eg,,"Cell Biology department, Biotechnology institute, National Research Centre"
+email_exact,1.0,Andy Wilson,a.j.wilson.1@bham.ac.uk,Andy Wilson,a.j.wilson.1@bham.ac.uk,,University of Birmingham
+email_exact,1.0,Ioana ,i.m.ilie@uva.nl,Ioana Ilie,i.m.ilie@uva.nl,,University of Amsterdam
+email_exact,1.0,Wenchao ,wenchaol@stanford.edu,Wenchao Li,wenchaol@stanford.edu,,No
+email_exact,1.0,Nicholas Sarlis,nick@clearabiotech.com,Nicholas Sarlis,nick@clearabiotech.com,,"CLEARA Biotechnology, NV"
+email_exact,1.0,Severin Schneebeli,schneebeli@purdue.edu,Severin Schneebeli,schneebeli@purdue.edu,,Purdue University
+email_exact,1.0,Subhankar ,subhankar.sahu@univ-lille.fr,Subhankar Sahu,subhankar.sahu@univ-lille.fr,,"University of Lille, CNRS, France"
+email_exact,1.0,Ekta ,ekta.menghani@jecrcu.edu.in,Ekta Menghani,ekta.menghani@jecrcu.edu.in,,"Professor and Head, Department of Biotechnology, JECRC University, Jaipur 303905, Rajasthan, India"
+email_exact,1.0,Raymond ,rsarksia@amgen.com,Raymond Sarksian,rsarksia@amgen.com,,Amgen
+email_exact,1.0,Sevan Habeshian,sevan.habeshian@orbismedicines.com,Sevan Habeshian,sevan.habeshian@orbismedicines.com,,Orbis Medicines
+email_exact,1.0,Alessandro ,alessandro.gori@cnr.it,Alessandro Gori,alessandro.gori@cnr.it,,Group leader
+email_exact,1.0,Mónica ,mrivasm@umich.edu,M√≥Nica Rivas,mrivasm@umich.edu,,University of Michigan
+email_exact,1.0,Anamika ,anamikaghosh2809@gmail.com,Anamika Ghosh,anamikaghosh2809@gmail.com,,Research Associate
+email_exact,1.0,Severin Schneebeli,schneebeli@purdue.edu,Severin Schneebeli,schneebeli@purdue.edu,,Purdue University
+email_exact,1.0,Mariam ,abimbolaadigun@ymail.com,Mariam Adigun,abimbolaadigun@ymail.com,,Student
+email_exact,1.0,Rotimi ,arise.ro@unilorin.edu.ng,Rotimi Arise,arise.ro@unilorin.edu.ng,,Biochemistry
+email_exact,1.0,Robert ,rpdoyle@syr.edu,Robert Doyle,rpdoyle@syr.edu,,Syracuse university
+email_exact,1.0,Heidi ,heidi.alterson@gmail.com,Heidi Alterson,heidi.alterson@gmail.com,,AANP
+email_exact,1.0,Andrew ,andrew.hong2@utdallas.edu,Andrew Hong,andrew.hong2@utdallas.edu,,University of Rochester
+email_exact,1.0,Nishant ,nishantraj@iisc.ac.in,Nishant Raj,nishantraj@iisc.ac.in,,Graduate student
+email_exact,1.0,Damilola Akintayo,damilolaakintayo141@gmail.com,Damilola Akintayo,damilolaakintayo141@gmail.com,,University of Hawaii at Hilo
+email_exact,1.0,Damilola ,akintayocd@gmail.com,Damilola Akintayo,akintayocd@gmail.com,,University of Hawaii at Hilo
+email_exact,1.0,Pawan Yadav,pawanyadav_sch@jamiahamdard.ac.in,Pawan Yadav,pawanyadav_sch@jamiahamdard.ac.in,,PhD scholar
+email_exact,1.0,Ana Laura ,analau290@gmail.com,Ana Laura Fragozo Ortiz,analau290@gmail.com,,IPN
+email_exact,1.0,Yekaterina ,ykuznets@hotmail.com,Yekaterina Kuznetsova,ykuznets@hotmail.com,,physician
+email_exact,1.0,Scott Jarmusch,salja@dtu.dk,Scott Jarmusch,salja@dtu.dk,,Technical University of Denmark (DTU)
+email_exact,1.0,Erik ,honualars@gmail.com,Erik Sahl,honualars@gmail.com,,Kumu Design
+email_exact,1.0,Ziyong Hong,zhong37@wisc.edu,Ziyong Hong,zhong37@wisc.edu,,University of Wisconsin-Madison
+email_exact,1.0,Chin Phan,chinsoon@osi.lv,Chin-Soon Phan,chinsoon@osi.lv,,Latvian Institute of Organic Synthesis
+email_exact,1.0,George ,grpdvm@aol.com,George Parker,grpdvm@aol.com,,American Veterinary Medical Association
+email_exact,1.0,Murali K ,grajesh@divislabs.com,Murali K Divi,grajesh@divislabs.com,,Managing Director
+email_exact,1.0,Aditya ,aditya.garai@childrens.harvard.edu,Aditya Garai,aditya.garai@childrens.harvard.edu,,Research Fellow
+email_exact,1.0,Lev ,levny4@yahoo.com,Lev Zak,levny4@yahoo.com,,NURSE PRACTITIONER
+email_exact,1.0,Benjamin ,emenikebenjamin59@gmail.com,Benjamin Emenike,emenikebenjamin59@gmail.com,,Emory University
+email_exact,1.0,Benjamin Emenike,bemenik@emory.edu,Benjamin Emenike,bemenik@emory.edu,,Emory University
+email_exact,1.0,Vijay ,vjygarg90@gmail.com,Vijay Kumar,vjygarg90@gmail.com,,University of Texsas
+email_exact,1.0,Yan ,yan.zhang34@astrazeneca.com,Yan Zhang,yan.zhang34@astrazeneca.com,,AstraZeneca
+email_exact,1.0,Stephanie ,716ology@gmail.com,Stephanie Small,716ology@gmail.com,,Nurse Practitioner
+email_exact,1.0,Susan ,susanralston@yahoo.com,Susan Ralston,susanralston@yahoo.com,,Attorney
+email_exact,1.0,Ron ,rstuart@occamdesign.com,Ron Stuart,rstuart@occamdesign.com,,Occam Design
+email_exact,1.0,Mardiros ,mmihranian@yahoo.com,Mardiros Mihranian,mmihranian@yahoo.com,,"AMA, FACS"
+email_exact,1.0,Mardiros ,mmihranian@yahoo.com,Mardiros Mihranian,mmihranian@yahoo.com,,"AMA, FACS"
+email_exact,1.0,Victor ,victoradebomi306@gmail.com,Victor Adebomi,victoradebomi306@gmail.com,,University of Washington
+email_exact,1.0,Melissa ,susquehannabodyworks@gmail.com,Melissa Bollinger,susquehannabodyworks@gmail.com,,Professional
+email_exact,1.0,Kavyasree ,kavyasree.chintalapudi@lilly.com,Kavyasree Chintalapudi,kavyasree.chintalapudi@lilly.com,,Eli Lilly and Company
+email_exact,1.0,Achyut ,dahalachyut.ad@gmail.com,Achyut Dahal,dahalachyut.ad@gmail.com,,National Cancer Institute
+email_exact,1.0,Mohammad Sadegh Taghizadeh,ms.taghizadeh@shirazu.ac.ir,Mohammad Sadegh Taghizadeh,ms.taghizadeh@shirazu.ac.ir,,"Institute of Biotechnology, Shiraz University, Shiraz, Iran"
+email_exact,1.0,Ruslan ,rgibadullin@scripps.edu,Ruslan Gibadullin,rgibadullin@scripps.edu,,Scripps
+email_exact,1.0,Bibekananda ,bibekananda.23cyz0017@iirtpr.ac.in,Bibekananda Pati,bibekananda.23cyz0017@iirtpr.ac.in,,IIT ROPAR
+email_exact,1.0,Mahdi ,m.samapour@rug.nl,Mahdi Sampour,m.samapour@rug.nl,,PhD candidate
+email_exact,1.0,Ramesh Singh,rameshsinghchilwal@gmail.com,Ramesh Singh,rameshsinghchilwal@gmail.com,,George Mason University
+email_exact,1.0,Neeladri ,neeladri.iicb@gmail.com,Neeladri Roy,neeladri.iicb@gmail.com,,Royal College of Surgeons in Ireland
+email_exact,1.0,Brenson ,bjassim@purdue.edu,Brenson Jassim,bjassim@purdue.edu,,Purdue University
+email_exact,1.0,Perumalsamy Parasuraman,pasperumal4@gmail.com,Perumalsamy Parasuraman,pasperumal4@gmail.com,,Hokkaido University
+email_exact,1.0,Sharon ,bryant@inteligand.com,Sharon Bryant,bryant@inteligand.com,,Inte:Ligand GmbH
+email_exact,1.0,Kae-Jung ,kae-jung.hwang@usp.org,Kae-Jung Hwang,kae-jung.hwang@usp.org,,United States Pharmacopeial Convention
+email_exact,1.0,Brandon ,phambi@nus.edu.sg,Brandon Morinaka,phambi@nus.edu.sg,,National University of Singapore
+email_exact,1.0,Ruiqi ,rqhuang@ucdavis.edu,Ruiqi Huang,rqhuang@ucdavis.edu,,Doctoral Graduate Student
+email_exact,1.0,Vanessa ,vraiceslopez@yahoo.com,Vanessa Ra√≠Ces L√≥Pez,vraiceslopez@yahoo.com,,CAAMAS
+email_exact,1.0,Vladislav ,vladislav.khamraev@tufts.edu,Vladislav Khamraev,vladislav.khamraev@tufts.edu,,Tufts University
+email_exact,1.0,Galyna ,galynalane@pmi.edu,Galyna Lane,galynalane@pmi.edu,,Doctor
+email_exact,1.0,Chaithanya ,chaituspandu@gmail.com,Chaithanya Tegalapalli,chaituspandu@gmail.com,,Research Scholar
+email_exact,1.0,Y. George ,yzheng@uga.edu,Y. George Zheng,yzheng@uga.edu,,University of Georgia
+email_exact,1.0,Jean ,jean.xiao@icloud.com,Jean Xiao,jean.xiao@icloud.com,,WFMSPC
+email_exact,1.0,Umberto ,botta@ginecologiabotta.ch,Umberto Botta,botta@ginecologiabotta.ch,,FMH
+email_exact,1.0,Satish Gandhesiri,satish.gandhesiri@gmail.com,Satish Gandhesiri,satish.gandhesiri@gmail.com,,BIOSYNTH
+email_exact,1.0,Meghna ,mb2398@cornell.edu,Meghna Bajaj,mb2398@cornell.edu,,Cornell University
+email_exact,1.0,Maria L ,maria.ufret@biosynth.com,Maria L Ufret,maria.ufret@biosynth.com,,"Biosynth International, Inc."
+email_exact,1.0,Lihu ,lihu.yang@ucb.com,Lihu Yang,lihu.yang@ucb.com,,UCB Pharma
+email_exact,1.0,Kimberly ,nursekimmie1969@yahoo.com,Kimberly Ward,nursekimmie1969@yahoo.com,,"LPN,MPH"
+email_exact,1.0,Chi ,chiting@brandeis.edu,Chi Ting,chiting@brandeis.edu,,Brandeis University
+email_exact,1.0,Hsiuchen ,hsiuchen.chen@student.uq.edu.au,Hsiuchen Chen,hsiuchen.chen@student.uq.edu.au,,The University of Queensland
+email_exact,1.0,Pablo ,drtagle@iffhealthmcallen.com,Pablo Tagle,drtagle@iffhealthmcallen.com,,Regenerative Medicine Clinic Owner
+email_exact,1.0,Haritha ,hxa8189@mavs.uta.edu,Haritha Asokan Sheeja,hxa8189@mavs.uta.edu,,The University of Texas at Arlington
+email_exact,1.0,Shweta ,shweta.devi@ucsf.edu,Shweta Devi,shweta.devi@ucsf.edu,,ucsf
+email_exact,1.0,Bryan ,lampkinb@uic.edu,Bryan Lampkin,lampkinb@uic.edu,,"University of Illinois Chicago, Department of Pharmaceutical Sciences"
+email_exact,1.0,Ranjit ,ranjitgill63@gmail.com,Ranjit Singh,ranjitgill63@gmail.com,,Assistant Professor
+email_exact,1.0,Yong ,novelab@yahoo.com,Yong Ma,novelab@yahoo.com,,Novelab
+email_exact,1.0,Basem ,baattum@gmail.com,Basem Attum,baattum@gmail.com,,Surgeon
+email_exact,1.0,Mohamad Aboelenin,mohamad2000mail@gmail.com,Mohamad Aboelenin,mohamad2000mail@gmail.com,,"Associate Professor at Cell Biology Department, Biotechnology Research Institute, National Research Centre (NRC), Egypt"
+email_exact,1.0,Mohamad ,mohamed2000mail@yahoo.com,Mohamad Aboelenin,mohamed2000mail@yahoo.com,,"Associate Professor at Cell Biology Department, Biotechnology Research Institute, National Research Centre (NRC), Egypt"
+email_exact,1.0,Glenhall ,glen.tayloriv@gmail.com,Glenhall Taylor,glen.tayloriv@gmail.com,,Sutter Hospital
+email_exact,1.0,Melanie ,melaniemiller2002@gmail.com,Melanie Miller,melaniemiller2002@gmail.com,,Registered nurse
+email_exact,1.0,Mst Umme Laila ,m.urmi@unsw.edu.au,Mst Umme Laila Urmi,m.urmi@unsw.edu.au,,University of New South Wales
+email_exact,1.0,Jomari Fernando,jcfernando2@up.edu.ph,Jomari Fernando,jcfernando2@up.edu.ph,,PhD student
+email_exact,1.0,Yashwantsinh S,yashwantsinh.jadeja@marwadieducation.edu.in,Yashwantsinh S,yashwantsinh.jadeja@marwadieducation.edu.in,,ASSOCIATE PROFESSOR
+email_exact,1.0,Naurin ,nmanjiyani123@gmail.com,Naurin Lalani,nmanjiyani123@gmail.com,,Marwadi University
+email_exact,1.0,Beth ,bethkiehn1@gmail.com,Beth Kiehn,bethkiehn1@gmail.com,,AANC
+email_exact,1.0,Stephen ,sjohnson@sjfamilymedicine.com,Stephen Johnson,sjohnson@sjfamilymedicine.com,,"AANP, FLANP"
+email_exact,1.0,Ripon Chandra ,rbhowmic@mgh.harvard.edu,Ripon Chandra Bhowmic,rbhowmic@mgh.harvard.edu,,Research Technologist at Massachusetts General Hospital
+email_exact,1.0,Salman ,sali@polsl.pl,Salman Ali,sali@polsl.pl,,"Tunneling Group, Biotechnology Centre, Silesian University of Technology, Gliwice, Poland"
+email_exact,1.0,Naresh Venneti,vennetinmurty@gmail.com,Naresh Venneti,vennetinmurty@gmail.com,,Wayne State University
+email_exact,1.0,Heather ,crnpwallick@gmail.com,Heather Wallick,crnpwallick@gmail.com,,AANP
+email_exact,1.0,Humira ,humirakarim@yahoo.com,Humira Karim,humirakarim@yahoo.com,,"Ph. D. Scholar at H.E.J Research Institute of Chemistry, Pakistan"
+email_exact,1.0,Migdalia ,agewell@owgrp.com,Migdalia Rodriguez,agewell@owgrp.com,,Consultants for pharmaceutical
+email_exact,1.0,Chintan ,chintanlokhande1998@gmail.com,Chintan Lokhande,chintanlokhande1998@gmail.com,,RESERCH
+email_exact,1.0,Desmond ,desmond.boakyetanoh@yahoo.com,Desmond Boakye Tanoh,desmond.boakyetanoh@yahoo.com,,Insight Hospital and Medical Center
+email_exact,1.0,Meroline ,mvbazile@bu.edu,Meroline Bazile,mvbazile@bu.edu,,PhD Student
+email_exact,1.0,Brent ,sbbrent@gmail.com,Brent Bottelsen,sbbrent@gmail.com,,Supernova peptides
+email_exact,1.0,An ,trinh069@umn.edu,An Trinh,trinh069@umn.edu,,University of Minnesota - Twin Cities
+email_exact,1.0,Zhao ,zhaoli92@vt.edu,Zhao Li,zhaoli92@vt.edu,,Virginia Tech
+email_exact,1.0,Armin ,armin.mirzapourr@gmail.com,Armin Mirzapour Kouhdasht,armin.mirzapourr@gmail.com,,"Department of Food Science, Purdue University"
+email_exact,1.0,Delasa ,delasa.rahimi-galougahi.1@ulaval.ca,Delasa Rahimi,delasa.rahimi-galougahi.1@ulaval.ca,,Phd student at Laval University
+email_exact,1.0,Kyle ,kmkoss@utmb.edu,Kyle Koss,kmkoss@utmb.edu,,"University of Texas Medical Brand, and Sealy Institute for Drug Discovery"
+email_exact,1.0,Andrew ,ab3107@bath.ac.uk,Andrew Brennan,ab3107@bath.ac.uk,,Post doc
+email_exact,1.0,Suheil ,susieobgyn@gmail.com,Suheil Guzman,susieobgyn@gmail.com,,Aluvia Wellness Center
+email_exact,1.0,Elma ,enaranjoestepa@ccny.cuny.edu,Elma Naranjo,enaranjoestepa@ccny.cuny.edu,,Graduate research assistant
+email_exact,1.0,Linzhongyi ,lisun@scripps.edu,Linzhongyi Sun,lisun@scripps.edu,,The Scripps Research Institute
+email_exact,1.0,Kandace ,hello@sleektransactions.com,Kandace Carrasco,hello@sleektransactions.com,,Consulting
+email_exact,1.0,Greg ,gregcarlson.np@gmail.com,Greg Carlson,gregcarlson.np@gmail.com,,AGNP-C
+email_exact,1.0,David ,damohboateng@gradcenter.cuny.edu,David Amoh-Boateng,damohboateng@gradcenter.cuny.edu,,CUNY Graduate Center
+email_exact,1.0,Janet ,peacos4@aol.com,Janet Peacock,peacos4@aol.com,,RN
+email_exact,1.0,Ariel ,agallanosa@gmail.com,Ariel Gallanosa,agallanosa@gmail.com,,Make Way 4 Health
+email_exact,1.0,Soorej ,soorejm@kannuruniv.ac.in,Soorej M Basheer,soorejm@kannuruniv.ac.in,,Kannur University
+email_exact,1.0,Manirul Islam,michemistrymanir@gmail.com,Manirul Islam,michemistrymanir@gmail.com,,Research Assistant
+email_exact,1.0,Matthew ,mattmontee@mac.com,Matthew Montee,mattmontee@mac.com,,Functional & Sports Medicine
+email_exact,1.0,Bruce ,bzxu@icloud.com,Bruce Xu,bzxu@icloud.com,,Epidemiology
+email_exact,1.0,Suzanne ,info@rewindaz.com,Suzanne Morris,info@rewindaz.com,,RewindAZ.com
+email_exact,1.0,Alex ,solivan@berkeley.edu,Alex Solivan,solivan@berkeley.edu,,UC Berkeley College of Chemistry
+email_exact,1.0,Saayak ,saayak007@gmail.com,Saayak Halder,saayak007@gmail.com,,
+email_exact,1.0,Najmeh ,najme.sodagar@gmail.com,Najmeh Sodagar,najme.sodagar@gmail.com,,"Industrial Biotechnology Research Group, Institute of Biotechnology, Ferdowsi University of Mashhad, Mashhad, Iran"
+email_exact,1.0,Thomas ,kodadek@ufl.edu,Thomas Kodadek,kodadek@ufl.edu,,UF Scripps
+email_exact,1.0,Deborah ,debbie@jce.ac.il,Deborah Shalev,debbie@jce.ac.il,,Azrieli College of Engineering
+email_exact,1.0,Stephanie ,sbarros2@its.jnj.com,Stephanie Barros,sbarros2@its.jnj.com,,Johnson & Johnson
+email_exact,1.0,Riyana ,drchinoy@gmail.com,Riyana Chinoy,drchinoy@gmail.com,,NMD
+email_exact,1.0,Aparna ,shuklaa273@gmail.com,Aparna Shukla,shuklaa273@gmail.com,,Postdoctoral Associate
+email_exact,1.0,Jing ,christianxie@gmail.com,Jing Xie,christianxie@gmail.com,,Pfizer
+email_exact,1.0,Aurelie ,aurelie.rondon@inserm.fr,Aurelie Rondon,aurelie.rondon@inserm.fr,,INSERM - French National Institute of Health and Medical Research
+email_exact,1.0,Sachin ,ssongire@gmail.com,Sachin Songire,ssongire@gmail.com,,DIRECTOR
+email_exact,1.0,Neeladri Roy,neeladri-roy@ouhsc.edu,Neeladri Roy,neeladri-roy@ouhsc.edu,,Staff Scientist
+email_exact,1.0,Marcelo ,mmunoz@ottawaheart.ca,Marcelo Munoz,mmunoz@ottawaheart.ca,,Associate Scientist
+email_exact,1.0,Wael ,w.houssen@abdn.ac.uk,Wael Houssen,w.houssen@abdn.ac.uk,,"Reader, University"
+email_exact,1.0,Roger Tan,rstan9@up.edu.ph,Roger Tan,rstan9@up.edu.ph,,Associate Professor
+email_exact,1.0,Kristiana ,kristy.witte@gmail.com,Kristiana Witte,kristy.witte@gmail.com,,North Carolina State University
+email_exact,1.0,Joshua ,jhampton1@tamu.edu,Joshua Hampton,jhampton1@tamu.edu,,Texas A&M University
+email_exact,1.0,Saundra ,saundra.mason@csbio.com,Saundra Mason,saundra.mason@csbio.com,,Content Specialist
+email_exact,1.0,Kalaiarasu Lakshminarayanan,kalaiarasu.l@vit.ac.in,Kalaiarasu Lakshminarayanan,kalaiarasu.l@vit.ac.in,,Vellore Institue of Technology (VIT)
+email_exact,1.0,Axay ,axaysutariya777@gmail.com,Axay Sutariya,axaysutariya777@gmail.com,,Research Associate
+email_exact,1.0,Avinash ,biotech.avi@gmail.com,Avinash Singh,biotech.avi@gmail.com,,Mayo Clinic
+email_exact,1.0,Jordyn ,jpieper2003@gmail.com,Jordyn Pieper,jpieper2003@gmail.com,,College of Charleston Student
+email_exact,1.0,Tanveer ,tanvirpathan2280@gmail.com,Tanveer Pathan,tanvirpathan2280@gmail.com,,Peptide scientist
+email_exact,1.0,Moustafa ,moustafa.hamaad@ufl.edu,Moustafa Hamaad,moustafa.hamaad@ufl.edu,,University of Florida
+email_exact,1.0,Pei-Gee Yap,pgyap@usm.my,Pei-Gee Yap,pgyap@usm.my,,"Analytical Biochemistry Research Centre (ABrC) Inkubator Inovasi Universiti (I2U), SAINS@USM,  Universiti Sains Malaysia, 11900 Bayan Lepas, Penang, Malaysia"
+email_exact,1.0,Taylor ,tcd60055@uga.edu,Taylor Dill,tcd60055@uga.edu,,University of Georgia
+email_exact,1.0,Vinayak ,vagarwal@gatech.edu,Vinayak Agarwal,vagarwal@gatech.edu,,Georgia Institute of Technology
+email_exact,1.0,Fnu ,vidyasingh16236@gmail.com,Fnu Vidya,vidyasingh16236@gmail.com,,Student
+email_exact,1.0,Heather ,hgoodchild@colorescience.com,Heather Goodchild,hgoodchild@colorescience.com,,skincare manufacturer
+email_exact,1.0,Mary ,mfisher@colorescience.com,Mary Fisher,mfisher@colorescience.com,,Colorescience
+email_exact,1.0,Nirmal ,nsaha31@gatech.edu,Nirmal Saha,nsaha31@gatech.edu,,Postdoc
+email_exact,1.0,Nitish ,nitish.sharma@niperahm.res.in,Nitish Sharma,nitish.sharma@niperahm.res.in,,National institute of pharmaceutical education and research-ahmedabad
+email_exact,1.0,Alvin ,alvinromeromd@gmail.com,Alvin Romero-Cales,alvinromeromd@gmail.com,,
+email_exact,1.0,Pratik ,pchavdad@gmail.com,Pratik Chavda,pchavdad@gmail.com,,Protein Purification Expert
+email_exact,1.0,Krishnakoli Adhikary,kadhikary@gradcenter.cuny.edu,Krishnakoli Adhikary,kadhikary@gradcenter.cuny.edu,,"College of Staten Island, CUNY and The Graduate Center, CUNY"
+email_exact,1.0,Silvia ,smarchesan@units.it,Silvia Marchesan,smarchesan@units.it,,University of Trieste
+email_exact,1.0,Michele ,melchionnam@units.it,Michele Melchionna,melchionnam@units.it,,University of Trieste
+email_exact,1.0,Zhenquan Sun,sunzhq@uchicago.edu,Zhenquan Sun,sunzhq@uchicago.edu,,The University of Chicago
+email_exact,1.0,Priscilla ,priscillaowusu492@gmail.com,Priscilla Owusu,priscillaowusu492@gmail.com,,University of Texas Rio Grande Valley
+email_exact,1.0,Stephen ,stevehall91362@yahoo.com,Stephen Hall,stevehall91362@yahoo.com,,Business owner
+email_exact,1.0,Tiancheng ,tianchengchen@uga.edu,Tiancheng Chen,tianchengchen@uga.edu,,University of Georiga
+email_exact,1.0,Rahul ,rahulsingh1898off@gmail.com,Rahul Singh,rahulsingh1898off@gmail.com,,University of North Bengal
+email_exact,1.0,Suresh Kumar ,schintakrinda@mtech.edu,Suresh Kumar Chintakrinda,schintakrinda@mtech.edu,,ACS and AAAS
+email_exact,1.0,Sheryl ,sharmasheryl012@gmail.com,Sheryl Sharma,sharmasheryl012@gmail.com,,University of Nebraska-Lincoln
+email_exact,1.0,Justin ,catino235@gmail.com,Justin Catino,catino235@gmail.com,,engineering
+name_similarity,1.1,Alain Scarso,alainscarso@hotmail.com,Alain Scarso,alain.scarso@lonza.com,0,Lonza Braine S.A.
+name_similarity,1.1,Morten Meldal,meldal@chem.ku.dk,Morten Meldal,meldal@nano.ku.dk,1983,Department of Chemistry; University of Copenhagen
+name_similarity,0.9979310344827587,Clovis Nakaie,cnakaie@unifesp.br,Clovis R. Nakaie,,0,Univ. Federal De Sao Paulo
+name_similarity,0.8109090909090909,David Wade,amidebond@hotmail.com,David Andreu,david.andreu@upf.edu,,Pompeu Fabra U; Exp & Health Sci
+name_similarity,0.85,Terry Moore,twmoore@uic.edu,Stanley Moore,sales.uk@bachem.com,,Bachem (UK) Ltd.
+name_similarity,0.8163636363636363,Jiayi Huang,huan0273@e.ntu.edu.sg,Yumei Huang,yxh24@po.cwru.edu,,
+name_similarity,1.1,Fernando Albericio,albericio@ukzn.ac.za,Fernando Albericio,albericio@ub.edu,0,University of Barcelona
+name_similarity,1.1,Yoshiaki Kiso,y_kiso@nagahama-i-bio.ac.jp,Yoshiaki Kiso,kiso@mb.kyoto-phu.ac.jp,1974,Kyoto Pharmaceutical U
+name_similarity,1.1,Terrence Burke,burkete@mail.nih.gov,Terrence Burke,burkete@helix.nih.gov,1978,Natl Cancer Inst; NIH
+name_similarity,0.8052631578947368,Yongcheng Liu,yongcheng.liu@tyson.com,Rong Qiang Liu,rqliu@pharmacop.com,,Pharmacopeia Inc.
+name_similarity,0.8309941520467835,Jing Chen,chenjingsimm@gmail.com,Yuxin Chen,yuxin.chen@uchsc.edu,,U of Colorado Health Sci at Fitzsimons
+name_similarity,0.8613636363636362,Jianchao Xu,chao89827@163.com,Qingchai Xu,qingchaixu@hotmail.com,2000,Roche
+name_similarity,1.1,Gregg B. Fields,fieldsg@fau.edu,Gregg B. Fields,gfields@tpims.org,1988,Torrey Pines Institute for Molecular Studies
+name_similarity,1.1,Adam R. Mezo,amezo@neurocrine.com,Adam R. Mezo,mezo_adam_r@lilly.com,1999,Eli Lilly and Company
+name_similarity,0.8257142857142857,Corey Johnson,john2157@purdue.edu,Rodney L. Johnson,johns022@tc.umn.edu,,U of Minnesota
+name_similarity,1.1,Fred R. Naider,fred.naider@csi.cuny.edu,Fred R. Naider,naider@mail.csi.cuny.edu,0,College of Staten Island; CUNY
+name_similarity,0.9734545454545455,John Nestor,jnestor@eumederis.com,John J. Nestor,jnestor@pobox.com,0,
+name_similarity,0.8047272727272726,Mark Hansen,mark@altoris.com,Kirk C. Hansen,kirk@its.caltech.edu,,
+name_similarity,0.8786561264822134,Yong Zhang,yzhang684@gmail.com,Chongwu Zhang,chongwu.zhang@pharma.com,,Purdue Pharma L.P.
+name_similarity,1.1,Michael Chorev,mchorev.g@gmail.com,Michael Chorev,michael_chorev@hms.harvard.edu,0,Harvard Medical School
+name_similarity,0.8058064516129032,Antonia Rinaldi,a.rinaldi@irbm.com,Nicholas Rinaldi,nrinaldi@ca.shire.com,,Shire Biochem
+name_similarity,0.8926421404682273,Chenrui Chen,ccrhd02@gmail.com,Yuchen Chen,ychen@mbiotech.com,,Micrologix Biotech
+name_similarity,0.8523809523809524,Mike Pennington,mike.pennington@ambiopharm.com,Michael W. Pennington,mpennington@pepnet.com,1988,Peptides International
+name_similarity,0.8410256410256409,Joseph Stock,zjhs@novonordisk.com,Joseph Swistok,joseph.swistok@roche.com,0,Hoffmann-La Roche Inc; Metabolic Disease
+name_similarity,0.8083333333333332,Tsuyoshi Takahashi,ttakahas@gunma-u.ac.jp,Kazuyuki Takahashi,ktaka@aol.com,,Human Genome Sciences; Inc.
+name_similarity,0.8506493506493505,Yiming Liu,lym2007@mail.ustc.edu.cn,Yin-Zeng Liu,yinzengliu@hotmail.com,,Ryss Laboratories
+name_similarity,0.9900000000000001,Rui Zhang,rzhang4@its.jnj.com,Rumin Zhang,rumin.zhang@spcorp.com,,Schering-Plough Research Inst.
+name_similarity,1.1,Mark Macielag,mjm19@msn.com,Mark Macielag,mmaciela@its.jnj.com,1984,Janssen Research & Development
+name_similarity,1.1,Deanna Long,deanna.long@bachem.com,Deanna Long,dwlong1@gmail.com,0,Bachem Americas Inc.
+name_similarity,0.9979310344827587,Robert Hammer,robert.hammer@bicycletx.com,Robert P. Hammer,rphammer@gmail.com,1990,Ra Pharamceuticals
+name_similarity,1.1,Stoytcho B. Stoev,stoytcho.stoev@utoledo.edu,Stoytcho B. Stoev,stoytcho.stoev@abv.bg,1971,BG Academy of Science
+name_similarity,0.8079107505070994,Xin Cindy Cheng,xin_cheng@eisai.com,Lingling Cheng,lcheng@mco.edu,,Dept Biochem &  Mol Bio
+name_similarity,0.8285714285714286,Kuan Lu,meilidehema@126.com,Yian Lu,yianlu@scripps.edu,,Scripps Florida
+name_similarity,0.9642857142857143,Tao Yu,yu_tao@wuxiapptec.com,Qitao Yu,qitaoyu@scripps.edu,0,Scripps Institute
+name_similarity,0.9274999999999999,Richard Agnes,richardagnes@msn.com,Richard Sario Agnes,ragnes@aecom.yu.edu,,Albert Einstein College of Med; BioChem
+name_similarity,0.9979310344827587,Yvonne Angell,yangell@genedit.com,Yvonne M. Angell,yangell@chempartner.com,1996,ChemPartner-San Francisco
+name_similarity,0.9084033613445378,Qian Chen,qianch@pcom.edu,Lin Chen,lin.chen@condenpharma.com,0,Corden Pharma Colorado
+name_similarity,0.9933333333333333,Linlin Guo,go.1583@hotmail.com,Lili Guo,guo_lili@lilly.com,oo,Eli Lilly  and Company
+name_similarity,1.1,Claudio D. Schteingart,cschteingart@san.rr.com,Claudio D. Schteingart,claudio.schteingart@ferring.com,0,Ferring Research Institute Inc.
+name_similarity,1.1,Guangcheng Jiang,gcjiang@yahoo.com,Guangcheng Jiang,guangcheng.jiang@ferring.com,,Ferring Research Institute Inc.
+name_similarity,0.9642857142857143,Wenyi Li,wenyi.li@latrobe.edu.au,Wei Li,liwei@email.jlu.edu.cn,0,Jilin Univ Dept of Biochemistry & Molecular Biology
+name_similarity,0.86,Hu Wang,biomed_wang@yahoo.com,Rui Wang,wangrui@lzu.edu.cn,,Lanzhou U; Biochem Dept
+name_similarity,0.8802197802197801,Ligong Liu,l.liu@ptgx-inc.com,Keliang Liu,keliangliu@yahoo.com,,Beijing Inst of Pharm and Toxicology
+name_similarity,0.8386666666666666,Mingzhou Zhou,mingzhou.zhou@outlook.com,Li-Ming Zhou,lzhou@medichem.com,,
+name_similarity,1.0132773109243698,Richard Houghten,rhoughten@tpims.org,Richard A. Houghten,houghten@tpims.org,0,Torrey Pines Institute of Molecular Studies
+name_similarity,1.1,Tomi K. Sawyer,sawyerkrt@aol.com,Tomi K. Sawyer,tomi.sawyer@merck.com,0,Merck Research Laboratories
+name_similarity,0.8066666666666665,Elyse Williams,elysetwilliams@gmail.com,Ross E. Williams,rewill@magma.ca,,
+name_similarity,1.1,Andrew V. Schally,aschally@med.miami.edu,Andrew V. Schally,,,VA Medical Center; Research
+name_similarity,0.9242424242424242,Jing Yang,jyang@tjhecheng.com,Jin-Long Yang,jin-long.yang@mcmail.vanderbilt.edu,,Vanderbilt U; Microbio & Immunol
+name_similarity,0.8984126984126984,Divya Lal Saksena,divyalsaksena@gmail.com,Divya Lal Saksena,divya_l@hotmail.com; divya.saksena@usv.co.in,0,PAN Lab; USV Ltd
+name_similarity,0.8054945054945054,Jose C Martins,jose.martins@ugent.be,John D. Martin,john_d_martin@sbphrd.com,,Smith Kline Beecham
+name_similarity,1.1,Michelle Schmidt,michelle.schmidt@mnk.com,Michelle Schmidt,michelle.schmidt@mallinckrodt.com,0,Mallinckrodt Pharmaceuticals
+name_similarity,0.8363636363636363,Jonathan Kwok,jgk298@nyu.edu,Stan Kwok,colorado_wiz@yahoo.com,none,University of Colorado
+name_similarity,0.8009625668449197,Jordan Anderson,jmander8@uw.edu,Linda Andersson,linda.andersson@oc.chalmers.se,,Dept. of Org Chem
+name_similarity,1.0138755980861245,Florence Brunel,florencembrunel@gmail.com,Florence M. Brunel,,,
+name_similarity,0.8866666666666666,Takahiro Yamaguchi,yamaguchi.takahiro.ar@daiichisankyo.co.jp,Hiroshi Yamaguchi,99td21@edu.cc.saga-u.ac.jp,,Dept. of Chemistry
+name_similarity,0.9871794871794871,David Wilson,david.wilson4@jcu.edu.au,David M. Wilson,,,Diatide; Inc.
+name_similarity,0.9084033613445378,Amy Yang,ay23@nyu.edu,Mary Yang,myang@kairos-scientific.com,,Kairos Scientific Inc. A#110
+name_similarity,1.1,Wei Wang,wei.wang@csbio.com,Wei Wang,wwang@unm.edu,0,Dept. of Chemistry; UNM
+name_similarity,0.8386666666666666,Lai Yue Chan,l.chan3@uq.edu.au,Hoi Huen Chan,fate0310@hotmail.com,,Rm. 2211; Hing Ping House; Tai Hing Est
+name_similarity,1.1,Elisabetta Bianchi,e.bianchi@irbm.com,Elisabetta Bianchi,e.bianchi@irbm.it,0,IRBM Science Park
+name_similarity,1.1,Joel Patrick Schneider,schneiderjp@mail.nih.gov,Joel Patrick Schneider,joel.schneider@nih.gov,0,Center for Cancer Research
+name_similarity,0.8240579710144927,Yixing Sun,yixings@alumni.purdue.edu,Yingchuan Sun,y0sun002@athena.louisville.edu,,U-Louisville; Chem Dept
+name_similarity,1.1,Yeon Sun Lee,yeon@email.arizona.edu,Yeon Sun Lee,yeon@u.arizona.edu,0,University of Arizona
+name_similarity,0.8802197802197801,Jiamei Liu,2728967130@qq.com,Jiankai Liu,jliu@chemat.com,,
+name_similarity,0.9109090909090908,Vikas Kumar,vikas.kumar5@icar.gov.in,Vivek Kumar,kumar.vivek@att.net,,EMD Biosciences
+name_similarity,0.8189743589743589,Lieselot Carrette,lieselot.carrette@gmail.com,Julie Carette,carette@conjuchem.com,,
+name_similarity,1.1,Silvana Cappelletti,s.cappelletti@italfarmacogroup.com,Silvana Cappelletti,s.cappelletti@chemi.com,1986,Chemi S.p.A. Via Dei Lavoratori 54
+name_similarity,0.8758241758241759,Ang Li,lyonla7@gmail.com,Peng Li,pli@intracellulartherapies.com,,Intra-Cellular Therapies; Inc.
+name_similarity,0.8123167155425219,Christian Behn,behn@intavis.com,Christian Lehmann,christian.lehmann@unil.ch,,U of Lausanne
+name_similarity,0.975,Ming Sun,mingsun@msg.ucsf.edu,Ying Sun,sunying69@yahoo.com,,Enanta Pharmaceuticals
+name_similarity,0.8926421404682273,Guangbo Yang,ericyang@sunresin.com,Guohan Yang,,,Bayer Diagnostics
+name_similarity,1.1,James Dattilo,jdattilo@p3bio.com,James Dattilo,jdattilo@helixbiomedix.com,0,Helix BioMedix; Inc.
+name_similarity,0.85,Qiang Zhang,qzhang5@albany.edu,Mingzhu Zhang,,,E500/1805A  Exp Sta
+name_similarity,0.9337662337662337,Ye Jin Lee,dpwls1207@naver.com,Hyun Jin Lee,hj0220@hyundaipharm.co.kr,,Research Inst of Hyundai Pharm
+name_similarity,0.851111111111111,Jianheng Zhang,jianheng.zhang@bachem.com,Ruoheng Zhang,rzhang@penlabs.com,,
+name_similarity,0.8285714285714286,Sahar Ahmed,sahar@ualberta.ca,Shawn Ibrar Ahmed,sahmed@creighton.edu,,Creighton Sch. of Medicine;BioMed Sci
+name_similarity,0.8066666666666665,Caleb Anderson,caleb.anderson@nih.gov,Matthew Anderson,maanders@artsci.wustl.edu,,
+name_similarity,0.9333333333333332,Sha Li,sliwhu@gmail.com,Hua Li,,,Vanderbilt Univ - Dept of Microbiology
+name_similarity,0.8786561264822134,Liuyin Zhang,liuyin.zhang@pharm.utah.edu,Junyi Zhang,junyiz@u.arizona.edu,,U-Arizona
+name_similarity,0.9337662337662337,Tae-Kyung Lee,tklee@utdallas.edu,Kyung Lee,khlchem@aol.com,,
+name_similarity,0.8749999999999999,Hee-Kyoung Lee,hee-kyoung.lee@pharm.utah.edu,Kyeong Lee,klee@ncifcrf.gov,,
+name_similarity,0.8191176470588235,Jonathan Collins,jon.collins@cem.com,Jonathan Iaconelli,iacon10@hotmail.com,,
+name_similarity,1.1,Bin Yang,biy@novonordisk.com,Bin Yang,bin.yang@mail.tju.edu,,
+name_similarity,0.851111111111111,Jingtao Zhang,jingtao_zhang@merck.com,Jingming Zhang,jingming91@hotmail.com,,
+name_similarity,0.8583333333333334,John Tan,john.tan@nimbletherapeutics.com,John Ahn,jahn@amylin.com,,Amylin Pharmaceuticals; Inc
+name_similarity,0.8321678321678321,Alexander Zaykov,alzy@novonordisk.com,Alexander Mayorov,amayorov@email.arizona.edu,,University of Arizona
+name_similarity,0.9084033613445378,Jing Wang,jing.wang609875@tufts.edu,Jia Wang,jwang9@lsu.edu,,LSU
+name_similarity,0.851111111111111,Sanjay Kumar,sanjay.micro@mdurohtak.ac.in,Mohanraja Kumar,mkumar@chuma.cas.usf.edu,,
+name_similarity,0.8171717171717171,Andrew Roberts,roberts@chem.utah.edu,Shawn Roberts,,,SUNY at Stony Brook
+name_similarity,1.0672514619883042,Hsien-Ming Lee,leehm@chem.sinica.edu.tw,Hsienming Lee,leehm@purdue.edu,,
+name_similarity,0.8066666666666665,Xinting Li,xintingl@uw.edu,Xiangqun Li,li36@purdue.edu,,
+name_similarity,0.846031746031746,Chris Chang,chrischang@berkeley.edu,Eric Chang,echang@purdue.edu,,
+name_similarity,1.1,Fanny Guzman Q.,fannyguz@gmail.com,Fanny Guzman Q.,fanny.guzman@ucv.cl,0,NBC; Pontificia Universidad CaTOLICA DE VALPARAISO
+name_similarity,0.9252747252747253,Ye Chen,380074349@qq.com,Ye Che,chey@nhlbi.nih.gov,,NIH/NHLBI/DIR/LBC
+name_similarity,0.811965811965812,Markus Kunzler,mkuenzle@ethz.ch,Markus Muller,mmmuelle@biochem.mpg.de,,Max Planck Institute for Biochem
+name_similarity,0.8398319327731093,Viji Sarojini,v.sarojini@auckland.ac.nz,Vijayalekshmi Sarojini,svijayalekshmi@hotmail.com,,Texas A & M U
+name_similarity,0.8252631578947367,Christopher Clements,christopher.m.clements@cuanschutz.edu,Cristina Clement,,,City U of New York
+name_similarity,1.1,Gary Erickson,gary.w.erickson@gmail.com,Gary Erickson,erickson@cblbiopharma.com,0,CBL BIOPHARMA LLC
+name_similarity,0.8163636363636363,Li Zhang,kasan@htzpeptide.com,Lianshan Zhang,zhang_lianshan@lilly.com,,Eli Lilly and Company
+name_similarity,0.88,Fa Zhang,zhang418@indiana.edu,Faming Zhang,zfm@lilly.com,,Eli Lilly & Co.
+name_similarity,0.801098901098901,Chunhui Huang,chunhui.huang@merck.com,Xuening Huang,xhuang@sial.com,,Sigma-Genosys
+name_similarity,0.8511961722488038,Zhilian Liu,zh.liu@anaspec.com,Mian Liu,liumianuh@yahoo.com,,University of Minnesota
+name_similarity,1.1,Juan Del Valle,jdelvalle@nd.edu,Juan Del Valle,jdvalle@ucsd.edu,,UCSD
+name_similarity,0.8309941520467835,Xuezhi Zhao,xuezhi.zhao@nih.gov,Lei Zhao,zhaol@purdue.edu,,Purdue U
+name_similarity,0.8310696095076401,Junge (John) Zhang,johnzhang@biopeptek.com,Jingwen Zhang,jzhang@amgen.com,,Amgen Inc
+name_similarity,0.8096989966555183,Charles Chen,charles.chen@kcl.ac.uk,Alfred Chen,alfred_chen@affymax.com,1986,Affymax; Inc.
+name_similarity,0.801098901098901,Amrendra Singh,amrendra.bt@gmail.com,Preman Singh,sub518@hotmail.com,,GRHS
+name_similarity,1.0066666666666668,Leping Liu,lliu@creosalus.com,Liping Liu,liping.liu@stealthpeptides.com,0,Stealth Peptides Inc
+name_similarity,0.8363636363636363,Harry Wang,hwang@ljpc.com,Richard Wang,wangyu@bambio.com,,BAM Biotech Co.; Ltd.
+name_similarity,1.1,Tom W. Muir,muir@princeton.edu,Tom W. Muir,muirt@rockefeller.edu,1993,The Rockefeller University
+name_similarity,0.8285714285714286,Joseph Brown,josephsbrown1@gmail.com,Stephen C. Brown,stephen.brown@pfizer.com,,Esperion Therapeutics; PGRD
+name_similarity,0.801098901098901,Joey Kelly,jjk3uc@virginia.edu,Jeffery W. Kelly,jwk@scripps.edu,0,Scripps Research Institute - Chem
+name_similarity,0.846031746031746,Tapan Kumar,tapaniict@gmail.com,Anil Kumar,anilcbt@yahoo.com,,csir
+name_similarity,1.1,Zhiyong Tao,zhiyong.tao@mnk.com,Zhiyong Tao,zhiyong.tao@mallinckrodt.com,1990,Mallinckrodt Pharmaceuticals
+name_similarity,1.1,Pottayil G Sasikumar,pgsasikumar@hotmail.com,Pottayil G Sasikumar,pottayil.sasikumar@medkem.lu.se,,Lund University
+name_similarity,0.9979310344827587,Ronald Raines,rtraines@mit.edu,Ronald T. Raines,raines@biochem.wisc.edu,,University of Wisconsin
+name_similarity,0.8415384615384615,Eric Schmidt,ews1@utah.edu,Albert Schmidt,aschmid6@cntus.jnj.com,0,Centocor R-3-1; Protein Engineering
+name_similarity,1.1,Hongchang Qu,qu_hongchang@lilly.com,Hongchang Qu,wonderfullife321@hotmail.com,2007,University of Pennsylvania
+name_similarity,0.8276923076923076,Rebecca Rohlfs,rerh@novonordisk.com,Rebecca Roof,myersra@umich.edu,,University of Michigan
+name_similarity,1.1,Byoung J. Min,byoungjoon.min@polypeptide.com,Byoung J. Min,joony2580@hotmail.com,2008,U of Arizona
+name_similarity,0.8476190476190475,Wen Liu,liu_wen@lilly.com,Wen Lin,wen.lin@pfizer.com,0,Pfizer; Inc.
+name_similarity,1.1,Weiming Xu,chemweiming@gmail.com,Weiming Xu,wxu@rutchem.rutgers.edu,,Rutgers University
+name_similarity,1.1,Yu Tian,yu.tian9@merck.com,Yu Tian,tianyu@rutchem.rutgers.edu,,CABM
+name_similarity,0.9337662337662337,Young Kim,olemiss.kim01@gmail.com,Young Soo Kim,yskim@scripps.edu,,The Scripps Research Institute
+name_similarity,1.0166666666666666,Frank W Kotch,frank.w.kotch@pfizer.com,Frank Kotch,fkotch@biochem.wisc.edu,,University of Wisconsin-Madison
+name_similarity,0.8309941520467835,Xiaoyi Wang,xiaoyi.wang@nih.gov,Xin Wang,wangx@ku.edu,,The University of Kansas
+name_similarity,0.8615384615384615,Bhavesh Khatri,bhavesh.khatri2011@gmail.com,Ashok Khatri,,,Massachusetts Harvard Med School
+name_similarity,1.1,Eric Biron,eric.biron@pha.ulaval.ca,Eric Biron,eric.biron@ch.tum.de,,Technische Universitaet Muenchen
+name_similarity,1.1,Anouk Dirksen,dirksen.anouk@gmail.com,Anouk Dirksen,a.dirksen@tue.nl,,Eindhoven University of Technology; SMO
+name_similarity,0.8476190476190475,Michael Karney,michael.karney@cem.com,Michael Barany,bara0051@umn.edu,0,
+name_similarity,1.1,Rudi Fasan,rfasan@ur.rochester.edu,Rudi Fasan,fasan@chem.rochester.edu,0,University of Rochester
+name_similarity,0.8342857142857142,Yonghui Li,yonghui@ksu.edu,Tongbin Li,toli@biocompute.umn.edu,,University of Minnesota
+name_similarity,0.8233766233766233,Christopher Lohans,lohans@ualberta.ca,Christopher Loose,crloose@mit.edu,,MIT
+name_similarity,0.8166666666666665,Douglas Masterson,douglas.masterson@usm.edu,Larry Masterson,masterson@chem.umn.edu,,University of Minnesota-TC
+name_similarity,1.1,Kenji Usui,kusui@konan-u.ac.jp,Kenji Usui,kusui@center.konan-u.ac.jp,0,Konan University
+name_similarity,0.8240579710144927,Yunsub Lee,yunseop@mwc.co.kr,Seung-Yub Lee,seulee@ms.cc.sunysb.edu,,ICB & DD
+name_similarity,0.8342857142857142,Rongjun He,ron.he.phd@gmail.com,Zhaojun He,helijun93@yahoo.com,,biochemistry and chemistry
+name_similarity,1.1,Jyothi Thundimadathil,jyothi.thundimadathil@bachem.com,Jyothi Thundimadathil,yothitm@yahoo.com,0,
+name_similarity,0.8096989966555183,Monica Choi,mchoi@xerispharma.com,Won-Tak Choi,wchoi3@uiuc.edu,,The University of Illinois; Urbana-Champaign
+name_similarity,1.1,Soumitra Ghosh,soumitra.s.ghosh@gmail.com,Soumitra Ghosh,sghosh@amylin.com,0,Amylin Pharmaceuticals; Inc.
+name_similarity,1.1,Jay Levy,jlvy@novonordisk.com,Jay Levy,jjlevy@indiana.edu,0,Indiana University
+name_similarity,0.832620320855615,Ling Li,lingli@tjhecheng.com,Tingyou Li,litingyou@yahoo.com.cn,,Grad School of Food & Medicine Science
+name_similarity,0.8321428571428572,Kamatchi Sankaranarayanan,kamatchis@iasst.gov.in,Rajesh Sankaranarayanan,srajesh@email.arizona.edu,,Department of Chemistry;  U of Arizona
+name_similarity,1.1,Francisco Valenzuela,valenzuela_francisco@lilly.com,Francisco Valenzuela,fvalenzuela@pepnet.com,,Peptides International Inc.
+name_similarity,0.8666666666666667,Simon Ng,sng3@ualberta.ca,Simon Wong,shengjun@email.arizona.edu,,University of Arizona
+name_similarity,1.1,Tatyana Yakovlev,tyakovlev@cop.ufl.edu,Tatyana Yakovlev,tyakovl@ku.edu,,University of Kansas
+name_similarity,1.1,Vasily Gelfanov,vgf@novonordisk.com,Vasily Gelfanov,vgelfano@indiana.edu,0,Indiana University
+name_similarity,0.8163636363636363,Xinxia Liang,xinxia.liang.1@ulaval.ca,Qing Liang,liangqing@fusogen.com.cn,0,B19-A; Ping an Bldg
+name_similarity,0.9385964912280701,Yang Zhou,yangzhou@email.arizona.edu,Liang Zhou,liang.zhou@fda.gov,,
+name_similarity,1.1,Matthew Pratt,matthew.pratt@usc.edu,Matthew Pratt,mpratt@rockefeller.edu,,Rockefeller University
+name_similarity,0.88,Naoki Yamamoto,nyamamoto1979@gmail.com,Takashi Yamamoto,takashiy@email.arizona.edu,,University of Arizona Dept of Chemistry
+name_similarity,1.1,Annette Beck-Sickinger,abeck-sickinger@uni-leipzig.de,Annette Beck-Sickinger,beck-sickinger@uni-leipzig.de,,University of Leipzig
+name_similarity,1.1,Jesse Dong,jdong@neontherapeutics.com,Jesse Dong,jesse.dong@ipsen.com,,IPSEN/Biomeasure Inc.
+name_similarity,1.1,Daniel B. Deoliveira,daniel.deoliveira@yahoo.com,Daniel B. Deoliveira,daniel.deoliveira@ipsen.com,1998,Ipsen
+name_similarity,0.89,Jason Lone,jlone@occamdesign.com,Jason Long,longj@amgen.com,,Amgen
+name_similarity,0.9076923076923077,Rui Watanabe,louis.a.watanabe@watanabechem.co.jp,Louis Watanabe,watanabe@life.kyutech.ac.jp,,Kyushu Institute of Technology
+name_similarity,0.8153846153846153,Liangyou Wang,liangwang@tianmapharma.com,Xiaobing Wang,xwang@ucdavis.edu,,Univ of California Davis - Cancer Center
+name_similarity,1.1,Ahmed Merzouk,a.merzouk@biopeps.com,Ahmed Merzouk,ahmed@globelaboratories.com,,Globe Laboratories Inc.
+name_similarity,0.8787878787878789,Raimund Maier,raimund.maier@iris-biotech.de,Raimund Miller,raimund.miller@lonza.com,,Lonza Inc.
+name_similarity,0.8821631878557875,Yoshihito Tanaka,tanaka.yoshihito@mk.mt-pharma.co.jp,Yasuhiro Tanaka,yasuhiro_tanaka@ajinomoto.com,,Ajinomoto Co.; Inc.
+name_similarity,0.84,Katherine Bowen,kbowen@tcd.ie,Katherine Olsen,olsenk@u.washington.edu,,University of Washington; Dept of Chem
+name_similarity,0.8309941520467835,Sijie Wang,wang3289@purdue.edu,Jing Wang,wangjing20052004@yahoo.com,,
+name_similarity,0.9337662337662337,Jiyoun Lee,jlee@sungshin.ac.kr,Ki-Young Lee,kylee@ucalgary.ca,,The University of Calgary
+name_similarity,0.8666666666666666,Yizhao Chen,chen_yizhao@hsa.gov.sg,Ya Chen,ychen@sanfordburnham.org,0,Sanford Burnham Medical Research Institute
+name_similarity,0.88,Ryan Smith,rs@tailormadehealth.com,Alan Smith,alanj_smith@yahoo.com,,Somerset Consulting
+name_similarity,1.1,Adel Nefzi,anefzi@fiu.edu,Adel Nefzi,adeln@tpims.org,1995,Torrey Pines Inst for Molecular Studies
+name_similarity,0.8506493506493505,Yadong Liu,yadong.liu@bachem.com,Baosheng Liu,baosheng@americanpeptide.com,,American Peptide Company
+name_similarity,1.1,Ewa Lis,elis@koliberbio.com,Ewa Lis,elis@globelaboratories.com,,Globe Laboratories Inc.
+name_similarity,0.8285714285714286,Soumadwip Ghosh,sghosh3@illumina.com,Mousumi Ghosh,mghosh@nybloodcenter.org,2000,New York Blood Center
+name_similarity,0.846031746031746,Varun Kumar,varunfsn@gmail.com,Anil Kumar,anil@chem.iitb.ac.in,0,Bio-Organic Lab; Department of Chemistry; Indian Institute of Technology Bombay
+name_similarity,0.8514285714285713,Amit Mehrotra,amit.mehrotra@biotage.com,Sanjiv Mehrotra,smehrotra@mpbio.com,0,MP Biomedicals/ESP
+name_similarity,0.8398319327731093,Saranraj Krishnan,ksaranraj7@gmail.com,Nagarajan Krishnan,j.s.k.nagarajan@gmail.com,1999,jss
+name_similarity,0.8163636363636363,Hong Zheng,zheng.hon@gmail.com,Hailin Zheng,cozheng@weizmann.ac.il,2006,Dept. of Org. Chem. The Weizmann Institute of Science
+name_similarity,0.8786561264822134,Wentao Zhang,wzhang@creosalus.com,Wenyi Zhang,wenyizhang2@yahoo.com,2005,stony brook university
+name_similarity,1.1,Jean Gariepy,gariepy@sri.utoronto.ca,Jean Gariepy,gariepy@uhnres.utoronto.ca,1983,Medical Biophys. University of Toronto
+name_similarity,1.1,Alexander Riemen,alexander.riemen@bachem.com,Alexander Riemen,riemen@email.unc.edu,2009,University of North Carolina at Chapel Hill
+name_similarity,1.1,Wendy Hartsock,wendyhartsock@gmail.com,Wendy Hartsock,wendy.hartsock@ferring.com,2010,Ferring Research Institute
+name_similarity,0.8964285714285715,Katelyn Smith,katelyn.smith@merck.com,Katherine Smith,kprevatt@ku.edu,2011,University of Kansas
+name_similarity,0.9671936758893281,Hanson Chang,hanson.chang@csbio.com,Jason Chang,jason.chang@bioch.ox.ac.uk,2009,University of Oxford
+name_similarity,0.865034965034965,Wioleta Kowalczyk,wioleta.kowalczyk@csiro.au,Renata Kowalczyk,r.kowalczyk@auckland.ac.nz,none,University of Auckland
+name_similarity,1.1,Jayanta Chatterjee,jayanta@iisc.ac.in,Jayanta Chatterjee,jay@poppy.kyoto-phu.ac.jp,2008,Kyoto Pharmaceutical University
+name_similarity,0.9409090909090908,Zhonghan Li,zhonghan.li@ucr.edu,Hongjian Li,tlihj@jnu.edu.cn,none,Jinan University
+name_similarity,1.1,Steve Bourgault,bourgault.steve@uqam.ca,Steve Bourgault,bsteve@scripps.edu,none,The Scripps Research Institute
+name_similarity,0.935,Gilles Guichard,g.guichard@iecb.u-bordeaux.fr,Gilles Buichard,g.guichard@ibmc.u-strasbg.fr,non,CNRS
+name_similarity,0.8163636363636363,Bipin Singh,bipinsingh.bioinfo@gmail.com,Vinay Singh,singhv@post.queensu.ca,none,Queen's University; Dept. of Biochemistry
+name_similarity,1.1,Yuri Yamazaki,yuyama@ps.toyaku.ac.jp,Yuri Yamazaki,ky01372@poppy.kyoto-phu.ac.jp,none,Kyoto Pharmaceutical Univ
+name_similarity,0.8357142857142857,Daisuke Nakamura,daisuke.nakamura@ncx.nagase.co.jp,Setsuko Nakamura,ky02264@poppy.kyoto-phu.ac.jp,none,Kyoto Pharmaceutical Univ
+name_similarity,1.1,Salvatore Di Maro,salvatore.dimaro@unicampania.it,Salvatore Di Maro,salvatore.dimaro@unina.it,none,Second University of Naples
+name_similarity,1.1,David Tumelty,david.tumelty@bachem.com,David Tumelty,david.tumelty@pfizer.com,none,CovX/Pfizer
+name_similarity,1.1,Steve Fernandes,marqbiotech@gmail.com,Steve Fernandes,stevef78@email.arizona.edu,none,University of Arizona - BioChem
+name_similarity,0.8124183006535947,Xuan Pan,xuan_pan@wuxiapptec.com,Yijun Pan,yijun_pan@affymax.com,none,Affymax; Inc.
+name_similarity,1.1,Chengzao Sun,chengzao@gmail.com,Chengzao Sun,chengzao.sun@merck.com,0,Merck Research Labs
+name_similarity,0.8926421404682273,Lars Sahl,lars@americanpeptidesociety.org,Lars Erik Sahl,sahl@email.unc.edu,,Kumu Design
+name_similarity,1.1,Nabanita Mukherjee,nabanita.mukh123@gmail.com,Nabanita Mukherjee,mukherjee.1@iitj.ac.in,,PhD. Research Scholar

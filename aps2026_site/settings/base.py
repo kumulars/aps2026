@@ -10,6 +10,7 @@ BASE_DIR = PROJECT_DIR.parent                         # /aps2026/
 INSTALLED_APPS = [
     "home",
     "search",
+    "members",  # Custom membership app
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -29,6 +30,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",  # Required by allauth
+    # Allauth apps
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    # Optional social providers
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.linkedin_oauth2",
 ]
 
 MIDDLEWARE = [
@@ -39,6 +48,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",  # Allauth middleware
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -131,3 +141,71 @@ WAGTAILDOCS_EXTENSIONS = [
 
 # Form field safety
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
+
+# ===============================================
+# Django Allauth Configuration
+# ===============================================
+
+SITE_ID = 1
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Allauth settings (updated to new format)
+ACCOUNT_LOGIN_METHODS = ['email']
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
+
+# Login/logout URLs
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/members/dashboard/'
+LOGOUT_REDIRECT_URL = '/'
+
+# APS Membership Settings
+APS_FREE_MEMBERSHIP = True  # Set to False when implementing paid features
+APS_AUTO_ACTIVATE_MEMBERS = True  # Automatically activate new members
+
+# Account settings
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_LOGOUT_ON_GET = False
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+# Social account settings
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'  # Trust social providers
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Email settings (for development - you'll need to configure for production)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Social provider configuration (add your keys in local settings)
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    },
+    'linkedin_oauth2': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'PROFILE_FIELDS': [
+            'emailAddress',
+            'formatted-name',
+            'public-profile-url',
+            'picture-url',
+        ]
+    }
+}

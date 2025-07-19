@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header bg-primary text-white py-4 mb-4">
+                <div class="container">
+                    <h1 class="display-5">Edit Profile</h1>
+                    <p class="lead">Update your member information</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-person-circle"></i> Member Menu</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'member_dashboard' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                        <a href="{% url 'member_profile' %}" class="list-group-item list-group-item-action active">
+                            <i class="bi bi-person-gear"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'member_directory' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-people"></i> Member Directory
+                        </a>
+                        <!-- Future premium features - currently hidden -->
+                        {% comment %}
+                        <a href="{% url 'membership_payment' %}" class="list-group-item list-group-item-action">
+                            <i class="bi bi-star"></i> Premium Features (Coming Soon)
+                        </a>
+                        {% endcomment %}
+                        <a href="/accounts/logout/" class="list-group-item list-group-item-action text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Form -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-person-vcard"></i> Member Profile</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <!-- Basic Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="text-primary mb-3">Basic Information</h6>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="title" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" 
+                                           value="{{ member.title }}" placeholder="Dr., Prof., etc.">
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="first_name" class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" 
+                                           value="{{ member.first_name }}" required>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="last_name" class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" 
+                                           value="{{ member.last_name }}" required>
+                                </div>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="text-primary mb-3">Contact Information</h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" 
+                                           value="{{ member.phone }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Email is readonly since it's the login -->
+                                    <label for="email" class="form-label">Email (Login)</label>
+                                    <input type="email" class="form-control" value="{{ member.email }}" readonly>
+                                </div>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="text-primary mb-3">Address</h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="address_1" class="form-label">Address Line 1</label>
+                                    <input type="text" class="form-control" id="address_1" name="address_1" 
+                                           value="{{ member.address_1 }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="address_2" class="form-label">Address Line 2</label>
+                                    <input type="text" class="form-control" id="address_2" name="address_2" 
+                                           value="{{ member.address_2 }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" 
+                                           value="{{ member.city }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="state" class="form-label">State/Province</label>
+                                    <input type="text" class="form-control" id="state" name="state" 
+                                           value="{{ member.state }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="zip_code" class="form-label">ZIP/Postal Code</label>
+                                    <input type="text" class="form-control" id="zip_code" name="zip_code" 
+                                           value="{{ member.zip_code }}">
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="country" name="country" 
+                                           value="{{ member.country }}" placeholder="United States">
+                                </div>
+                            </div>
+
+                            <!-- Professional Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="text-primary mb-3">Professional Information</h6>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="affiliation" class="form-label">Affiliation</label>
+                                    <input type="text" class="form-control" id="affiliation" name="affiliation" 
+                                           value="{{ member.affiliation }}" placeholder="University, Company, etc.">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="affiliation_type" class="form-label">Affiliation Type</label>
+                                    <select class="form-select" id="affiliation_type" name="affiliation_type">
+                                        <option value="">Select Type</option>
+                                        {% for value, label in affiliation_choices %}
+                                            <option value="{{ value }}" {% if member.affiliation_type == value %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-3">
+                                    <label for="phd_year" class="form-label">PhD Year</label>
+                                    <input type="number" class="form-control" id="phd_year" name="phd_year" 
+                                           value="{{ member.phd_year }}" min="1900" max="2030">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <label for="research_interests" class="form-label">Research Interests</label>
+                                    <textarea class="form-control" id="research_interests" name="research_interests" 
+                                              rows="4" placeholder="Describe your research interests and expertise...">{{ member.research_interests }}</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr>
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        <i class="bi bi-check-lg"></i> Save Profile
+                                    </button>
+                                    <a href="{% url 'member_dashboard' %}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
