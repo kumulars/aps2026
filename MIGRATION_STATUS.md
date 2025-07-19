@@ -12,12 +12,15 @@
    - Primary usage: Grid, navbar, forms, basic utilities
    - No complex JS components (modals, tooltips)
    - jQuery only needed for dropdowns and tabs
+5. Updated base.html to Bootstrap 5
+6. Updated navbar to Bootstrap 5 structure
+7. Updated CSS for Bootstrap 5 compatibility
 
 ## In Progress 🚧
-- Testing site functionality after base.html update
+- Testing site functionality
 
 ## Next Steps 📋
-1. Update navbar component to Bootstrap 5
+1. Update grid classes in templates (col-xs-* → col-*)
 2. Update navbar component
 3. Migrate grid system in templates
 4. Update form components
