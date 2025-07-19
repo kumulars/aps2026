@@ -581,7 +581,8 @@ body.fade-out {
 
 
 /* === Layout Elements === */
-.panel {
+.panel,
+.card {
   border: none;
   box-shadow: none;
 }

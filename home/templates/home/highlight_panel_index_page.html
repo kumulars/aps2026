@@ -16,7 +16,7 @@
           </p>
         {% endif %}
         {% if panel.image %}
-          <img src="{{ panel.image.file.url }}" class="img-responsive aps-img" alt="{{ panel.title }}">
+          <img src="{{ panel.image.file.url }}" class="img-fluid aps-img" alt="{{ panel.title }}">
         {% endif %}
         <div>
           {{ panel.html_body|safe }}

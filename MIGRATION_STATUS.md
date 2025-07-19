@@ -15,12 +15,17 @@
 5. Updated base.html to Bootstrap 5
 6. Updated navbar to Bootstrap 5 structure
 7. Updated CSS for Bootstrap 5 compatibility
+8. Updated all grid classes and utilities:
+   - Changed all `img-responsive` to `img-fluid`
+   - Updated `visible-*` classes to `d-none d-*-block`
+   - Changed `col-md-offset-*` to `offset-md-*`
+   - Updated `panel` classes to `card` classes
 
 ## In Progress 🚧
-- Testing site functionality
+- Testing all site functionality
 
 ## Next Steps 📋
-1. Update grid classes in templates (col-xs-* → col-*)
+1. Update any remaining tab functionality
 2. Update navbar component
 3. Migrate grid system in templates
 4. Update form components

@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="aps-container block-content">
-  <div class="row panel">
+  <div class="row card">
     <div class="col-md-12">
       <h1 class="main-page-header">APS Research & News Archive</h1>
       
@@ -45,7 +45,7 @@
           <div class="col-md-2 text-left">
             <a href="{{ item.get_absolute_url }}" class="aps-archive-link">
               {% if item.news_item_image %}
-                <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img img-responsive aps-archive-hover" />
+                <img src="{{ item.news_item_image.file.url }}" alt="{{ item.news_item_short_title }}" class="aps-img img-fluid aps-archive-hover" />
               {% endif %}
               <p class="index-header">
                 {{ item.news_item_short_title }}

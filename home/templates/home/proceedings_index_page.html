@@ -19,11 +19,11 @@
                     {% if item.cover_image and item.program_book %}
                         {% image item.cover_image fill-360x500 as cover %}
                         <a href="{{ item.program_book.url }}" target="_blank">
-                            <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-responsive aps-img">
+                            <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-fluid aps-img">
                         </a>
                     {% elif item.cover_image %}
                         {% image item.cover_image fill-360x500 as cover %}
-                        <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-responsive aps-img">
+                        <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-fluid aps-img">
                     {% endif %}
 
                     <div class="caption-wrapper">
@@ -63,10 +63,10 @@
             </div>
 
             {% if forloop.counter|divisibleby:3 %}
-                <div class="clearfix visible-md-block visible-lg-block"></div>
+                <div class="clearfix d-none d-md-block"></div>
             {% endif %}
             {% if forloop.counter|divisibleby:2 %}
-                <div class="clearfix visible-sm-block"></div>
+                <div class="clearfix d-none d-sm-block d-md-none"></div>
             {% endif %}
         {% endfor %}
     </div>
