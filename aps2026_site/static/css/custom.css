@@ -866,3 +866,171 @@ p {
 .aps-navbar-logo:hover {
   transform: scale(1.05);
 }
+
+/* === Enhanced Typography (Step 2) === */
+/* Improved hierarchy and readability */
+
+/* Main page headers */
+.main-page-header,
+h1.main-page-header {
+  font-weight: 600;
+  color: #3a53a4;
+  margin-bottom: 2rem;
+  position: relative;
+  line-height: 1.2;
+}
+
+.main-page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 4rem;
+  height: 3px;
+  background: linear-gradient(90deg, #FF7F11, #ff9f31);
+  border-radius: 2px;
+}
+
+/* Secondary headers */
+h2, .h2 {
+  font-weight: 500;
+  color: #2a4394;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+h3, .h3 {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+h4, .h4 {
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+/* Improved text spacing */
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Enhanced link styling */
+a {
+  color: #3a53a4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #FF7F11;
+  text-decoration: underline;
+}
+
+/* Professional list styling */
+ul, ol {
+  line-height: 1.6;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+/* Emphasis improvements */
+strong, b {
+  font-weight: 600;
+  color: #2a4394;
+}
+
+em, i {
+  color: #495057;
+}
+
+/* === Enhanced Buttons (Step 3) === */
+/* Modern button styling with smooth interactions */
+
+.btn {
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Primary buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #3a53a4, #5a73c4);
+  color: #ffffff;
+  border-color: #3a53a4;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #2a4394, #3a53a4);
+  color: #ffffff;
+  border-color: #2a4394;
+}
+
+/* Secondary buttons */
+.btn-secondary {
+  background: linear-gradient(135deg, #cb3b2d, #db5b4d);
+  color: #ffffff;
+  border-color: #cb3b2d;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #bb2b1d, #cb3b2d);
+  color: #ffffff;
+  border-color: #bb2b1d;
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+  background: transparent;
+  color: #3a53a4;
+  border-color: #3a53a4;
+}
+
+.btn-outline-primary:hover {
+  background: #3a53a4;
+  color: #ffffff;
+  border-color: #3a53a4;
+}
+
+/* Success buttons */
+.btn-success {
+  background: linear-gradient(135deg, #28a745, #48c765);
+  color: #ffffff;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #218838, #28a745);
+  color: #ffffff;
+  border-color: #218838;
+}
+
+/* Small buttons */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 6px;
+}
+
+/* Large buttons */
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  border-radius: 10px;
+}
