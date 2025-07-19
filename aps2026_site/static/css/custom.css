@@ -461,11 +461,11 @@ html, body {
   margin-bottom: 20px;
 }
 
-.nav-tabs > li {
+.nav-tabs .nav-item {
   margin-bottom: -1px; /* aligns active tab with content box */
 }
 
-.nav-tabs > li > a {
+.nav-tabs .nav-link {
   font-weight: 400;
   color: #000;
   background-color: #f9f9f9;
@@ -473,17 +473,16 @@ html, body {
   border-radius: 4px 4px 0 0;
   margin-right: 4px;
   padding: 8px 16px;
+  transition: all 0.2s ease;
 }
 
-.nav-tabs > li > a:hover {
+.nav-tabs .nav-link:hover {
   color: #FF7F11;
   background-color: #fff;
   border-color: #ccc;
 }
 
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:focus,
-.nav-tabs > li.active > a:hover {
+.nav-tabs .nav-link.active {
   color: #FF7F11;
   background-color: #fff;
   border: 1px solid #FF7F11;
