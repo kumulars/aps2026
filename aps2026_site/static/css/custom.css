@@ -807,3 +807,62 @@ p {
     padding-right: 0;
   }
 }
+
+/* ===============================================
+   GRADUAL ENHANCEMENTS - Safe Improvements
+   =============================================== */
+
+/* === Enhanced Navbar (Step 1) === */
+/* Subtle improvements to existing navbar */
+.aps-navbar {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: #ffffff;
+}
+
+/* Smooth hover effects for nav links */
+.navbar-nav .nav-link {
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: rgba(255, 127, 17, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Enhanced dropdown animations */
+.navbar-nav .dropdown-menu {
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.navbar-nav .dropdown:hover .dropdown-menu,
+.navbar-nav .dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.navbar-nav .dropdown-item {
+  border-radius: 6px;
+  margin: 2px 4px;
+}
+
+.navbar-nav .dropdown-item:hover {
+  transform: translateX(4px);
+}
+
+/* Logo hover effect */
+.aps-navbar-logo {
+  transition: transform 0.3s ease;
+}
+
+.aps-navbar-logo:hover {
+  transform: scale(1.05);
+}
