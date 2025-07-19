@@ -1034,3 +1034,81 @@ em, i {
   font-size: 1.125rem;
   border-radius: 10px;
 }
+
+/* === Enhanced Cards (Step 4) === */
+/* Modern card styling with engaging interactions */
+
+.panel,
+.card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.panel:hover,
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Card images */
+.card img,
+.panel img,
+.aps-img {
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+}
+
+.card:hover img,
+.panel:hover img,
+.aps-img:hover {
+  transform: scale(1.03);
+}
+
+/* Thumbnail enhancements */
+.thumbnail {
+  border: none;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.thumbnail:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Archive link improvements */
+.aps-archive-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.aps-archive-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.aps-archive-hover {
+  transition: all 0.3s ease;
+}
+
+.aps-archive-link:hover .aps-archive-hover {
+  transform: scale(1.05);
+}
+
+/* News slider card enhancements */
+.aps-news-slider .card {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.aps-news-slider .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
