@@ -1,0 +1,219 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags %}
+
+{% block titletag %}Membership Dashboard{% endblock %}
+{% block extra_css %}
+<style>
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 4px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #43b1b0;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.breakdown-section {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.breakdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.breakdown-item:last-child {
+    border-bottom: none;
+}
+
+.breakdown-bar {
+    height: 4px;
+    background: #43b1b0;
+    border-radius: 2px;
+    margin-top: 0.25rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="row">
+        <div class="left">
+            <div class="col">
+                <h1 class="header-title">
+                    <svg class="icon icon-group" aria-hidden="true"><use href="#icon-group"></use></svg>
+                    Membership Dashboard
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="content-wrapper">
+    <!-- Statistics Overview -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_members }}</div>
+            <div class="stat-label">Total Members</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ active_members }}</div>
+            <div class="stat-label">Active Members</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ pending_members }}</div>
+            <div class="stat-label">Pending Members</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ recent_signups }}</div>
+            <div class="stat-label">New This Month</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Data Sources -->
+        <div class="col6">
+            <div class="breakdown-section">
+                <h3>Members by Data Source</h3>
+                <ul class="breakdown-list">
+                    {% for source in data_sources %}
+                    <li class="breakdown-item">
+                        <span>
+                            {% if source.data_source == 'wordpress' %}
+                                WordPress Export
+                            {% elif source.data_source == 'legacy_only' %}
+                                Legacy Excel Only
+                            {% elif source.data_source == 'merged' %}
+                                Merged Data
+                            {% else %}
+                                {{ source.data_source|title }}
+                            {% endif %}
+                        </span>
+                        <span><strong>{{ source.count }}</strong></span>
+                    </li>
+                    <div class="breakdown-bar" style="width: {% widthratio source.count total_members 100 %}%"></div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Affiliation Types -->
+        <div class="col6">
+            <div class="breakdown-section">
+                <h3>Members by Affiliation</h3>
+                <ul class="breakdown-list">
+                    {% for affiliation in affiliations %}
+                    <li class="breakdown-item">
+                        <span>{{ affiliation.affiliation_type|title }}</span>
+                        <span><strong>{{ affiliation.count }}</strong></span>
+                    </li>
+                    <div class="breakdown-bar" style="width: {% widthratio affiliation.count total_members 100 %}%"></div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Members -->
+    <div class="breakdown-section">
+        <h3>Recent Members</h3>
+        <table class="listing">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Affiliation</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in recent_members %}
+                <tr>
+                    <td>
+                        <a href="{% url 'wagtailsnippets_members_member:edit' member.pk %}">
+                            {{ member.full_name }}
+                        </a>
+                    </td>
+                    <td>{{ member.email }}</td>
+                    <td>{{ member.affiliation|default:"-" }}</td>
+                    <td>
+                        <span class="status-tag {% if member.status == 'active' %}status-tag--primary{% elif member.status == 'pending' %}status-tag--warning{% else %}status-tag--default{% endif %}">
+                            {{ member.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ member.created_at|date:"M j, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="breakdown-section">
+        <h3>Quick Actions</h3>
+        <div class="row">
+            <div class="col3">
+                <a href="{% url 'wagtailsnippets_members_member:list' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-user" aria-hidden="true"><use href="#icon-user"></use></svg>
+                    Manage Members
+                </a>
+            </div>
+            <div class="col3">
+                <a href="{% url 'wagtailadmin_membership_stats' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-doc-full" aria-hidden="true"><use href="#icon-doc-full"></use></svg>
+                    View Statistics
+                </a>
+            </div>
+            <div class="col3">
+                <a href="{% url 'wagtailsnippets_members_membershiplevel:list' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-group" aria-hidden="true"><use href="#icon-group"></use></svg>
+                    Membership Levels
+                </a>
+            </div>
+            <div class="col3">
+                <a href="{% url 'wagtailadmin_bulk_member_actions' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-cogs" aria-hidden="true"><use href="#icon-cogs"></use></svg>
+                    Bulk Actions
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

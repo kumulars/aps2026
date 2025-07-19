@@ -1,0 +1,199 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags %}
+
+{% block titletag %}Member Statistics{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="row">
+        <div class="left">
+            <div class="col">
+                <h1 class="header-title">
+                    <svg class="icon icon-doc-full" aria-hidden="true"><use href="#icon-doc-full"></use></svg>
+                    Member Statistics
+                </h1>
+            </div>
+        </div>
+        <div class="right">
+            <div class="col">
+                <a href="{% url 'wagtailadmin_membership_dashboard' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-arrow-left" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="content-wrapper">
+    <div class="row">
+        <!-- Status Breakdown -->
+        <div class="col6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Member Status</h3>
+                </div>
+                <div class="card-content">
+                    <table class="listing">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Count</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for status in status_stats %}
+                            <tr>
+                                <td>
+                                    <span class="status-tag {% if status.status == 'active' %}status-tag--primary{% elif status.status == 'pending' %}status-tag--warning{% else %}status-tag--default{% endif %}">
+                                        {{ status.status|title }}
+                                    </span>
+                                </td>
+                                <td><strong>{{ status.count }}</strong></td>
+                                <td>{% widthratio status.count total_members 100 %}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geographic Distribution -->
+        <div class="col6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top Countries</h3>
+                </div>
+                <div class="card-content">
+                    <table class="listing">
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Members</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for country in country_stats %}
+                            <tr>
+                                <td>{{ country.country }}</td>
+                                <td><strong>{{ country.count }}</strong></td>
+                                <td>{% widthratio country.count total_members 100 %}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Membership Levels -->
+        <div class="col6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Membership Levels</h3>
+                </div>
+                <div class="card-content">
+                    {% if level_stats %}
+                        <table class="listing">
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>Members</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for level in level_stats %}
+                                <tr>
+                                    <td>{{ level.membership_level__name }}</td>
+                                    <td><strong>{{ level.count }}</strong></td>
+                                    <td>{% widthratio level.count total_members 100 %}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="help-text">Most members don't have assigned membership levels yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- PhD Year Distribution -->
+        <div class="col6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>PhD Years by Decade</h3>
+                </div>
+                <div class="card-content">
+                    {% if decade_stats %}
+                        <table class="listing">
+                            <thead>
+                                <tr>
+                                    <th>Decade</th>
+                                    <th>Members</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for decade, count in decade_stats.items %}
+                                <tr>
+                                    <td>{{ decade }}</td>
+                                    <td><strong>{{ count }}</strong></td>
+                                    <td>{% widthratio count total_members 100 %}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="help-text">PhD year data not available for most members.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Summary</h3>
+        </div>
+        <div class="card-content">
+            <div class="help-block">
+                <p><strong>Total Members:</strong> {{ total_members }}</p>
+                <p>This statistics page shows the breakdown of your member database. Use this information to understand your community composition and identify trends.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e1e5e9;
+    padding: 1rem 1.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+</style>
+{% endblock %}

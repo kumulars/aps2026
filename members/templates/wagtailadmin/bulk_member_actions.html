@@ -1,0 +1,148 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags %}
+
+{% block titletag %}Bulk Member Actions{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="row">
+        <div class="left">
+            <div class="col">
+                <h1 class="header-title">
+                    <svg class="icon icon-cogs" aria-hidden="true"><use href="#icon-cogs"></use></svg>
+                    Bulk Member Actions
+                </h1>
+            </div>
+        </div>
+        <div class="right">
+            <div class="col">
+                <a href="{% url 'wagtailadmin_membership_dashboard' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-arrow-left" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="content-wrapper">
+    <div class="help-block">
+        <p><strong>Warning:</strong> These actions affect multiple members at once. Please review carefully before proceeding.</p>
+    </div>
+
+    <!-- Activate Pending Members -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Activate Pending Members</h3>
+        </div>
+        <div class="card-content">
+            <p>Currently <strong>{{ pending_count }}</strong> members have "pending" status.</p>
+            <p>This action will change their status to "active" to give them full access to member features.</p>
+            
+            {% if pending_count > 0 %}
+                <form method="post" onsubmit="return confirm('Are you sure you want to activate {{ pending_count }} pending members?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="activate_all_pending">
+                    <button type="submit" class="button button-primary">
+                        Activate {{ pending_count }} Pending Member{{ pending_count|pluralize }}
+                    </button>
+                </form>
+            {% else %}
+                <p class="help-text">No pending members to activate.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Verify WordPress Members -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Verify WordPress Members</h3>
+        </div>
+        <div class="card-content">
+            <p>Currently <strong>{{ unverified_wp_count }}</strong> WordPress/merged members are unverified.</p>
+            <p>This action will mark them as verified since they came from your existing WordPress database.</p>
+            
+            {% if unverified_wp_count > 0 %}
+                <form method="post" onsubmit="return confirm('Are you sure you want to verify {{ unverified_wp_count }} WordPress members?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="verify_wordpress_members">
+                    <button type="submit" class="button button-primary">
+                        Verify {{ unverified_wp_count }} WordPress Member{{ unverified_wp_count|pluralize }}
+                    </button>
+                </form>
+            {% else %}
+                <p class="help-text">No unverified WordPress members.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Deactivate Legacy-Only Members -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Deactivate Legacy-Only Members</h3>
+        </div>
+        <div class="card-content">
+            <p>Currently <strong>{{ legacy_only_count }}</strong> members are from legacy Excel data only.</p>
+            <p><strong>Note:</strong> Since you're using free membership, all members are currently active. Use this only if you want to hide legacy members from the directory.</p>
+            
+            {% if legacy_only_count > 0 %}
+                <form method="post" onsubmit="return confirm('Are you sure you want to deactivate {{ legacy_only_count }} legacy-only members? This will remove them from the public directory.');">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="deactivate_legacy_only">
+                    <button type="submit" class="button button-warning">
+                        Deactivate {{ legacy_only_count }} Legacy Member{{ legacy_only_count|pluralize }}
+                    </button>
+                </form>
+            {% else %}
+                <p class="help-text">No legacy-only members to deactivate.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Information Box -->
+    <div class="help-block">
+        <h3>About Bulk Actions</h3>
+        <ul>
+            <li><strong>Activate Pending:</strong> Gives full member access to users who signed up but haven't been activated yet</li>
+            <li><strong>Verify WordPress:</strong> Marks imported WordPress members as verified since they were already in your system</li>
+            <li><strong>Deactivate Legacy:</strong> Hides old Excel-only members from public directory (they keep their data but lose access)</li>
+        </ul>
+        <p><strong>Free Membership Note:</strong> Since you're using free membership, most actions focus on organization rather than payment status.</p>
+    </div>
+</div>
+
+<style>
+.card {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e1e5e9;
+    padding: 1rem 1.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.button-warning {
+    background-color: #f39c12;
+    border-color: #f39c12;
+}
+
+.button-warning:hover {
+    background-color: #e67e22;
+    border-color: #e67e22;
+}
+</style>
+{% endblock %}
