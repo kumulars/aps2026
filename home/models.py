@@ -42,11 +42,27 @@ class NewsItemCategory(models.Model):
 class HomePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
-        context["news_items"] = NewsResearchItem.objects.all().order_by("-id")[:15]
+        # Custom ordering: new items (import-*) first, then by entry date desc
+        from django.db.models import Case, When, IntegerField
+        
+        context["news_items"] = NewsResearchItem.objects.annotate(
+            custom_order=Case(
+                When(news_item_id__startswith='import-', then=1),  # New items first
+                default=2,
+                output_field=IntegerField(),
+            )
+        ).order_by("custom_order", "-news_item_entry_date", "-id")[:15]
+        
         # Add featured items for hero slider (top 5 most recent with images)
         context["hero_news_items"] = NewsResearchItem.objects.filter(
             news_item_image__isnull=False
-        ).order_by("-id")[:5]
+        ).annotate(
+            custom_order=Case(
+                When(news_item_id__startswith='import-', then=1),  # New items first
+                default=2,
+                output_field=IntegerField(),
+            )
+        ).order_by("custom_order", "-news_item_entry_date", "-id")[:5]
         context["middle_column_items"] = HighlightPanel.objects.filter(
             column="middle", is_archived=False).order_by("sort_order")
         context["right_column_items"] = HighlightPanel.objects.filter(
@@ -111,6 +127,7 @@ class NewsResearchItem(models.Model):
         on_delete=models.SET_NULL,
         related_name="+"
     )
+    news_item_image_caption = models.TextField(blank=True, help_text="Image caption in HTML format")
     news_item_full_title = models.CharField(max_length=300)
     news_item_authors = models.TextField()
     news_item_citation = models.TextField()
@@ -139,6 +156,7 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_blurb"),
         FieldPanel("news_item_full_text"),
         FieldPanel("news_item_image"),
+        FieldPanel("news_item_image_caption"),
         FieldPanel("news_item_full_title"),
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
@@ -337,20 +355,42 @@ class NewsResearchIndexPage(Page):
         context = super().get_context(request)
 
         selected_category = request.GET.get("category")
+        # Custom ordering: new items (import-*) first, then by entry date desc
+        from django.db.models import Case, When, IntegerField
+        
         if selected_category:
             items = NewsResearchItem.objects.filter(
                 category__name=selected_category
-            ).order_by("-id")
+            ).annotate(
+                custom_order=Case(
+                    When(news_item_id__startswith='import-', then=1),  # New items first
+                    default=2,
+                    output_field=IntegerField(),
+                )
+            ).order_by("custom_order", "-news_item_entry_date", "-id")
         else:
-            items = NewsResearchItem.objects.all().order_by("-id")
+            items = NewsResearchItem.objects.all().annotate(
+                custom_order=Case(
+                    When(news_item_id__startswith='import-', then=1),  # New items first
+                    default=2,
+                    output_field=IntegerField(),
+                )
+            ).order_by("custom_order", "-news_item_entry_date", "-id")
 
         # Chunk items into rows of 6
         def chunked(qs, size):
             return [qs[i:i+size] for i in range(0, len(qs), size)]
 
+        # Add category counts for enhanced UI
+        categories_with_counts = []
+        for category in NewsItemCategory.objects.all().order_by("name"):
+            category.item_count = NewsResearchItem.objects.filter(category=category).count()
+            categories_with_counts.append(category)
+
         context["news_rows"] = chunked(list(items), 6)
-        context["categories"] = NewsItemCategory.objects.all().order_by("name")
+        context["categories"] = categories_with_counts
         context["selected_category"] = selected_category
+        context["total_count"] = NewsResearchItem.objects.count()
 
         return context
 

@@ -7,31 +7,38 @@
     <div class="col-md-12">
       <h1 class="main-page-header">APS Research & News Archive</h1>
       
-<div class="category-filters">
-  <a href="{{ page.url }}" class="btn btn-outline-primary btn-sm {% if not selected_category %}active{% endif %}">ALL</a>
-  {% for cat in categories %}
-    {% if cat.name == "Cell Signaling and Cancer" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">SIGNALLING</a>
-    {% elif cat.name == "Computational Peptide Science" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">COMPUTATIONAL</a>
-    {% elif cat.name == "Peptide Materials" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">MATERIALS</a>
-    {% elif cat.name == "Structural Biology" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">STRUCTURES</a>
-    {% elif cat.name == "Synthetic Methods" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">SYNTHETICS</a>
-    {% elif cat.name == "Therapeutics and Drug Delivery" %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">THERAPEUTICS</a>
-    {% else %}
-      <a href="?category={{ cat.name }}" class="btn btn-outline-primary btn-sm {% if selected_category == cat.name %}active{% endif %}">OTHER</a>
-    {% endif %}
-  {% endfor %}
-</div>
-
-{% if selected_category %}
-  <h3>
-    Articles in the category: {{ selected_category }}</h3>
-{% endif %}
+      <!-- Enhanced Category Filter Navigation -->
+      <div class="category-filter-section mb-4">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <a href="{{ page.url }}" 
+             class="category-filter-btn {% if not selected_category %}active{% endif %}"
+             data-category="all">
+            <span class="filter-label">ALL</span>
+            <span class="filter-count">({{ total_count|default:"0" }})</span>
+          </a>
+          
+          {% for cat in categories %}
+            <a href="?category={{ cat.name }}" 
+               class="category-filter-btn {% if selected_category == cat.name %}active{% endif %}"
+               data-category="{{ cat.name|lower }}">
+              <span class="filter-label">{{ cat.name|upper }}</span>
+              <span class="filter-count">({{ cat.item_count|default:"0" }})</span>
+            </a>
+          {% endfor %}
+        </div>
+        
+        {% if selected_category %}
+          <div class="selected-category-info mt-3">
+            <p class="text-muted text-center">
+              <i class="fas fa-filter"></i> 
+              Showing <strong>{{ selected_category }}</strong> articles
+              <a href="{{ page.url }}" class="ms-2 text-decoration-none">
+                <i class="fas fa-times-circle"></i> Clear filter
+              </a>
+            </p>
+          </div>
+        {% endif %}
+      </div>
 
 
 

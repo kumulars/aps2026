@@ -2,6 +2,93 @@
 /* === TypeKit & Global Font === */
 @import url("https://use.typekit.net/dvt1uyd.css");
 
+/* === Enhanced Category Filter UI === */
+.category-filter-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.category-filter-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 20px;
+  background: white;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.category-filter-btn:hover {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,123,255,0.25);
+}
+
+.category-filter-btn.active {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.category-filter-btn .filter-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.category-filter-btn .filter-count {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.category-filter-btn:hover .filter-count,
+.category-filter-btn.active .filter-count {
+  opacity: 0.9;
+}
+
+.selected-category-info {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.selected-category-info a {
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.selected-category-info a:hover {
+  color: #dc3545;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .category-filter-btn {
+    min-width: 80px;
+    padding: 10px 15px;
+  }
+  
+  .category-filter-btn .filter-label {
+    font-size: 0.8rem;
+  }
+  
+  .category-filter-btn .filter-count {
+    font-size: 0.7rem;
+  }
+}
+
 
 /* Hero News Slider - Clean and Simple */
 
