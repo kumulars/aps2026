@@ -175,7 +175,7 @@ class NewsResearchItem(models.Model):
         return reverse("news_item_detail", kwargs={"slug": self.slug})
 
     class Meta:
-        ordering = ["-id"]
+        ordering = ["-news_item_entry_date", "-id"]
         verbose_name = "News Research Item"
         verbose_name_plural = "News Research Items"
 

@@ -2,6 +2,110 @@
 /* === TypeKit & Global Font === */
 @import url("https://use.typekit.net/dvt1uyd.css");
 
+/* === Homepage Layout Styles (WordPress Structure) === */
+
+/* Blue horizontal rules */
+hr.blue {
+  border: 0;
+  height: 2px;
+  background: #3a53a4;
+  margin: 20px 0;
+}
+
+/* Homepage headers */
+h1.home-page-header {
+  color: #3a53a4;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+h2.secondary-homepage-header-left-2 {
+  color: #3a53a4;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+/* News item containers */
+.newsitem-container {
+  margin-bottom: 30px;
+}
+
+/* Sidebar styling */
+.main-sidebar-right {
+  padding-left: 30px;
+  border-left: 1px solid #CCCCCC;
+}
+
+/* Remove padding for image columns */
+.nopad {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* APS Button styles */
+.aps-button {
+  background-color: #3a53a4;
+  border-color: #3a53a4;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.aps-button:hover {
+  background-color: #d1951f;
+  border-color: #d1951f;
+  color: #ffffff;
+}
+
+.aps-button-small {
+  background-color: #cb3b2d;
+  border-color: #cb3b2d;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.aps-button-small:hover {
+  background-color: #3a53a4;
+  border-color: #3a53a4;
+  color: #ffffff;
+}
+
+/* Member testimonials section */
+.member-testimonials {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* Responsive adjustments for homepage */
+@media (max-width: 768px) {
+  .main-sidebar-right {
+    padding-left: 15px;
+    border-left: none;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 30px;
+    padding-top: 20px;
+  }
+  
+  h1.home-page-header {
+    font-size: 1.5rem;
+  }
+  
+  h2.secondary-homepage-header-left-2 {
+    font-size: 1.2rem;
+  }
+}
+
 /* === Enhanced Category Filter UI === */
 .category-filter-section {
   background: #f8f9fa;
@@ -111,7 +215,7 @@
 }
 
 .aps-news-slider .slider-container {
-  max-width: 1140px;
+  max-width: 1700px;
   margin: 0 auto;
   position: relative;
   padding: 40px 0;
@@ -125,7 +229,7 @@
 }
 
 .aps-news-slider .slide {
-  flex: 0 0 25%;
+  flex: 0 0 20%;
   padding: 0 10px;
 }
 
@@ -234,7 +338,7 @@
 }
 
 .aps-hero-news-slider .hero-slide-content {
-  max-width: 1140px;
+  max-width: 1700px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -674,7 +778,7 @@ body.fade-out {
 }
 
 .aps-container {
-  max-width: 1362px;
+  max-width: 1700px;
   margin: 0 auto;
   padding-left: 21px;
   padding-right: 21px;
@@ -747,16 +851,16 @@ body.fade-out {
 
 /* === Typography === */
 p {
-  font-size: clamp(1.225rem, 2.3vw, 1.475rem);
+  font-size: clamp(1rem, 1.3vw, 1.05rem);
   line-height: 1.5;
   font-weight: 400;
   color: #5A5A5A;
 }
 
 .index-header {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
   line-height: 1.5;
-  font-weight: 600;
+  font-weight: 400;
   color: #5A5A5A;
   margin-top: 7px;
 }
@@ -833,7 +937,7 @@ p {
 }
 
 #aps-footer .aps-container {
-  max-width: 1362px;
+  max-width: 1700px;
   margin: 0 auto;
   padding: 3rem 1rem;
 }
@@ -1029,7 +1133,7 @@ li {
 /* Emphasis improvements */
 strong, b {
   font-weight: 600;
-  color: #2a4394;
+  color: #5A5A5A;
 }
 
 em, i {

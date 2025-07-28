@@ -202,15 +202,30 @@
                 </a>
             </div>
             <div class="col3">
+                <a href="{% url 'wagtailadmin_bulk_member_actions' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-cogs" aria-hidden="true"><use href="#icon-cogs"></use></svg>
+                    Bulk Actions
+                </a>
+            </div>
+            <div class="col3">
+                <a href="{% url 'wagtailadmin_export_members' %}" class="button button-secondary button--icon">
+                    <svg class="icon icon-download" aria-hidden="true"><use href="#icon-download"></use></svg>
+                    Export to CSV
+                </a>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 1rem;">
+            <div class="col3">
                 <a href="{% url 'wagtailsnippets_members_membershiplevel:list' %}" class="button button-secondary button--icon">
                     <svg class="icon icon-group" aria-hidden="true"><use href="#icon-group"></use></svg>
                     Membership Levels
                 </a>
             </div>
             <div class="col3">
-                <a href="{% url 'wagtailadmin_bulk_member_actions' %}" class="button button-secondary button--icon">
-                    <svg class="icon icon-cogs" aria-hidden="true"><use href="#icon-cogs"></use></svg>
-                    Bulk Actions
+                <a href="{% url 'wagtailadmin_export_members' %}?status=active" class="button button-secondary button--icon">
+                    <svg class="icon icon-download" aria-hidden="true"><use href="#icon-download"></use></svg>
+                    Export Active Only
                 </a>
             </div>
         </div>

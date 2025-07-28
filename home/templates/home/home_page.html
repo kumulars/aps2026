@@ -13,41 +13,101 @@
     </div>
   </section>
 
-  <!-- Slider - Completely isolated from Bootstrap -->
-{% include "components/news_hero_slider.html" %}
-
-  <!-- Main Content Section -->
+  <!-- News Hero Slider (replaces smartslider3) -->
+  {% include "components/news_hero_slider.html" %}
+  
+  <!-- Main Content Section - 9+3 Column Layout -->
   <section class="aps-homepage-content">
     <div class="aps-container block-content">
+      <hr class="blue" />
+      
       <div class="row">
-        <!-- Middle Column -->
-        <div class="col-md-6">
+        <!-- Main 9-Column Content Area -->
+        <div class="col-md-9">
+          
+          <!-- Middle Column Content Blocks (5+7 text+image format) -->
           {% for item in middle_column_items %}
-            <a href="{{ item.get_absolute_url }}" class="news-item-link">
-              <h4>{{ item.title }}</h4>
-              {% if item.image %}
-                <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
-              {% endif %}
-              <div class="highlight-html-body">
-                {{ item.html_body|safe }}
+            <div class="newsitem-container">
+              <hr class="blue" />
+              <h1 class="home-page-header">{{ item.title }}</h1>
+              
+              <div class="row">
+                <!-- Text Content (5 columns) -->
+                <div class="col-md-5">
+                  <div class="highlight-html-body">
+                    {{ item.html_body|safe }}
+                  </div>
+                  
+                  {% if item.get_absolute_url %}
+                    <div style="text-align: center; margin-top: 20px;">
+                      <a href="{{ item.get_absolute_url }}" class="btn btn-primary aps-button">
+                        READ MORE
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+                
+                <!-- Image Content (7 columns) -->
+                <div class="col-md-7 nopad">
+                  {% if item.image %}
+                    <a href="{{ item.get_absolute_url }}">
+                      <img src="{{ item.image.file.url }}" 
+                           alt="{{ item.title }}" 
+                           class="img-fluid aps-image" 
+                           style="margin-bottom: 29px;">
+                    </a>
+                  {% endif %}
+                </div>
               </div>
-            </a>
-            {% if not forloop.last %}<hr class="aps-border">{% endif %}
+            </div>
           {% endfor %}
         </div>
 
-        <!-- Right Column -->
-        <div class="col-md-6" style="border-left: 1px solid #CCCCCC;">
+        <!-- Sidebar 3-Column Content Area -->
+        <div class="col-md-3 main-sidebar-right">
           {% for item in right_column_items %}
-            <h4>{{ item.title }}</h4>
-            <a href="{{ item.get_absolute_url }}" class="news-item-link">
-              {% if item.image %}
-                <img src="{{ item.image.file.url }}" class="aps-img" alt="{{ item.title }}">
-              {% endif %}
+            <h2 class="secondary-homepage-header-left-2" {% if forloop.first %}style="margin-top: 0px;"{% endif %}>
+              {{ item.title }}
+            </h2>
+            
+            {% if item.image %}
+              <a href="{{ item.get_absolute_url }}">
+                <img src="{{ item.image.file.url }}" 
+                     class="img-fluid aps-image" 
+                     alt="{{ item.title }}">
+              </a>
+            {% endif %}
+            
+            <div class="highlight-html-body">
               {{ item.html_body|safe }}
-            </a>
-            {% if not forloop.last %}<hr class="aps-border">{% endif %}
+            </div>
+            
+            {% if item.get_absolute_url %}
+              <a href="{{ item.get_absolute_url }}" class="btn btn-primary aps-button-small">
+                READ MORE
+              </a>
+            {% endif %}
+            
+            {% if not forloop.last %}<hr class="blue" />{% endif %}
           {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-Width 9-Column Section (What Current Members Say equivalent) -->
+  <section class="aps-homepage-content">
+    <div class="aps-container block-content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="newsitem-container">
+            <hr class="blue" />
+            <h2 class="secondary-homepage-header-left-2">What Current Members Say</h2>
+            <!-- This could be populated with testimonials or member quotes -->
+            <div class="member-testimonials">
+              <!-- Content will be populated via admin -->
+            </div>
+          </div>
         </div>
       </div>
     </div>

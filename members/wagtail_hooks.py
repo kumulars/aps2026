@@ -8,6 +8,9 @@ from django.utils.html import format_html
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
+import csv
+from datetime import datetime
 from .models import Member, MembershipLevel
 
 
@@ -114,6 +117,17 @@ def register_membership_stats():
     )
 
 
+# Add export members menu item
+@hooks.register('register_admin_menu_item')
+def register_export_members():
+    return MenuItem(
+        'Export Members',
+        reverse('wagtailadmin_export_members'),
+        icon_name='download',
+        order=152
+    )
+
+
 # Register custom admin URLs
 @hooks.register('register_admin_urls')
 def register_membership_admin_urls():
@@ -121,6 +135,7 @@ def register_membership_admin_urls():
         path('membership-dashboard/', membership_dashboard_view, name='wagtailadmin_membership_dashboard'),
         path('membership-stats/', membership_stats_view, name='wagtailadmin_membership_stats'),
         path('bulk-member-actions/', bulk_member_actions_view, name='wagtailadmin_bulk_member_actions'),
+        path('export-members/', export_members_csv, name='wagtailadmin_export_members'),
     ]
 
 
@@ -252,3 +267,90 @@ def bulk_member_actions_view(request):
     }
     
     return render(request, 'wagtailadmin/bulk_member_actions.html', context)
+
+
+@permission_required('members.view_member')
+def export_members_csv(request):
+    """Export members to CSV file"""
+    # Create the HttpResponse object with CSV header
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': f'attachment; filename="aps_members_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"'},
+    )
+    
+    # Create CSV writer
+    writer = csv.writer(response)
+    
+    # Get filter parameters from request
+    status_filter = request.GET.get('status', '')
+    affiliation_filter = request.GET.get('affiliation_type', '')
+    data_source_filter = request.GET.get('data_source', '')
+    
+    # Start with all members
+    members = Member.objects.all()
+    
+    # Apply filters if provided
+    if status_filter:
+        members = members.filter(status=status_filter)
+    if affiliation_filter:
+        members = members.filter(affiliation_type=affiliation_filter)
+    if data_source_filter:
+        members = members.filter(data_source=data_source_filter)
+    
+    # Order by last name, first name
+    members = members.order_by('last_name', 'first_name')
+    
+    # Write CSV headers
+    headers = [
+        'ID', 'First Name', 'Last Name', 'Title', 'Email', 'Phone',
+        'Affiliation', 'Affiliation Type', 'PhD Year',
+        'Address 1', 'Address 2', 'City', 'State', 'ZIP', 'Country',
+        'Status', 'Membership Level', 'Join Date', 'Last Payment', 'Expires',
+        'Research Interests', 'Data Source', 'Verified', 'Created Date'
+    ]
+    writer.writerow(headers)
+    
+    # Write member data
+    for member in members:
+        row = [
+            member.id,
+            member.first_name,
+            member.last_name,
+            member.title or '',
+            member.email,
+            member.phone or '',
+            member.affiliation or '',
+            member.get_affiliation_type_display() if member.affiliation_type else '',
+            member.phd_year or '',
+            member.address_1 or '',
+            member.address_2 or '',
+            member.city or '',
+            member.state or '',
+            member.zip_code or '',
+            member.country or '',
+            member.get_status_display(),
+            member.membership_level.name if member.membership_level else '',
+            member.join_date.strftime('%Y-%m-%d') if member.join_date else '',
+            member.last_payment_date.strftime('%Y-%m-%d') if member.last_payment_date else '',
+            member.membership_expires.strftime('%Y-%m-%d') if member.membership_expires else '',
+            member.research_interests or '',
+            member.get_data_source_display(),
+            'Yes' if member.is_verified else 'No',
+            member.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        ]
+        writer.writerow(row)
+    
+    # Add summary information as comments at the end
+    writer.writerow([])
+    writer.writerow([f'# Total members exported: {members.count()}'])
+    writer.writerow([f'# Export date: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'])
+    writer.writerow([f'# Exported by: {request.user.username}'])
+    
+    if status_filter:
+        writer.writerow([f'# Status filter: {status_filter}'])
+    if affiliation_filter:
+        writer.writerow([f'# Affiliation filter: {affiliation_filter}'])
+    if data_source_filter:
+        writer.writerow([f'# Data source filter: {data_source_filter}'])
+    
+    return response
