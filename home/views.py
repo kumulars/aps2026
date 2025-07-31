@@ -2,8 +2,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
 from django.utils.html import strip_tags
 from .models import NewsResearchItem, Obituary
-from .models import HighlightPanel
-from django.http import HttpResponse
+from .models import HighlightPanel, AwardRecipient, SymposiumImage
+from django.http import HttpResponse, JsonResponse
 
 class HomePageView(TemplateView):
     template_name = "home/home_page.html"
@@ -82,3 +82,85 @@ def highlight_detail(request, slug):
         'object': item,
         'tabs': tabs,
     })
+
+
+def award_recipient_detail_view(request, slug):
+    """Display detailed information about an award recipient."""
+    recipient = get_object_or_404(AwardRecipient, slug=slug, is_published=True)
+    
+    # Get other recipients of the same award
+    related_recipients = AwardRecipient.objects.filter(
+        award_type=recipient.award_type,
+        is_published=True
+    ).exclude(pk=recipient.pk).order_by('-year')[:5]
+    
+    return render(request, 'home/award_recipient_detail.html', {
+        'recipient': recipient,
+        'related_recipients': related_recipients,
+    })
+
+
+def symposium_images_api(request, year):
+    """API endpoint for loading symposium images by year with pagination."""
+    try:
+        limit_param = request.GET.get('limit', '30')
+        
+        if limit_param == 'all':
+            # Load all images for the year
+            images = SymposiumImage.objects.filter(
+                year=year
+            ).select_related(
+                'thumbnail_image', 'full_image'
+            ).order_by(
+                'display_order', 'filename'
+            )
+            images_list = list(images)
+            has_more = False
+        else:
+            # Paginated loading (legacy support)
+            offset = int(request.GET.get('offset', 0))
+            limit = int(limit_param)
+            
+            images = SymposiumImage.objects.filter(
+                year=year
+            ).select_related(
+                'thumbnail_image', 'full_image'
+            ).order_by(
+                'display_order', 'filename'
+            )[offset:offset + limit + 1]  # Get one extra to check if more exist
+            
+            images_list = list(images)
+            has_more = len(images_list) > limit
+            
+            if has_more:
+                images_list = images_list[:limit]  # Remove the extra one
+        
+        # Serialize the images
+        image_data = []
+        for image in images_list:
+            data = {
+                'filename': image.filename,
+                'year': image.year,
+                'event_date': image.event_date.isoformat() if image.event_date else None,
+                'caption': image.caption,
+                'thumbnail_url': image.thumbnail_url,
+                'full_url': image.full_url,
+            }
+            image_data.append(data)
+        
+        # Calculate total loaded based on loading method
+        if limit_param == 'all':
+            total_loaded = len(image_data)
+        else:
+            total_loaded = offset + len(image_data)
+        
+        return JsonResponse({
+            'images': image_data,
+            'has_more': has_more,
+            'total_loaded': total_loaded,
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': f'Failed to load images: {str(e)}'
+        }, status=500)

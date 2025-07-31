@@ -132,6 +132,24 @@ class NewsResearchItem(models.Model):
     news_item_authors = models.TextField()
     news_item_citation = models.TextField()
     news_item_journal_url = models.URLField(blank=True)
+    
+    # Inline images for article content
+    news_item_inline_image_1 = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="news_inline_1",
+        help_text="First inline image - reference in text as {{image1}}"
+    )
+    news_item_inline_image_2 = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="news_inline_2",
+        help_text="Second inline image - reference in text as {{image2}}"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -160,7 +178,9 @@ class NewsResearchItem(models.Model):
         FieldPanel("news_item_full_title"),
         FieldPanel("news_item_authors"),
         FieldPanel("news_item_citation"),
-        FieldPanel("news_item_journal_url"),        
+        FieldPanel("news_item_journal_url"),
+        FieldPanel("news_item_inline_image_1"),
+        FieldPanel("news_item_inline_image_2"),
     ]
 
     def __str__(self):
@@ -173,6 +193,26 @@ class NewsResearchItem(models.Model):
 
     def get_absolute_url(self):
         return reverse("news_item_detail", kwargs={"slug": self.slug})
+    
+    def get_processed_content(self):
+        """Process the full text content to replace image placeholders with actual images"""
+        content = self.news_item_full_text
+        
+        # Replace {{image1}} placeholder
+        if self.news_item_inline_image_1 and '{{image1}}' in content:
+            img_tag = f'<img src="{self.news_item_inline_image_1.file.url}" class="aps-img inline-article-image" alt="{self.news_item_short_title} - Image 1">'
+            content = content.replace('{{image1}}', img_tag)
+        
+        # Replace {{image2}} placeholder
+        if self.news_item_inline_image_2 and '{{image2}}' in content:
+            img_tag = f'<img src="{self.news_item_inline_image_2.file.url}" class="aps-img inline-article-image" alt="{self.news_item_short_title} - Image 2">'
+            content = content.replace('{{image2}}', img_tag)
+        
+        # Remove any remaining placeholders if images aren't set
+        content = content.replace('{{image1}}', '')
+        content = content.replace('{{image2}}', '')
+        
+        return content
 
     class Meta:
         ordering = ["-news_item_entry_date", "-id"]
@@ -1070,6 +1110,346 @@ class ResearcherSubmissionPage(AbstractEmailForm):
         verbose_name = "Researcher Submission Form"
 
 
+class AwardType(models.Model):
+    """
+    Represents different types of awards given by the American Peptide Society.
+    
+    This model stores metadata about each award type, including its full name,
+    description, criteria, and other relevant information.
+    """
+    # Core fields
+    slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        help_text="Unique identifier for the award type (e.g., 'merrifield', 'duvigneaud')"
+    )
+    name = models.CharField(
+        max_length=200,
+        help_text="Full name of the award (e.g., 'R. Bruce Merrifield Award')"
+    )
+    description = RichTextField(
+        blank=True,
+        help_text="Detailed description of the award, its history, and significance"
+    )
+    criteria = RichTextField(
+        blank=True,
+        help_text="Eligibility criteria and selection process for the award"
+    )
+    
+    # Award metadata
+    established_year = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text="Year the award was established"
+    )
+    frequency = models.CharField(
+        max_length=50,
+        default="Annual",
+        help_text="How often the award is given (e.g., Annual, Biennial)"
+    )
+    
+    # Display settings
+    display_order = models.IntegerField(
+        default=0,
+        help_text="Order in which awards appear on the awards page (lower numbers first)"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Whether this award is currently active"
+    )
+    
+    # Tracking fields
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['display_order', 'name']
+        verbose_name = "Award Type"
+        verbose_name_plural = "Award Types"
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        """Return the URL for this award type's page."""
+        return reverse('award-type-detail', kwargs={'slug': self.slug})
+    
+    @cached_property
+    def recipient_count(self):
+        """Return the total number of recipients for this award."""
+        return self.recipients.count()
+    
+    @cached_property
+    def latest_recipient(self):
+        """Return the most recent recipient of this award."""
+        return self.recipients.order_by('-year').first()
+
+
+class AwardRecipient(models.Model):
+    """
+    Represents an individual recipient of an APS award.
+    
+    This model stores comprehensive information about each award recipient,
+    including their biography, achievements, and associated metadata.
+    """
+    # Award relationship
+    award_type = models.ForeignKey(
+        AwardType,
+        on_delete=models.PROTECT,
+        related_name='recipients',
+        help_text="The type of award received"
+    )
+    year = models.IntegerField(
+        help_text="Year the award was received"
+    )
+    
+    # Recipient information
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    institution = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Institution at the time of receiving the award"
+    )
+    
+    # Biography and achievements
+    biography = RichTextField(
+        blank=True,
+        help_text="Full biography and achievements of the recipient"
+    )
+    
+    # Media
+    photo = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    photo_url = models.URLField(
+        max_length=500,
+        blank=True,
+        help_text="External URL for recipient photo (used during import)"
+    )
+    
+    # URL and slug
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        help_text="URL-friendly version of recipient name"
+    )
+    
+    # Import tracking
+    import_id = models.CharField(
+        max_length=50,
+        blank=True,
+        db_index=True,
+        help_text="Original ID from import source"
+    )
+    imported_from = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Source of the import (e.g., 'wordpress')"
+    )
+    import_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Date when this record was imported"
+    )
+    original_url = models.URLField(
+        max_length=500,
+        blank=True,
+        help_text="Original URL from the source website"
+    )
+    
+    # Status and tracking
+    is_published = models.BooleanField(
+        default=True,
+        help_text="Whether this recipient should be displayed publicly"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # Panels for Wagtail admin
+    panels = [
+        MultiFieldPanel([
+            FieldPanel('award_type'),
+            FieldPanel('year'),
+        ], heading="Award Information"),
+        MultiFieldPanel([
+            FieldPanel('first_name'),
+            FieldPanel('last_name'),
+            FieldPanel('institution'),
+            FieldPanel('slug'),
+        ], heading="Recipient Information"),
+        FieldPanel('biography'),
+        MultiFieldPanel([
+            FieldPanel('photo'),
+            FieldPanel('photo_url'),
+        ], heading="Photo"),
+        MultiFieldPanel([
+            FieldPanel('is_published'),
+            FieldPanel('import_id'),
+            FieldPanel('imported_from'),
+            FieldPanel('import_date'),
+            FieldPanel('original_url'),
+        ], heading="Status and Import Tracking"),
+    ]
+    
+    class Meta:
+        ordering = ['-year', 'last_name', 'first_name']
+        unique_together = [('award_type', 'year', 'first_name', 'last_name')]
+        verbose_name = "Award Recipient"
+        verbose_name_plural = "Award Recipients"
+    
+    def __str__(self):
+        return f"{self.last_name}, {self.first_name} ({self.award_type.slug} {self.year})"
+    
+    @property
+    def full_name(self):
+        """Return the recipient's full name."""
+        return f"{self.first_name} {self.last_name}"
+    
+    def get_absolute_url(self):
+        """Return the URL for this recipient's detail page."""
+        return reverse('award-recipient-detail', kwargs={'slug': self.slug})
+    
+    def clean(self):
+        """Validate the model instance."""
+        super().clean()
+        
+        # Auto-generate slug if not provided
+        if not self.slug:
+            base_slug = slugify(f"{self.first_name}-{self.last_name}-{self.year}")
+            self.slug = base_slug
+            
+            # Ensure uniqueness
+            counter = 1
+            while AwardRecipient.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                self.slug = f"{base_slug}-{counter}"
+                counter += 1
+    
+    def save(self, *args, **kwargs):
+        """Override save to ensure slug generation and validation."""
+        self.clean()
+        super().save(*args, **kwargs)
+
+
+class AwardRecipientViewSet(SnippetViewSet):
+    """Custom viewset for AwardRecipient with enhanced admin interface."""
+    model = AwardRecipient
+    icon = "trophy"
+    menu_label = "Award Recipients"
+    menu_name = "award_recipients"
+    list_display = ['full_name', 'award_type', 'year', 'institution', 'is_published']
+    list_filter = ['award_type', 'year', 'is_published', 'imported_from']
+    search_fields = ['first_name', 'last_name', 'institution', 'biography']
+
+
+# Register the viewset
+register_snippet(AwardRecipientViewSet)
+
+
+class AwardsIndexPage(Page):
+    """
+    Main awards page that lists all award types and provides overview.
+    
+    This page serves as the entry point to the awards section, displaying
+    all award types with their descriptions and links to individual award pages.
+    """
+    introduction = RichTextField(
+        blank=True,
+        help_text="Introduction text for the awards section"
+    )
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction'),
+    ]
+    
+    parent_page_types = ['home.HomePage']
+    subpage_types = ['home.AwardTypePage']
+    
+    def get_context(self, request):
+        """Add award types to the context."""
+        context = super().get_context(request)
+        context['award_types'] = AwardType.objects.filter(is_active=True)
+        return context
+    
+    class Meta:
+        verbose_name = "Awards Index Page"
+
+
+class AwardTypePage(Page):
+    """
+    Page for individual award types displaying recipients and award information.
+    
+    This page shows detailed information about a specific award type,
+    including its history, criteria, and a list of all recipients.
+    """
+    award_type = models.OneToOneField(
+        AwardType,
+        on_delete=models.PROTECT,
+        related_name='award_page',
+        help_text="The award type this page represents"
+    )
+    
+    # Additional content fields
+    hero_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text="Hero image for the award page"
+    )
+    nomination_info = RichTextField(
+        blank=True,
+        help_text="Information about how to nominate candidates for this award"
+    )
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('award_type'),
+        FieldPanel('hero_image'),
+        FieldPanel('nomination_info'),
+    ]
+    
+    parent_page_types = ['home.AwardsIndexPage']
+    subpage_types = []
+    
+    def get_context(self, request):
+        """Add recipients to the context."""
+        context = super().get_context(request)
+        
+        # Get all recipients for this award type
+        recipients = self.award_type.recipients.filter(is_published=True)
+        
+        # Group recipients by decade for better display
+        recipients_by_decade = {}
+        for recipient in recipients:
+            decade = (recipient.year // 10) * 10
+            decade_key = f"{decade}s"
+            if decade_key not in recipients_by_decade:
+                recipients_by_decade[decade_key] = []
+            recipients_by_decade[decade_key].append(recipient)
+        
+        # Sort decades in descending order
+        sorted_decades = sorted(recipients_by_decade.items(), key=lambda x: x[0], reverse=True)
+        
+        context['recipients'] = recipients
+        context['recipients_by_decade'] = sorted_decades
+        context['total_recipients'] = recipients.count()
+        
+        return context
+    
+    @property
+    def award_name(self):
+        """Convenience property to access award name."""
+        return self.award_type.name if self.award_type else self.title
+    
+    class Meta:
+        verbose_name = "Award Type Page"
+
+
 class MembersOnlyPage(Page):
     """
     A page type that restricts access to active APS members only
@@ -1143,3 +1523,130 @@ class MembersOnlyPage(Page):
 
     class Meta:
         verbose_name = "Members-Only Page"
+
+
+# === SYMPOSIUM IMAGE GALLERY MODELS ===
+
+class SymposiumImage(models.Model):
+    """
+    Model for individual symposium images with thumbnail and full-size versions
+    """
+    year = models.CharField(max_length=4, help_text="Symposium year (e.g., 2015)")
+    filename = models.CharField(max_length=255, help_text="Original filename without extension")
+    
+    # Wagtail images for thumbnail and full size
+    thumbnail_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='symposium_thumbnail_images',
+        help_text="Thumbnail version of the image"
+    )
+    
+    full_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='symposium_full_images',
+        help_text="Full-size version of the image"
+    )
+    
+    # Metadata
+    event_date = models.DateField(null=True, blank=True, help_text="Date when photo was taken")
+    caption = models.TextField(blank=True, help_text="Optional caption for the image")
+    display_order = models.IntegerField(default=0, help_text="Order for displaying images")
+    
+    # Import tracking
+    imported_from = models.CharField(max_length=255, blank=True)
+    import_date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['year', 'display_order', 'filename']
+        verbose_name = "Symposium Image"
+        verbose_name_plural = "Symposium Images"
+        indexes = [
+            models.Index(fields=['year']),
+            models.Index(fields=['year', 'display_order']),
+        ]
+    
+    def __str__(self):
+        return f"{self.year} - {self.filename}"
+    
+    @property
+    def thumbnail_url(self):
+        """Get thumbnail URL with fallback"""
+        if self.thumbnail_image:
+            return self.thumbnail_image.get_rendition('width-125|height-86').url
+        return None
+    
+    @property 
+    def full_url(self):
+        """Get full image URL with fallback"""
+        if self.full_image:
+            return self.full_image.get_rendition('width-1200').url
+        return None
+
+
+class SymposiumImageGalleryPage(Page):
+    """
+    Single page containing tabbed galleries for all symposium years
+    """
+    intro = RichTextField(
+        blank=True,
+        help_text="Introduction text for the symposium image galleries"
+    )
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+    ]
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # Get all years with images, ordered by year asc (2015 first)
+        years_with_images = (
+            SymposiumImage.objects
+            .values('year')
+            .distinct()
+            .order_by('year')
+        )
+        
+        # Get initial load data (first tab - most recent year or 2015 if specified)
+        initial_year = request.GET.get('year', '2015') if '2015' in [y['year'] for y in years_with_images] else years_with_images.first()['year'] if years_with_images else None
+        
+        initial_images = []
+        if initial_year:
+            # Load ALL images for initial year (small thumbnails make this feasible)
+            initial_images = (
+                SymposiumImage.objects
+                .filter(year=initial_year)
+                .select_related('thumbnail_image', 'full_image')
+                .order_by('display_order', 'filename')
+                # No limit - load all images for initial year
+            )
+        
+        context.update({
+            'years_with_images': [y['year'] for y in years_with_images],
+            'initial_year': initial_year,
+            'initial_images': initial_images,
+            'total_images_count': SymposiumImage.objects.count(),
+        })
+        
+        return context
+    
+    class Meta:
+        verbose_name = "Symposium Image Gallery"
+
+
+# Register the SymposiumImage model as a snippet for admin management
+@register_snippet
+class SymposiumImageViewSet(SnippetViewSet):
+    model = SymposiumImage
+    menu_label = "Symposium Images"
+    icon = "image"
+    list_display = ['year', 'filename', 'event_date', 'thumbnail_image', 'full_image']
+    list_filter = ['year', 'import_date']
+    search_fields = ['filename', 'caption', 'year']
+    ordering = ['-year', 'display_order', 'filename']

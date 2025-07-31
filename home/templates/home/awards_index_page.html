@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}Awards - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="main-page-header">{{ page.title }}</h1>
+    </div>
+  </div>
+
+  {% if page.introduction %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="award-introduction">
+          {{ page.introduction|richtext }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-8 nopad">
+      <div class="panel-title">
+        <p>American Peptide Society Awards</p>
+      </div>
+      
+      {% for award_type in award_types %}
+        <div class="award-entry">
+          <h3 class="award-name">
+            {% if award_type.award_page %}
+              <a href="{{ award_type.award_page.url }}">{{ award_type.name }}</a>
+            {% else %}
+              {{ award_type.name }}
+            {% endif %}
+          </h3>
+          
+          <div class="award-meta">
+            {% if award_type.established_year %}
+              <span class="award-established">Established {{ award_type.established_year }}</span>
+            {% endif %}
+            <span class="award-count">{{ award_type.recipient_count }} Recipients</span>
+          </div>
+          
+          {% if award_type.description %}
+            <div class="award-description">
+              {{ award_type.description|richtext|truncatewords:30 }}
+            </div>
+          {% endif %}
+          
+          {% if award_type.latest_recipient %}
+            <div class="latest-recipient">
+              <strong>Latest Recipient ({{ award_type.latest_recipient.year }}):</strong>
+              <a href="{{ award_type.latest_recipient.get_absolute_url }}">
+                {{ award_type.latest_recipient.full_name }}
+              </a>
+              {% if award_type.latest_recipient.institution %}
+                - {{ award_type.latest_recipient.institution }}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        <hr />
+      {% empty %}
+        <p>Awards information is currently being updated. Please check back soon.</p>
+      {% endfor %}
+    </div>
+    
+    <div class="col-md-4 nopad">
+      <h2 class="secondary-page-header">About Our Awards</h2>
+      <p>The American Peptide Society recognizes outstanding contributions to peptide science through our prestigious awards program.</p>
+      
+      <div class="awards-stats">
+        <div class="stat-item">
+          <strong>{{ award_types.count }}</strong><br>
+          Award Types
+        </div>
+        <div class="stat-item">
+          <strong>
+            {% for award_type in award_types %}
+              {% if forloop.first %}{{ award_type.recipient_count }}{% else %}{% widthratio award_type.recipient_count|add:forloop.counter0 1 1 %}{% endif %}
+            {% endfor %}
+          </strong><br>
+          Total Recipients
+        </div>
+        <div class="stat-item">
+          <strong>{{ award_types|length }}+</strong><br>
+          Decades of Excellence
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.award-introduction {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-left: 4px solid #007bff;
+}
+
+.award-entry {
+  margin-bottom: 1.5rem;
+}
+
+.award-name {
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.award-name a {
+  color: #333;
+  text-decoration: none;
+}
+
+.award-name a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.award-meta {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.award-established, .award-count {
+  margin-right: 1rem;
+  padding: 0.25rem 0.5rem;
+  background: #e9ecef;
+  border-radius: 3px;
+}
+
+.award-description {
+  margin-bottom: 0.75rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.latest-recipient {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.latest-recipient a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.latest-recipient a:hover {
+  text-decoration: underline;
+}
+
+.awards-stats {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.stat-item strong {
+  display: block;
+  font-size: 1.5rem;
+  color: #007bff;
+  margin-bottom: 0.25rem;
+}
+</style>
+{% endblock %}

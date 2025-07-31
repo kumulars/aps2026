@@ -38,6 +38,42 @@
             <li><a class="dropdown-item" href="/obituaries/">In Memoriam</a></li>
           </ul>
         </li>
+
+        <li class="nav-item dropdown{% if request.path|slice:':7' == '/awards' %} active{% endif %}">
+          <a class="nav-link dropdown-toggle" href="#" id="awardsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            AWARDS
+          </a>
+          <ul class="dropdown-menu aps-fade-dropdown" aria-labelledby="awardsDropdown">
+            <li><a class="dropdown-item" href="/awards/">All Awards</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/awards/merrifield-award/">Merrifield Award</a></li>
+            <li><a class="dropdown-item" href="/awards/duvigneaud-award/">du Vigneaud Award</a></li>
+            <li><a class="dropdown-item" href="/awards/hirschmann-award/">Hirschmann Award</a></li>
+            <li><a class="dropdown-item" href="/awards/goodman-award/">Goodman Award</a></li>
+            <li><a class="dropdown-item" href="/awards/makineni-award/">Makineni Lectureship</a></li>
+            <li><a class="dropdown-item" href="/awards/aps-award/">APS Award</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown{% if request.path|slice:':8' == '/members' or request.path|slice:':9' == '/accounts' %} active{% endif %}">
+          <a class="nav-link dropdown-toggle" href="#" id="membersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            MEMBERS
+          </a>
+          <ul class="dropdown-menu aps-fade-dropdown" aria-labelledby="membersDropdown">
+            {% if user.is_authenticated %}
+              <li><a class="dropdown-item" href="/members/dashboard/">My Dashboard</a></li>
+              <li><a class="dropdown-item" href="/members/profile/">My Profile</a></li>
+              <li><a class="dropdown-item" href="/members/directory/">Member Directory</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/accounts/logout/">Logout</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="/accounts/login/">Member Login</a></li>
+              <li><a class="dropdown-item" href="/accounts/signup/">Join APS</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/membership-benefits/">Membership Benefits</a></li>
+            {% endif %}
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

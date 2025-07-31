@@ -22,6 +22,12 @@ urlpatterns = [
 
     # Obituary detail pages
     path("obituaries/<slug:slug>/", views.obituary_detail_view, name="obituary_detail"),
+    
+    # Award recipient detail pages
+    path("awards/recipient/<slug:slug>/", views.award_recipient_detail_view, name="award-recipient-detail"),
+
+    # Symposium images API
+    path("api/symposium-images/<str:year>/", views.symposium_images_api, name="symposium-images-api"),
 
     # Allauth URLs for membership authentication
     path("accounts/", include("allauth.urls")),

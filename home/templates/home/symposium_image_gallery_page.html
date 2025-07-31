@@ -1,0 +1,547 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="main-page-header">{{ page.title }}</h1>
+    </div>
+  </div>
+
+  {% if page.intro %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="symposium-intro">
+          {{ page.intro|richtext }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12">
+      
+      <!-- Background loading indicator -->
+      <div id="backgroundLoadingIndicator" class="alert alert-info d-none" role="alert">
+        <div class="d-flex align-items-center">
+          <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span id="backgroundLoadingText">Loading additional years in background...</span>
+        </div>
+      </div>
+      
+      <!-- Year Tabs -->
+      <ul class="nav nav-tabs symposium-tabs" id="symposiumYearTabs" role="tablist">
+        {% for year in years_with_images %}
+          <li class="nav-item" role="presentation">
+            <button 
+              class="nav-link{% if year == initial_year %} active{% endif %}" 
+              id="tab-{{ year }}" 
+              data-bs-toggle="tab" 
+              data-bs-target="#gallery-{{ year }}" 
+              data-year="{{ year }}"
+              type="button" 
+              role="tab" 
+              aria-controls="gallery-{{ year }}" 
+              aria-selected="{% if year == initial_year %}true{% else %}false{% endif %}">
+              {{ year }}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content symposium-tab-content" id="symposiumTabContent">
+        {% for year in years_with_images %}
+          <div 
+            class="tab-pane fade{% if year == initial_year %} show active{% endif %}" 
+            id="gallery-{{ year }}" 
+            role="tabpanel" 
+            aria-labelledby="tab-{{ year }}">
+            
+            <!-- Loading indicator -->
+            <div class="gallery-loading d-none" id="loading-{{ year }}">
+              <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading {{ year }} images...</span>
+                </div>
+                <p class="mt-2">Loading {{ year }} symposium images...</p>
+              </div>
+            </div>
+
+            <!-- Image grid -->
+            <div class="symposium-gallery" id="gallery-grid-{{ year }}">
+              {% if year == initial_year %}
+                <!-- Pre-load first year's images -->
+                <div class="row g-2" id="image-grid-{{ year }}">
+                  {% for image in initial_images %}
+                    <div class="col-auto">
+                      <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#imageModal" 
+                           data-full-url="{{ image.full_url }}" 
+                           data-title="{{ image.filename }}"
+                           data-year="{{ image.year }}"
+                           data-date="{% if image.event_date %}{{ image.event_date|date:'M d, Y' }}{% endif %}">
+                        {% if image.thumbnail_image %}
+                          {% image image.thumbnail_image width-125 height-86 class="gallery-thumbnail" loading="lazy" %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+                
+                <!-- No load more button needed - all images loaded initially -->
+              {% else %}
+                <!-- Placeholder for other years -->
+                <div class="gallery-placeholder text-center py-5">
+                  <p>Click to load {{ year }} symposium images</p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Symposium Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" alt="" class="img-fluid">
+        <div class="image-info mt-3">
+          <p id="imageTitle" class="fw-bold mb-1"></p>
+          <p id="imageDetails" class="text-muted mb-0"></p>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" id="prevImage">
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="nextImage">
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.symposium-intro {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-left: 4px solid #007bff;
+  border-radius: 0 8px 8px 0;
+}
+
+.symposium-tabs {
+  border-bottom: 2px solid #E0E0E0;
+  margin-bottom: 2rem;
+}
+
+.symposium-tabs .nav-link {
+  font-weight: 600;
+  color: #495057;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px 8px 0 0;
+  margin-right: 4px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.symposium-tabs .nav-link:hover {
+  color: #007bff;
+  background-color: #e9ecef;
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.symposium-tabs .nav-link.active {
+  color: #007bff;
+  background-color: #ffffff;
+  border-color: #007bff #007bff #ffffff;
+  border-bottom: 2px solid #ffffff;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.symposium-tab-content {
+  background: #ffffff;
+  border-radius: 0 8px 8px 8px;
+  padding: 2rem;
+  min-height: 400px;
+}
+
+.gallery-item {
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  display: inline-block;
+  width: 125px;
+  height: 86px;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.gallery-thumbnail {
+  width: 125px;
+  height: 86px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-thumbnail {
+  transform: scale(1.05);
+}
+
+.gallery-placeholder {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.load-more-btn {
+  padding: 12px 30px;
+  font-weight: 500;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.gallery-loading {
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+#imageModal .modal-content {
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+#imageModal .modal-body {
+  padding: 2rem;
+}
+
+#modalImage {
+  max-height: 70vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.image-info {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* Modal navigation buttons */
+.modal-footer .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.modal-footer .btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .symposium-tabs .nav-link {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .symposium-tab-content {
+    padding: 1rem;
+  }
+  
+  .gallery-item {
+    width: 125px;
+    height: 86px;
+  }
+  
+  .gallery-thumbnail {
+    width: 125px;
+    height: 86px;
+  }
+  
+  #imageModal .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  #modalImage {
+    max-height: 60vh;
+  }
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.gallery-loading {
+  animation: pulse 2s infinite;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching with immediate loading (images pre-loaded in background)
+    const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+    const loadedYears = new Set(['{{ initial_year }}']); // Track loaded years
+    const backgroundLoadQueue = [];
+    
+    // Collect all years for background loading
+    tabButtons.forEach(button => {
+        const year = button.dataset.year;
+        if (year !== '{{ initial_year }}') {
+            backgroundLoadQueue.push(year);
+        }
+    });
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('shown.bs.tab', function(event) {
+            const year = event.target.dataset.year;
+            
+            if (!loadedYears.has(year)) {
+                loadYearImages(year);
+                loadedYears.add(year);
+            }
+        });
+    });
+    
+    // Background loading function
+    function backgroundLoadImages() {
+        const indicator = document.getElementById('backgroundLoadingIndicator');
+        const loadingText = document.getElementById('backgroundLoadingText');
+        
+        if (backgroundLoadQueue.length === 0) {
+            // All done!
+            indicator.classList.add('d-none');
+            console.log('Background loading complete!');
+            return;
+        }
+        
+        // Show progress indicator
+        if (indicator.classList.contains('d-none')) {
+            indicator.classList.remove('d-none');
+        }
+        
+        const year = backgroundLoadQueue.shift();
+        const totalBackgroundYears = 4; // We know we have 4 background years to load (2017, 2019, 2022, 2023)
+        const remaining = backgroundLoadQueue.length;
+        const loaded = totalBackgroundYears - remaining;
+        
+        loadingText.textContent = `Loading ${year} images in background... (${loaded} of ${totalBackgroundYears})`;
+        console.log(`Background loading images for ${year}...`);
+        
+        // Load images for this year
+        loadYearImages(year).then((result) => {
+            loadedYears.add(year);
+            console.log(`Background loaded ${year}: ${result.count} images`);
+            
+            // Continue with next year after a short delay to not overwhelm the browser
+            setTimeout(() => {
+                backgroundLoadImages();
+            }, 800); // Slightly faster now - 0.8 second delay between years
+        }).catch(error => {
+            console.error(`Failed to background load ${year}:`, error);
+            // Continue with next year even if this one failed
+            setTimeout(() => {
+                backgroundLoadImages();
+            }, 1500);
+        });
+    }
+    
+    // Start background loading after initial page is fully loaded (delay to not interfere with first load)
+    setTimeout(() => {
+        console.log('Starting background image loading...');
+        console.log('Background queue:', backgroundLoadQueue);
+        console.log('Already loaded years:', Array.from(loadedYears));
+        backgroundLoadImages();
+    }, 1500); // Reduced to 1.5 second delay after page load
+    
+    // Load images for a specific year
+    function loadYearImages(year, offset = 0) {
+        const gallery = document.getElementById(`gallery-grid-${year}`);
+        const loading = document.getElementById(`loading-${year}`);
+        const placeholder = gallery.querySelector('.gallery-placeholder');
+        
+        // Show loading indicator
+        if (placeholder) {
+            placeholder.style.display = 'none';
+        }
+        loading.classList.remove('d-none');
+        
+        // Return Promise for background loading chaining
+        return fetch(`/api/symposium-images/${year}/?limit=all`)
+            .then(response => response.json())
+            .then(data => {
+                loading.classList.add('d-none');
+                
+                if (data.images && data.images.length > 0) {
+                    renderImages(year, data.images, true);
+                    return { success: true, count: data.images.length };
+                } else {
+                    gallery.innerHTML = '<div class="text-center py-5"><p>No images found for ' + year + '</p></div>';
+                    return { success: false, count: 0 };
+                }
+            })
+            .catch(error => {
+                console.error('Error loading images:', error);
+                loading.classList.add('d-none');
+                gallery.innerHTML = '<div class="text-center py-5 text-danger"><p>Error loading images for ' + year + '</p></div>';
+                throw error;
+            });
+    }
+    
+    // Render images in the gallery
+    function renderImages(year, images, clearFirst = false) {
+        let imageGrid = document.getElementById(`image-grid-${year}`);
+        
+        if (!imageGrid) {
+            const gallery = document.getElementById(`gallery-grid-${year}`);
+            gallery.innerHTML = `<div class="row g-2" id="image-grid-${year}"></div>`;
+            imageGrid = document.getElementById(`image-grid-${year}`);
+        }
+        
+        if (clearFirst) {
+            imageGrid.innerHTML = '';
+        }
+        
+        images.forEach(image => {
+            const col = document.createElement('div');
+            col.className = 'col-auto';
+            
+            const eventDate = image.event_date ? new Date(image.event_date).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            }) : '';
+            
+            col.innerHTML = `
+                <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#imageModal" 
+                     data-full-url="${image.full_url}" 
+                     data-title="${image.filename}"
+                     data-year="${image.year}"
+                     data-date="${eventDate}">
+                    <img src="${image.thumbnail_url}" class="gallery-thumbnail" loading="lazy" alt="${image.filename}">
+                </div>
+            `;
+            
+            imageGrid.appendChild(col);
+        });
+        
+        // Refresh event listeners for all gallery items (including newly loaded ones)
+        addImageModalListeners();
+    }
+    
+    // Load more functionality removed - all images load at once
+    
+    // Image modal functionality with navigation
+    let currentImageIndex = 0;
+    let currentYearImages = [];
+    
+    function addImageModalListeners() {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', function() {
+                // Get all images from the current active tab
+                const activeTab = document.querySelector('.tab-pane.active');
+                const activeTabImages = activeTab.querySelectorAll('.gallery-item');
+                
+                currentYearImages = Array.from(activeTabImages);
+                currentImageIndex = currentYearImages.indexOf(this);
+                
+                showImageInModal(currentImageIndex);
+            });
+        });
+    }
+    
+    function showImageInModal(index) {
+        if (index < 0 || index >= currentYearImages.length) return;
+        
+        const item = currentYearImages[index];
+        const fullUrl = item.dataset.fullUrl;
+        const title = item.dataset.title;
+        const year = item.dataset.year;
+        const date = item.dataset.date;
+        
+        document.getElementById('modalImage').src = fullUrl;
+        document.getElementById('imageTitle').textContent = title;
+        document.getElementById('imageDetails').textContent = `${year} Symposium${date ? ' • ' + date : ''} • Image ${index + 1} of ${currentYearImages.length}`;
+        
+        // Update button states
+        const prevBtn = document.getElementById('prevImage');
+        const nextBtn = document.getElementById('nextImage');
+        
+        prevBtn.disabled = (index === 0);
+        nextBtn.disabled = (index === currentYearImages.length - 1);
+        
+        // Update button text to show navigation info
+        prevBtn.innerHTML = index > 0 ? `<i class="fas fa-chevron-left"></i> Previous` : `<i class="fas fa-chevron-left"></i> First`;
+        nextBtn.innerHTML = index < currentYearImages.length - 1 ? `Next <i class="fas fa-chevron-right"></i>` : `Last <i class="fas fa-chevron-right"></i>`;
+    }
+    
+    // Previous/Next button event listeners
+    document.getElementById('prevImage').addEventListener('click', function() {
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            showImageInModal(currentImageIndex);
+        }
+    });
+    
+    document.getElementById('nextImage').addEventListener('click', function() {
+        if (currentImageIndex < currentYearImages.length - 1) {
+            currentImageIndex++;
+            showImageInModal(currentImageIndex);
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById('imageModal');
+        if (modal.classList.contains('show')) {
+            if (event.key === 'ArrowLeft' && currentImageIndex > 0) {
+                currentImageIndex--;
+                showImageInModal(currentImageIndex);
+            } else if (event.key === 'ArrowRight' && currentImageIndex < currentYearImages.length - 1) {
+                currentImageIndex++;
+                showImageInModal(currentImageIndex);
+            } else if (event.key === 'Escape') {
+                bootstrap.Modal.getInstance(modal).hide();
+            }
+        }
+    });
+    
+    // Initialize modal listeners for pre-loaded images
+    addImageModalListeners();
+});
+</script>
+{% endblock %}

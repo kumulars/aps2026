@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.award_name }} - Awards - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="main-page-header">{{ page.award_name }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 nopad">
+      {% if page.award_type.description %}
+        <div class="award-description">
+          {{ page.award_type.description|richtext }}
+        </div>
+      {% endif %}
+      
+      {% if page.award_type.criteria %}
+        <h2 class="secondary-header">Award Criteria</h2>
+        <div class="award-criteria">
+          {{ page.award_type.criteria|richtext }}
+        </div>
+      {% endif %}
+      
+      <div class="panel-title">
+        <p>{{ page.award_name }} Recipients</p>
+      </div>
+      
+      <!-- Modern Bootstrap 5 recipient list instead of table -->
+      <div class="recipients-list">
+        {% for decade, decade_recipients in recipients_by_decade %}
+          <div class="decade-section">
+            <h3 class="decade-header">{{ decade }}</h3>
+            
+            {% for recipient in decade_recipients %}
+              <div class="recipient-entry">
+                {% if recipient.photo %}
+                  <div class="recipient-photo">
+                    {% image recipient.photo width-60 height-60 class="rounded-circle" %}
+                  </div>
+                {% endif %}
+                
+                <div class="recipient-info">
+                  <div class="recipient-year-name">
+                    <strong class="year">{{ recipient.year }}</strong>, 
+                    <strong class="name">
+                      <a href="{{ recipient.get_absolute_url }}">{{ recipient.full_name }}</a>
+                    </strong>
+                  </div>
+                  {% if recipient.institution %}
+                    <div class="recipient-institution">{{ recipient.institution }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <hr />
+            {% endfor %}
+          </div>
+        {% empty %}
+          <p>Recipient information for this award is currently being updated.</p>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="col-md-4 nopad">
+      {% if page.hero_image %}
+        <img src="{{ page.hero_image.file.url }}" alt="{{ page.award_name }}" class="img-responsive">
+      {% endif %}
+      
+      <h2 class="secondary-page-header">Award Information</h2>
+      
+      <div class="award-details">
+        {% if page.award_type.established_year %}
+          <p><strong>Established:</strong> {{ page.award_type.established_year }}</p>
+        {% endif %}
+        <p><strong>Recipients:</strong> {{ total_recipients }}</p>
+        {% if page.award_type.frequency %}
+          <p><strong>Frequency:</strong> {{ page.award_type.frequency }}</p>
+        {% endif %}
+      </div>
+      
+      {% if page.nomination_info %}
+        <h2 class="secondary-page-header">Nominations</h2>
+        <div class="nomination-info">
+          {{ page.nomination_info|richtext }}
+        </div>
+      {% endif %}
+      
+      {% if related_recipients %}
+        <h2 class="secondary-page-header">Recent Recipients</h2>
+        <div class="recent-recipients">
+          {% for recipient in related_recipients|slice:":5" %}
+            <div class="recent-recipient">
+              {% if recipient.photo %}
+                {% image recipient.photo width-40 height-40 class="rounded-circle me-2" %}
+              {% endif %}
+              <div class="recent-info">
+                <strong>{{ recipient.year }}</strong><br>
+                <a href="{{ recipient.get_absolute_url }}">{{ recipient.full_name }}</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+.award-description {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-left: 4px solid #007bff;
+}
+
+.award-criteria {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 5px;
+}
+
+.recipients-list {
+  margin-top: 1rem;
+}
+
+.decade-section {
+  margin-bottom: 2rem;
+}
+
+.decade-header {
+  color: #007bff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid #007bff;
+}
+
+.recipient-entry {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.recipient-photo {
+  flex-shrink: 0;
+}
+
+.recipient-photo img {
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+}
+
+.recipient-info {
+  flex-grow: 1;
+}
+
+.recipient-year-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.recipient-year-name .year {
+  color: #007bff;
+}
+
+.recipient-year-name .name a {
+  color: #333;
+  text-decoration: none;
+}
+
+.recipient-year-name .name a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.recipient-institution {
+  color: #666;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.award-details {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+}
+
+.award-details p {
+  margin-bottom: 0.5rem;
+}
+
+.award-details p:last-child {
+  margin-bottom: 0;
+}
+
+.nomination-info {
+  background: #e7f3ff;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+}
+
+.recent-recipients {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.recent-recipient {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.recent-recipient:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.recent-recipient img {
+  object-fit: cover;
+}
+
+.recent-info a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.recent-info a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .recipient-entry {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .recipient-photo {
+    align-self: center;
+  }
+  
+  .recent-recipient {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+{% endblock %}

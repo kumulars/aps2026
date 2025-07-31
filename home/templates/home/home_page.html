@@ -19,7 +19,7 @@
   <!-- Main Content Section - 9+3 Column Layout -->
   <section class="aps-homepage-content">
     <div class="aps-container block-content">
-      <hr class="blue" />
+
       
       <div class="row">
         <!-- Main 9-Column Content Area -->
@@ -28,19 +28,19 @@
           <!-- Middle Column Content Blocks (5+7 text+image format) -->
           {% for item in middle_column_items %}
             <div class="newsitem-container">
-              <hr class="blue" />
-              <h1 class="home-page-header">{{ item.title }}</h1>
+
+              <h2 {% if forloop.first %}style="margin-top: 0px;"{% endif %}>{{ item.title }}</h2>
               
               <div class="row">
                 <!-- Text Content (5 columns) -->
-                <div class="col-md-5">
+                <div class="col-md-6">
                   <div class="highlight-html-body">
                     {{ item.html_body|safe }}
                   </div>
                   
                   {% if item.get_absolute_url %}
-                    <div style="text-align: center; margin-top: 20px;">
-                      <a href="{{ item.get_absolute_url }}" class="btn btn-primary aps-button">
+                    <div style="text-align: left; margin-top: 20px;">
+                      <a href="{{ item.get_absolute_url }}" class="btn btn-primary btn-sm aps-button">
                         READ MORE
                       </a>
                     </div>
@@ -48,7 +48,7 @@
                 </div>
                 
                 <!-- Image Content (7 columns) -->
-                <div class="col-md-7 nopad">
+                <div class="col-md-6 pe-4">
                   {% if item.image %}
                     <a href="{{ item.get_absolute_url }}">
                       <img src="{{ item.image.file.url }}" 
@@ -59,14 +59,15 @@
                   {% endif %}
                 </div>
               </div>
+              <hr />
             </div>
           {% endfor %}
-        </div>
+          </div>
 
         <!-- Sidebar 3-Column Content Area -->
         <div class="col-md-3 main-sidebar-right">
           {% for item in right_column_items %}
-            <h2 class="secondary-homepage-header-left-2" {% if forloop.first %}style="margin-top: 0px;"{% endif %}>
+            <h2 {% if forloop.first %}style="margin-top: 0px;"{% endif %}>
               {{ item.title }}
             </h2>
             
@@ -83,7 +84,7 @@
             </div>
             
             {% if item.get_absolute_url %}
-              <a href="{{ item.get_absolute_url }}" class="btn btn-primary aps-button-small">
+              <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-primary aps-button">
                 READ MORE
               </a>
             {% endif %}
@@ -101,7 +102,6 @@
       <div class="row">
         <div class="col-md-12">
           <div class="newsitem-container">
-            <hr class="blue" />
             <h2 class="secondary-homepage-header-left-2">What Current Members Say</h2>
             <!-- This could be populated with testimonials or member quotes -->
             <div class="member-testimonials">

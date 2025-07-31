@@ -1,7 +1,7 @@
 from wagtail.snippets.views.snippets import SnippetViewSet
 from wagtail.snippets.models import register_snippet
 from home.models import Person, NewsResearchItem, NewsItemCategory
-from home.models import SymposiumProceeding
+from home.models import SymposiumProceeding, AwardType
 
 # Custom admin view for Person
 class PersonViewSet(SnippetViewSet):
@@ -18,7 +18,7 @@ class NewsItemCategoryViewSet(SnippetViewSet):
 
 class NewsResearchItemViewSet(SnippetViewSet):
     model = NewsResearchItem
-    ordering = ["-id"]  # Sort by ID descending (most recent at top)
+    ordering = ["-news_item_entry_date", "-id"]  # Sort by entry date descending, then ID
     list_display = [
         "news_item_short_title",
         "news_item_pi_last_name",
@@ -40,6 +40,17 @@ class SymposiumProceedingViewSet(SnippetViewSet):
     menu_label = "Symposium Proceedings"
     menu_order = 300
 
+class AwardTypeViewSet(SnippetViewSet):
+    model = AwardType
+    icon = "trophy"
+    add_to_admin_menu = True
+    menu_label = "Award Types"
+    menu_order = 250
+    list_display = ["name", "slug", "display_order", "is_active", "recipient_count"]
+    list_filter = ["is_active"]
+    search_fields = ["name", "description"]
+
 register_snippet(Person, viewset=PersonViewSet)
 register_snippet(NewsItemCategory, viewset=NewsItemCategoryViewSet)
 register_snippet(NewsResearchItem, viewset=NewsResearchItemViewSet)
+register_snippet(AwardType, viewset=AwardTypeViewSet)

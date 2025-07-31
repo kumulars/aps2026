@@ -35,9 +35,11 @@
       <div class="card">
         <a href="${data.url}" class="news-item-link">
           <img src="${data.img}" alt="${data.title}">
-          <h4>${data.title}</h4>
-          <p class="reflecting-work">${data.desc}</p>
-          <p class="news-blurb">${data.blurb}</p>
+          <div class="card-content">
+            <h4>${data.title}</h4>
+            <p class="reflecting-work">${data.desc}</p>
+            <p class="news-blurb">${data.blurb}</p>
+          </div>
         </a>
       </div>`;
     return slide;

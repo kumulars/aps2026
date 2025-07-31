@@ -13,7 +13,7 @@
       <h3 style="margin-top: 0;">{{ page.news_item_short_title }}</h3>
       
     <p><strong>This article reflects work in the {{ page.news_item_pi_last_name }} Lab</strong></p>
-      {{ page.news_item_full_text|safe }}
+      {{ page.get_processed_content|safe }}
     </div>
 
     <!-- Right column (reserved for future) -->

@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ recipient.full_name }} - {{ recipient.award_type.name }} {{ recipient.year }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="aps-container block-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="main-page-header">{{ recipient.full_name }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-7 nopad">
+      {% if recipient.biography %}
+        {{ recipient.biography|richtext }}
+      {% else %}
+        <p>The biography for {{ recipient.full_name }} is currently being prepared and will be available soon.</p>
+      {% endif %}
+    </div>
+    
+    <div class="col-md-5 nopad">
+      {% if recipient.photo %}
+        {% image recipient.photo width-400 height-400 class="img-responsive" %}
+      {% endif %}
+      
+      <div class="recipient-details">
+        <h2 class="secondary-page-header">Award Details</h2>
+        <div class="award-info-box">
+          <p><strong>Award:</strong> {{ recipient.award_type.name }}</p>
+          <p><strong>Year:</strong> {{ recipient.year }}</p>
+          {% if recipient.institution %}
+            <p><strong>Institution:</strong> {{ recipient.institution }}</p>
+          {% endif %}
+        </div>
+      </div>
+      
+      {% if related_recipients %}
+        <div class="related-recipients">
+          <h2 class="secondary-page-header">Other {{ recipient.award_type.name }} Recipients</h2>
+          <div class="related-list">
+            {% for related in related_recipients %}
+              <div class="related-recipient-item">
+                {% if related.photo %}
+                  {% image related.photo width-40 height-40 class="rounded-circle me-2" %}
+                {% endif %}
+                <div class="related-info">
+                  <strong>{{ related.year }}</strong><br>
+                  <a href="{{ related.get_absolute_url }}">{{ related.full_name }}</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          
+          <div class="view-all-link">
+            <a href="#" onclick="history.back()" class="btn btn-outline-primary btn-sm">
+              View All Recipients
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+.recipient-details {
+  margin-top: 2rem;
+}
+
+.award-info-box {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+}
+
+.award-info-box p {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.award-info-box p:last-child {
+  margin-bottom: 0;
+}
+
+.related-recipients {
+  margin-top: 2rem;
+}
+
+.related-list {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.related-recipient-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.related-recipient-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.related-recipient-item img {
+  object-fit: cover;
+}
+
+.related-info {
+  flex-grow: 1;
+}
+
+.related-info a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.related-info a:hover {
+  text-decoration: underline;
+}
+
+.view-all-link {
+  text-align: left;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .related-recipient-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  .recipient-details {
+    margin-top: 1rem;
+  }
+}
+
+/* Typography improvements for biography content */
+.col-md-7 p {
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  text-align: justify;
+}
+
+.col-md-7 strong {
+  font-weight: 600;
+}
+
+.col-md-7 em {
+  font-style: italic;
+}
+</style>
+{% endblock %}
