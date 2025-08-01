@@ -18,8 +18,8 @@
     {
       img: "{% if item.news_item_image %}{{ item.news_item_image.file.url }}{% else %}https://via.placeholder.com/300x200?text={{ item.news_item_short_title|truncatechars:15 }}{% endif %}",
       title: "{{ item.news_item_short_title|escapejs }}",
-      desc: "Reflecting work in {{ item.news_item_pi_last_name|escapejs }} Lab{% if item.news_item_pi_institution %} - {{ item.news_item_pi_institution|escapejs }}{% endif %}",
-      blurb: "{{ item.news_item_blurb|truncatechars:120|escapejs }}",
+      desc: "Reflecting work in the {{ item.news_item_pi_last_name|escapejs }} Lab",
+      blurb: "{{ item.news_item_blurb|escapejs }}",
       url: "{{ item.get_absolute_url }}"
     }{% if not forloop.last %},{% endif %}
     {% endfor %}
