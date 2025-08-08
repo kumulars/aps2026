@@ -338,6 +338,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Background loading function
+    const initialQueueSize = backgroundLoadQueue.length; // Store initial queue size
+    
     function backgroundLoadImages() {
         const indicator = document.getElementById('backgroundLoadingIndicator');
         const loadingText = document.getElementById('backgroundLoadingText');
@@ -355,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const year = backgroundLoadQueue.shift();
-        const totalBackgroundYears = 4; // We know we have 4 background years to load (2017, 2019, 2022, 2023)
+        const totalBackgroundYears = initialQueueSize; // Use stored initial size
         const remaining = backgroundLoadQueue.length;
         const loaded = totalBackgroundYears - remaining;
         
