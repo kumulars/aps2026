@@ -57,13 +57,10 @@
                         <div class="col-md-3 col-sm-6">
                             <select name="country" id="countrySelect" class="form-select">
                                 <option value="">All Countries</option>
-                                <option value="USA" {% if selected_country == 'USA' %}selected{% endif %}>United States</option>
-                                {% for country in countries %}
-                                    {% if country != 'USA' %}
-                                    <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
-                                        {{ country }}
+                                {% for country_code, country_display in countries %}
+                                    <option value="{{ country_code }}" {% if country_code == selected_country %}selected{% endif %}>
+                                        {{ country_display }}
                                     </option>
-                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

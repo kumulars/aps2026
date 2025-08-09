@@ -990,7 +990,7 @@ class PeptideLinksIndexPage(Page):
         researchers_by_location = {}
         for researcher in researchers.select_related().prefetch_related('research_areas'):
             if researcher.country == 'USA':
-                location_key = researcher.state_province or 'Unknown State'
+                location_key = researcher.state_province or 'Outside the United States'
             else:
                 location_key = researcher.country
                 
@@ -1019,7 +1019,7 @@ class PeptideLinksIndexPage(Page):
                 # Add more countries as needed
             }
             
-            if location_name not in known_countries and location_name != 'Unknown State':
+            if location_name not in known_countries and location_name != 'Outside the United States':
                 # This is likely a US state
                 return (0, location_name)  # Sort order 0 for US states
             elif location_name == 'Canada':
@@ -1036,8 +1036,63 @@ class PeptideLinksIndexPage(Page):
             researcher_list.sort(key=lambda r: (r.last_name, r.first_name))
         
         # Get filter options
-        countries = Researcher.objects.filter(is_active=True).values_list(
-            'country', flat=True).distinct().order_by('country')
+        # Define a comprehensive list of countries for peptide research
+        all_countries = [
+            ('USA', 'United States'),
+            ('Canada', 'Canada'),
+            ('UK', 'United Kingdom'),
+            ('Germany', 'Germany'),
+            ('France', 'France'),
+            ('Japan', 'Japan'),
+            ('China', 'China'),
+            ('South Korea', 'South Korea'),
+            ('Australia', 'Australia'),
+            ('Netherlands', 'Netherlands'),
+            ('Switzerland', 'Switzerland'),
+            ('Italy', 'Italy'),
+            ('Spain', 'Spain'),
+            ('Sweden', 'Sweden'),
+            ('Denmark', 'Denmark'),
+            ('Belgium', 'Belgium'),
+            ('Austria', 'Austria'),
+            ('Israel', 'Israel'),
+            ('Singapore', 'Singapore'),
+            ('India', 'India'),
+            ('Brazil', 'Brazil'),
+            ('Mexico', 'Mexico'),
+            ('Argentina', 'Argentina'),
+            ('New Zealand', 'New Zealand'),
+            ('Ireland', 'Ireland'),
+            ('Scotland', 'Scotland'),
+            ('Norway', 'Norway'),
+            ('Finland', 'Finland'),
+            ('Poland', 'Poland'),
+            ('Czech Republic', 'Czech Republic'),
+            ('Hungary', 'Hungary'),
+            ('Portugal', 'Portugal'),
+            ('Greece', 'Greece'),
+            ('Russia', 'Russia'),
+            ('South Africa', 'South Africa'),
+            ('Taiwan', 'Taiwan'),
+            ('Hong Kong', 'Hong Kong'),
+        ]
+        
+        # Get countries that actually have researchers with counts
+        country_counts = {}
+        for country in Researcher.objects.filter(is_active=True).values_list('country', flat=True):
+            if country:
+                country_counts[country] = country_counts.get(country, 0) + 1
+        
+        # Create country list with proper names and counts, only for countries with researchers
+        country_name_map = dict(all_countries)
+        countries = []
+        for code, count in sorted(country_counts.items(), key=lambda x: x[1], reverse=True):
+            display_name = country_name_map.get(code, code)
+            countries.append((code, f"{display_name}, {count}"))
+        
+        # Sort alphabetically except USA first
+        countries.sort(key=lambda x: (0 if x[0] == 'USA' else 1, x[1]))
+        
         states = Researcher.objects.filter(is_active=True, country='USA').values_list(
             'state_province', flat=True).distinct().order_by('state_province')
         research_areas = ResearchArea.objects.all()
