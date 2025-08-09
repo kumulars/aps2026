@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block content %}
+<div class="aps-container block-content">
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="main-page-header">{{ page.title }}</h1>
+            {% if page.intro %}
+                <div class="intro-text mb-4">
+                    {{ page.intro|richtext }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="member-search-section">
+                <h3 class="search-title">Find APS Members</h3>
+                <form method="get" class="member-search-form" id="searchForm">
+                    <div class="row g-3">
+                        <!-- Main Search Input -->
+                        <div class="col-md-6">
+                            <div class="search-input-wrapper">
+                                <input type="text" 
+                                       name="search" 
+                                       id="mainSearch"
+                                       value="{{ search_query }}" 
+                                       placeholder="Search by name, affiliation, or research interests..." 
+                                       class="form-control form-control-lg main-search"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        
+                        <!-- Affiliation Filter -->
+                        <div class="col-md-3">
+                            <select name="affiliation_type" class="form-select">
+                                <option value="">All Affiliations</option>
+                                {% for value, label in affiliation_choices %}
+                                <option value="{{ value }}" {% if value == affiliation_filter %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Search & Clear Buttons -->
+                        <div class="col-md-3">
+                            <div class="btn-group w-100" role="group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <a href="{{ page.url }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i> Clear
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="results-header">
+                <div class="results-summary">
+                    <h4>
+                        <span class="result-count">{{ members.count }}</span> 
+                        member{{ members.count|pluralize }} found
+                        {% if search_query or affiliation_filter %}
+                            <span class="filter-info">
+                                {% if search_query %}for "{{ search_query }}"{% endif %}
+                                {% if affiliation_filter %}in {{ affiliation_filter|capfirst }}{% endif %}
+                            </span>
+                        {% endif %}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Members Display -->
+    {% if members %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="members-directory">
+                {% regroup members by last_name.0 as members_by_letter %}
+                {% for letter_group in members_by_letter %}
+                    <div class="letter-group">
+                        <h5 class="letter-header">
+                            {{ letter_group.grouper|upper }}
+                            <span class="member-count">({{ letter_group.list|length }})</span>
+                        </h5>
+                        
+                        <div class="members-list">
+                            {% for member in letter_group.list %}
+                            <div class="member-row-simple">
+                                <a href="/members/detail/{{ member.pk }}/" class="member-link">
+                                    {{ member.last_name }}, {{ member.first_name }}
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- No Results State -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="no-results-state">
+                <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                {% if search_query or affiliation_filter %}
+                    <h4>No members found</h4>
+                    <p>Try adjusting your search criteria or <a href="{{ page.url }}">browse all members</a></p>
+                {% else %}
+                    <h4>No members in directory</h4>
+                    <p>Members will appear here once they join the society</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+/* Member Directory Styles */
+.member-search-section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding-top: 29px !important;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.search-title {
+    color: #1D3557;
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem;
+    padding-top: 0 !important;
+    font-weight: 600;
+    text-align: center;
+}
+
+.main-search {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Results Header */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+.result-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FF7F11;
+}
+
+.filter-info {
+    font-weight: normal;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Members Directory */
+.letter-group {
+    margin-bottom: 2rem;
+}
+
+.letter-header {
+    color: #1D3557;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #FF7F11;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.member-count {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.members-list {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.member-row-simple {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.member-row-simple:hover {
+    background: #f8f9fa;
+}
+
+.member-row-simple:last-child {
+    border-bottom: none;
+}
+
+.member-link {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #1D3557;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.member-link:hover {
+    color: #FF7F11;
+    text-decoration: none;
+}
+
+/* Clear button styling */
+.btn-outline-secondary {
+    border-color: rgba(255, 165, 0, 0.6);
+    color: rgba(255, 165, 0, 0.8);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: rgba(255, 165, 0, 0.6);
+    border-color: rgba(255, 165, 0, 0.8);
+    color: white;
+}
+
+/* No Results State */
+.no-results-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .member-search-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .search-title {
+        font-size: 1.2rem;
+    }
+    
+    .member-row-simple {
+        padding: 0.65rem 1rem;
+    }
+    
+    .member-link {
+        font-size: 1rem;
+    }
+    
+    .letter-header {
+        font-size: 1.1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit on filter change
+    const filterSelect = document.querySelector('select[name="affiliation_type"]');
+    if (filterSelect) {
+        filterSelect.addEventListener('change', function() {
+            document.getElementById('searchForm').submit();
+        });
+    }
+});
+</script>
+
+{% endblock %}

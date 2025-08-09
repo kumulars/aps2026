@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Page
+from wagtail.fields import RichTextField
 
 
 class MembershipLevel(models.Model):
@@ -106,6 +107,16 @@ class Member(models.Model):
     wp_user_id = models.IntegerField(null=True, blank=True)
     wp_user_login = models.CharField(max_length=100, blank=True)
     
+    # Privacy settings
+    directory_visible = models.BooleanField(
+        default=True, 
+        help_text="Show this member in the public directory"
+    )
+    show_research_interests = models.BooleanField(
+        default=True,
+        help_text="Display research interests in directory"
+    )
+    
     # Metadata
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -129,8 +140,40 @@ class Member(models.Model):
         return f"{self.first_name} {self.last_name}"
     
     @property
+    def display_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def formatted_name(self):
+        """Return name in 'Lastname, Firstname' format for admin display"""
+        if self.last_name and self.first_name:
+            return f"{self.last_name}, {self.first_name}"
+        elif self.last_name:
+            return self.last_name
+        elif self.first_name:
+            return self.first_name
+        else:
+            return f"[No Name] {self.email}"
+    
+    @property
     def is_active(self):
         return self.status == 'active'
+    
+    @property
+    def researcher_profile(self):
+        """Check if this member has a researcher profile in PeptideLinks"""
+        # This would typically check the home.Person model for a matching profile
+        from home.models import Person
+        try:
+            Person.objects.get(
+                first_name__iexact=self.first_name,
+                last_name__iexact=self.last_name
+            )
+            return True
+        except Person.DoesNotExist:
+            return False
+        except Person.MultipleObjectsReturned:
+            return True
     
     def get_absolute_url(self):
         return reverse('member_detail', kwargs={'pk': self.pk})
@@ -147,8 +190,11 @@ class MemberDirectoryPage(Page):
     def get_context(self, request):
         context = super().get_context(request)
         
-        # Get active members only
-        members = Member.objects.filter(status='active').order_by('last_name', 'first_name')
+        # Get active members who want to be in directory
+        members = Member.objects.filter(
+            status='active',
+            directory_visible=True
+        ).order_by('last_name', 'first_name')
         
         # Add search functionality
         search_query = request.GET.get('search')

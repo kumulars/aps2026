@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.db import models
+from django.db.models import Q
 from .models import Member, MembershipLevel
 
 User = get_user_model()
@@ -84,10 +85,15 @@ def member_profile(request):
     return render(request, 'members/profile.html', context)
 
 
-@login_required
 def member_directory(request):
     """Public member directory view"""
-    members = Member.objects.filter(status='active').order_by('last_name', 'first_name')
+    members = Member.objects.filter(
+        status='active',
+        directory_visible=True
+    ).exclude(
+        Q(first_name='') | Q(first_name__isnull=True),
+        Q(last_name='') | Q(last_name__isnull=True)
+    ).order_by('last_name', 'first_name')
     
     # Search functionality
     search_query = request.GET.get('search')

@@ -11,64 +11,143 @@
         </div>
     {% endif %}
 
-    <div class="row">
+    <div class="row proceedings-grid">
         {% for item in proceedings %}
-            <div class="col-sm-6 col-md-4 mb-4">
-                <div class="thumbnail" style="border: none;">
-
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="proceedings-item">
                     {% if item.cover_image and item.program_book %}
-                        {% image item.cover_image fill-360x500 as cover %}
-                        <a href="{{ item.program_book.url }}" target="_blank">
-                            <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-fluid aps-img">
+                        <a href="{{ item.program_book.url }}" target="_blank" class="proceedings-image-link">
+                            {% image item.cover_image max-300x400 as cover %}
+                            <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="proceedings-img img-fluid aps-img">
                         </a>
                     {% elif item.cover_image %}
-                        {% image item.cover_image fill-360x500 as cover %}
-                        <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="img-fluid aps-img">
+                        {% image item.cover_image max-300x400 as cover %}
+                        <img src="{{ cover.url }}" alt="APS {{ item.symposium_year }} Cover" class="proceedings-img img-fluid aps-img">
                     {% endif %}
 
-                    <div class="caption-wrapper">
-                        <div class="caption">
-                            <h2 style="margin-top: 9px;">APS {{ item.symposium_year }}</h2>
+                    <div class="proceedings-info">
+                        <h3 class="proceedings-year">APS {{ item.symposium_year }}</h3>
 
-                            {% if item.symposium_theme %}
-                                <p><strong>{{ item.symposium_theme }}</strong></p>
-                            {% endif %}
+                        {% if item.symposium_theme %}
+                            <p class="proceedings-theme">{{ item.symposium_theme }}</p>
+                        {% endif %}
 
-                            <p>{{ item.symposium_venue }}</p>
+                        <p class="proceedings-venue">{{ item.symposium_venue }}</p>
 
-                            {% with chairs=0 %}
-                                {% if item.symposium_chair_1_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
-                                {% if item.symposium_chair_2_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
-                                {% if item.symposium_chair_3_name %}{% with chairs=chairs|add:1 %}{% endwith %}{% endif %}
-
-                                {% if item.symposium_chair_1_name or item.symposium_chair_2_name or item.symposium_chair_3_name %}
-                                    <p><strong>
-                                        {% if chairs > 1 %}Chairs{% else %}Chair{% endif %}
-                                    </strong><br/>
+                        {% if item.symposium_chair_1_name or item.symposium_chair_2_name or item.symposium_chair_3_name %}
+                            <div class="proceedings-chairs">
+                                <strong>Chair{% if item.symposium_chair_2_name %}s{% endif %}:</strong>
+                                <div class="chair-list">
                                     {% if item.symposium_chair_1_name %}
-                                        {{ item.symposium_chair_1_name }}, {{ item.symposium_chair_1_institution }}<br/>
+                                        <span class="chair-name">{{ item.symposium_chair_1_name }}</span>
                                     {% endif %}
                                     {% if item.symposium_chair_2_name %}
-                                        {{ item.symposium_chair_2_name }}, {{ item.symposium_chair_2_institution }}<br/>
+                                        <span class="chair-name">{{ item.symposium_chair_2_name }}</span>
                                     {% endif %}
                                     {% if item.symposium_chair_3_name %}
-                                        {{ item.symposium_chair_3_name }}, {{ item.symposium_chair_3_institution }}
+                                        <span class="chair-name">{{ item.symposium_chair_3_name }}</span>
                                     {% endif %}
-                                    </p>
-                                {% endif %}
-                            {% endwith %}
-                        </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-
-            {% if forloop.counter|divisibleby:3 %}
-                <div class="clearfix d-none d-md-block"></div>
-            {% endif %}
-            {% if forloop.counter|divisibleby:2 %}
-                <div class="clearfix d-none d-sm-block d-md-none"></div>
-            {% endif %}
         {% endfor %}
     </div>
 </div>
+<style>
+/* 4-Column Proceedings Grid */
+.proceedings-grid {
+    margin-top: 2rem;
+}
+
+.proceedings-item {
+    margin-bottom: 1.5rem;
+}
+
+.proceedings-img {
+    display: block;
+    margin: 0;
+    max-width: 100%;
+    height: auto;
+}
+
+.proceedings-image-link:hover .proceedings-img {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.proceedings-info {
+    padding: 1rem 0.5rem;
+    text-align: left;
+}
+
+.proceedings-year {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1D3557;
+    margin: 0.75rem 0 0.5rem;
+}
+
+.proceedings-theme {
+    font-weight: 500;
+    color: #FF7F11;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    line-height: 1.3;
+}
+
+.proceedings-venue {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.proceedings-chairs {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.chair-list {
+    margin-top: 0.25rem;
+}
+
+.chair-name {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1199px) {
+    .proceedings-img {
+        max-height: 350px;
+    }
+}
+
+@media (max-width: 991px) {
+    .proceedings-year {
+        font-size: 1.1rem;
+    }
+    
+    .proceedings-theme {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .proceedings-grid .col-sm-6 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Remove old caption wrapper styles if they exist */
+.caption-wrapper {
+    display: none;
+}
+</style>
 {% endblock %}

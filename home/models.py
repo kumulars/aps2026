@@ -748,7 +748,6 @@ class ResearchArea(models.Model):
         ordering = ['name']
 
 
-@register_snippet
 class Researcher(models.Model):
     """Core researcher model"""
     
@@ -804,6 +803,16 @@ class Researcher(models.Model):
     admin_notes = models.TextField(blank=True, help_text="Internal notes for administrators")
     public_bio = models.TextField(blank=True, help_text="Optional public biography")
     
+    # Membership integration
+    member = models.OneToOneField(
+        'members.Member',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='researcher_profile',
+        help_text="Linked APS member account"
+    )
+    
     panels = [
         MultiFieldPanel([
             FieldPanel('first_name'),
@@ -840,12 +849,13 @@ class Researcher(models.Model):
             FieldPanel('is_active'),
             FieldPanel('is_verified'),
             FieldPanel('website_status'),
+            FieldPanel('member'),
             FieldPanel('admin_notes'),
         ], heading="Administrative"),
     ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.institution})"
+        return self.display_name
 
     @property
     def full_name(self):
@@ -853,9 +863,11 @@ class Researcher(models.Model):
 
     @property
     def display_name(self):
-        if self.title:
-            return f"{self.title} {self.full_name}"
-        return self.full_name
+        # Format: "Last Name, First Name - Institution"
+        base_name = f"{self.last_name}, {self.first_name}"
+        if self.institution:
+            return f"{base_name} - {self.institution}"
+        return base_name
 
     @property
     def location_display(self):
@@ -916,6 +928,8 @@ class Researcher(models.Model):
 
 class PeptideLinksIndexPage(Page):
     """Main directory page"""
+    
+    template = 'home/peptide_links_index_page.html'
     
     intro_text = RichTextField(
         default="""

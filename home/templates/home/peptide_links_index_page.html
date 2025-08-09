@@ -9,36 +9,68 @@
             <h1 class="main-page-header">{{ page.title }}</h1>
             <div class="peptidelinks-intro">
                 {{ page.intro_text|safe }}
+                
+                <!-- Submission Information -->
+                <div class="peptidelinks-submission-info-top">
+                    {{ page.submission_instructions|safe }}
+                    <div class="text-center">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary btn-lg" onclick="openClaimProfileModal()">
+                                <i class="fas fa-user-check"></i> Claim My Profile
+                            </button>
+                            <button type="button" class="btn btn-success btn-lg" onclick="openAddProfileModal()">
+                                <i class="fas fa-user-plus"></i> Add Me to PeptideLinks
+                            </button>
+                        </div>
+                        <p class="text-muted mt-2 small" style="margin-bottom: 19px;">
+                            <i class="fas fa-info-circle"></i> 
+                            To update your profile, we'll create a free APS membership account for you
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Search and Filter Section -->
+    <!-- Enhanced Search Section -->
     <div class="row">
         <div class="col-md-12">
             <div class="peptidelinks-search-section">
-                <form method="get" class="peptidelinks-search-form">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <input type="text" 
-                                   name="search" 
-                                   value="{{ search_query }}" 
-                                   placeholder="Search researchers, institutions..." 
-                                   class="form-control">
+                <h3 class="search-title">Find Peptide Researchers</h3>
+                <form method="get" class="peptidelinks-search-form" id="searchForm">
+                    <div class="row g-3">
+                        <!-- Main Search Input -->
+                        <div class="col-12">
+                            <div class="search-input-wrapper">
+                                <input type="text" 
+                                       name="search" 
+                                       id="mainSearch"
+                                       value="{{ search_query }}" 
+                                       placeholder="Search by name, institution, or keywords..." 
+                                       class="form-control form-control-lg main-search"
+                                       autocomplete="off">
+                                <div id="searchSuggestions" class="search-suggestions"></div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <select name="country" class="form-control">
+                        
+                        <!-- Filter Row -->
+                        <div class="col-md-3 col-sm-6">
+                            <select name="country" id="countrySelect" class="form-select">
                                 <option value="">All Countries</option>
+                                <option value="USA" {% if selected_country == 'USA' %}selected{% endif %}>United States</option>
                                 {% for country in countries %}
-                                <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
-                                    {{ country }}
-                                </option>
+                                    {% if country != 'USA' %}
+                                    <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
+                                        {{ country }}
+                                    </option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <select name="state" class="form-control">
-                                <option value="">All States</option>
+                        
+                        <div class="col-md-3 col-sm-6">
+                            <select name="state" id="stateSelect" class="form-select">
+                                <option value="">All States/Provinces</option>
                                 {% for state in states %}
                                 <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>
                                     {{ state }}
@@ -46,8 +78,9 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <select name="research_area" class="form-control">
+                        
+                        <div class="col-md-3 col-sm-6">
+                            <select name="research_area" class="form-select">
                                 <option value="">All Research Areas</option>
                                 {% for area in research_areas %}
                                 <option value="{{ area.slug }}" {% if area.slug == selected_research_area %}selected{% endif %}>
@@ -56,9 +89,16 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            <a href="{{ page.url }}" class="btn btn-secondary">Clear</a>
+                        
+                        <div class="col-md-3 col-sm-6">
+                            <div class="btn-group w-100" role="group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <a href="{{ page.url }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i> Clear
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -66,183 +106,328 @@
         </div>
     </div>
 
-    <!-- Results Summary -->
+    <!-- Results Summary & View Toggle -->
     <div class="row">
         <div class="col-md-12">
-            <div class="peptidelinks-results-summary">
-                <p><strong>{{ total_researchers }}</strong> researcher{{ total_researchers|pluralize }} found
-                {% if search_query %} for "<em>{{ search_query }}</em>"{% endif %}
-                {% if selected_country %} in {{ selected_country }}{% endif %}
-                {% if selected_state %}, {{ selected_state }}{% endif %}
-                </p>
+            <div class="results-header">
+                <div class="results-summary">
+                    <h4>
+                        <span class="result-count">{{ total_researchers }}</span> 
+                        researcher{{ total_researchers|pluralize }} found
+                        {% if search_query or selected_country or selected_state %}
+                            <span class="filter-info">
+                                {% if search_query %}for "{{ search_query }}"{% endif %}
+                                {% if selected_country %}in {{ selected_country }}{% endif %}
+                                {% if selected_state %}, {{ selected_state }}{% endif %}
+                            </span>
+                        {% endif %}
+                    </h4>
+                </div>
+                
             </div>
         </div>
     </div>
 
-    <!-- Researchers by Location -->
+    <!-- Results Display -->
+    {% if total_researchers > 0 %}
     <div class="row">
         <div class="col-md-12">
-            <div class="peptidelinks-directory">
-                {% for location, researchers in researchers_by_location %}
-                <div class="location-section">
-                    <h2 class="location-header">{{ location }}</h2>
-                    
-                    <div class="researchers-grid">
-                        {% for researcher in researchers %}
-                        <div class="researcher-card">
-                            <div class="researcher-info">
-                                <h4 class="researcher-name">
+            <div class="peptidelinks-results">
+                <!-- List View (Default) -->
+                <div id="listView" class="view-container active">
+                    {% for location, researchers in researchers_by_location %}
+                    <div class="location-group">
+                        <h5 class="location-header-compact">
+                            {{ location }}
+                            <span class="researcher-count">({{ researchers|length }})</span>
+                        </h5>
+                        
+                        <div class="researchers-list">
+                            {% for researcher in researchers %}
+                            <div class="researcher-row">
+                                <div class="researcher-main">
+                                    <span class="researcher-name">
+                                        {% if researcher.website_url %}
+                                            <a href="{{ researcher.website_url }}" target="_blank" rel="noopener">
+                                                {{ researcher.display_name }}
+                                            </a>
+                                        {% else %}
+                                            {{ researcher.display_name }}
+                                        {% endif %}
+                                    </span>
+                                  </div>
+                                <div class="researcher-actions">
+                                    {% if researcher.get_pubmed_url %}
+                                        <a href="{{ researcher.get_pubmed_url }}" 
+                                           target="_blank" 
+                                           rel="noopener" 
+                                           class="action-link pubmed"
+                                           title="PubMed">
+                                            <i class="fas fa-book-medical"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if researcher.website_url %}
+                                        <a href="{{ researcher.website_url }}" 
+                                           target="_blank" 
+                                           rel="noopener" 
+                                           class="action-link website"
+                                           title="Website">
+                                            <i class="fas fa-globe"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if researcher.orcid_id %}
+                                        <a href="https://orcid.org/{{ researcher.orcid_id }}" 
+                                           target="_blank" 
+                                           rel="noopener" 
+                                           class="action-link orcid"
+                                           title="ORCID">
+                                            <i class="fab fa-orcid"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Card View (Hidden by default) -->
+                <div id="cardView" class="view-container">
+                    {% for location, researchers in researchers_by_location %}
+                    <div class="location-section">
+                        <h5 class="location-header">{{ location }}</h5>
+                        
+                        <div class="researchers-grid-compact">
+                            {% for researcher in researchers %}
+                            <div class="researcher-card-compact">
+                                <h6 class="researcher-name">
                                     {% if researcher.website_url %}
                                         <a href="{{ researcher.website_url }}" target="_blank" rel="noopener">
                                             {{ researcher.display_name }}
-                                            <i class="external-link-icon">↗</i>
                                         </a>
                                     {% else %}
                                         {{ researcher.display_name }}
                                     {% endif %}
-                                </h4>
+                                </h6>
                                 
-                                <div class="researcher-institution">
-                                    {{ researcher.institution }}
-                                    {% if researcher.department %}
-                                        <br><small>{{ researcher.department }}</small>
-                                    {% endif %}
+                                <div class="researcher-details">
+                                    <small class="institution">{{ researcher.institution }}</small>
+                                    
+                                    <div class="researcher-links">
+                                        {% if researcher.get_pubmed_url %}
+                                            <a href="{{ researcher.get_pubmed_url }}" target="_blank" class="link-badge">PubMed</a>
+                                        {% endif %}
+                                        {% if researcher.orcid_id %}
+                                            <a href="https://orcid.org/{{ researcher.orcid_id }}" target="_blank" class="link-badge">ORCID</a>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                                
-                                {% if researcher.location_display %}
-                                <div class="researcher-location">
-                                    <small>{{ researcher.location_display }}</small>
-                                </div>
-                                {% endif %}
-                                
-                                <div class="researcher-links">
-                                    {% if researcher.get_pubmed_url %}
-                                        <a href="{{ researcher.get_pubmed_url }}" target="_blank" rel="noopener" class="pubmed-link">
-                                            PubMed
-                                        </a>
-                                    {% endif %}
-                                    {% if researcher.orcid_id %}
-                                        <a href="https://orcid.org/{{ researcher.orcid_id }}" target="_blank" rel="noopener" class="orcid-link">
-                                            ORCID
-                                        </a>
-                                    {% endif %}
-                                </div>
-                                
-                                {% if researcher.research_areas.exists %}
-                                <div class="research-areas">
-                                    {% for area in researcher.research_areas.all %}
-                                        <span class="research-area-tag">{{ area.name }}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                
-                                {% if researcher.public_bio %}
-                                <div class="researcher-bio">
-                                    <small>{{ researcher.public_bio|truncatewords:20 }}</small>
-                                </div>
-                                {% endif %}
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div class="no-results">
-                    <p>No researchers found matching your criteria. Try adjusting your search terms or filters.</p>
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>
-
-    <!-- Submission Information -->
+    {% else %}
+    <!-- No Results State -->
     <div class="row">
         <div class="col-md-12">
-            <div class="peptidelinks-submission-info">
-                <hr class="aps-border">
-                {{ page.submission_instructions|safe }}
-                <p class="text-center">
-    {% if page.get_children.first %}
-        <a href="{% pageurl page.get_children.first %}" class="btn btn-success btn-lg">
-            Submit Your Information
-        </a>
-    {% else %}
-        <a href="#" class="btn btn-success btn-lg" onclick="alert('Submission form coming soon!')">
-            Submit Your Information
-        </a>
-    {% endif %}
-</p>
+            <div class="no-results-state">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                {% if search_query or selected_country or selected_state %}
+                    <h4>No researchers found</h4>
+                    <p>Try adjusting your search criteria or <a href="{{ page.url }}">browse all researchers</a></p>
+                {% else %}
+                    <h4>Start searching to find researchers</h4>
+                    <p>Use the search bar above to find peptide science researchers by name, institution, or location</p>
+                {% endif %}
             </div>
         </div>
     </div>
+    {% endif %}
+
 </div>
 
 <style>
-/* PeptideLinks Directory Styles */
-.peptidelinks-intro {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border-left: 4px solid #FF7F11;
-}
-
+/* Enhanced Search Section */
 .peptidelinks-search-section {
-    background: #ffffff;
-    padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding-top: 29px !important;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.peptidelinks-search-form .form-control {
-    margin-bottom: 10px;
-}
-
-.peptidelinks-results-summary {
-    margin-bottom: 20px;
-    padding: 10px 0;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.location-section {
-    margin-bottom: 40px;
-}
-
-.location-header {
+.search-title {
     color: #1D3557;
-    font-size: 1.8em;
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem;
+    padding-top: 0 !important;
     font-weight: 600;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    text-align: center;
+}
+
+.main-search {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Clear button styling */
+.btn-outline-secondary {
+    border-color: rgba(255, 165, 0, 0.6);
+    color: rgba(255, 165, 0, 0.8);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: rgba(255, 165, 0, 0.6);
+    border-color: rgba(255, 165, 0, 0.8);
+    color: white;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-suggestions.active {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+}
+
+.suggestion-name {
+    font-weight: 500;
+    color: #1D3557;
+}
+
+.suggestion-institution {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Results Header */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+.result-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FF7F11;
+}
+
+.filter-info {
+    font-weight: normal;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* View Toggle */
+.view-toggle .btn {
+    min-width: 80px;
+}
+
+.view-container {
+    display: none;
+}
+
+.view-container.active {
+    display: block;
+}
+
+/* List View Styles */
+.location-group {
+    margin-bottom: 2rem;
+}
+
+.location-header-compact {
+    color: #1D3557;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
     border-bottom: 2px solid #FF7F11;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.researchers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+.researcher-count {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: normal;
 }
 
-.researcher-card {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
+.researchers-list {
+    background: white;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: box-shadow 0.3s ease;
+    overflow: hidden;
 }
 
-.researcher-card:hover {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+.researcher-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.researcher-row:hover {
+    background: #f8f9fa;
+}
+
+.researcher-row:last-child {
+    border-bottom: none;
+}
+
+.researcher-main {
+    flex: 1;
+    min-width: 0;
 }
 
 .researcher-name {
-    margin: 0 0 10px 0;
-    font-size: 1.2em;
-    line-height: 1.3;
+    font-weight: 500;
+    margin-right: 1rem;
 }
 
 .researcher-name a {
@@ -255,112 +440,864 @@
     text-decoration: underline;
 }
 
-.external-link-icon {
-    font-size: 0.8em;
-    opacity: 0.6;
-    margin-left: 4px;
-}
-
 .researcher-institution {
     color: #666;
-    margin-bottom: 8px;
-    font-weight: 500;
+    font-size: 0.9rem;
 }
 
-.researcher-location {
-    color: #888;
-    margin-bottom: 10px;
-    font-style: italic;
+.researcher-actions {
+    display: flex;
+    gap: 0.5rem;
 }
 
-.researcher-links {
-    margin: 10px 0;
+.action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #666;
+    transition: all 0.2s;
 }
 
-.researcher-links a {
-    display: inline-block;
-    padding: 4px 8px;
-    margin-right: 8px;
+.action-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.action-link.pubmed:hover {
+    background: #337ab7;
+    color: white;
+}
+
+.action-link.website:hover {
     background: #FF7F11;
     color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.85em;
-    transition: background-color 0.3s ease;
 }
 
-.researcher-links a:hover {
-    background: #e06d00;
+.action-link.orcid {
+    background: #a6ce39;
     color: white;
+}
+
+.action-link.orcid:hover {
+    background: #8fb02e;
+    color: white;
+}
+
+/* Compact Card View */
+.researchers-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.researcher-card-compact {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+
+.researcher-card-compact:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.researcher-card-compact .researcher-name {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.researcher-details {
+    font-size: 0.85rem;
+}
+
+.institution {
+    display: block;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.link-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: #f0f0f0;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    margin-right: 0.25rem;
+    color: #666;
     text-decoration: none;
 }
 
-.pubmed-link {
-    background: #337ab7 !important;
+.link-badge:hover {
+    background: #FF7F11;
+    color: white;
 }
 
-.pubmed-link:hover {
-    background: #286090 !important;
-}
-
-.orcid-link {
-    background: #a6ce39 !important;
-}
-
-.orcid-link:hover {
-    background: #8fb82d !important;
-}
-
-.research-areas {
-    margin: 10px 0;
-}
-
-.research-area-tag {
-    display: inline-block;
-    background: #e9ecef;
-    color: #495057;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 0.8em;
-    margin-right: 6px;
-    margin-bottom: 4px;
-}
-
-.researcher-bio {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
-    color: #666;
-}
-
-.peptidelinks-submission-info {
+/* No Results State */
+.no-results-state {
+    text-align: center;
+    padding: 4rem 2rem;
     background: #f8f9fa;
-    padding: 30px;
-    border-radius: 8px;
-    margin-top: 40px;
-    text-align: center;
+    border-radius: 12px;
+    margin: 2rem 0;
 }
 
-.no-results {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-}
-
-/* Mobile Responsiveness */
+/* Mobile Optimization */
 @media (max-width: 768px) {
-    .researchers-grid {
+    .peptidelinks-search-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .search-title {
+        font-size: 1.2rem;
+    }
+    
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .view-toggle {
+        width: 100%;
+    }
+    
+    .view-toggle .btn-group {
+        width: 100%;
+    }
+    
+    .researcher-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .researcher-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .researchers-grid-compact {
         grid-template-columns: 1fr;
     }
     
-    .peptidelinks-search-form .row > div {
-        margin-bottom: 10px;
+    .location-header-compact {
+        font-size: 1rem;
+    }
+}
+
+/* Loading State */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #FF7F11;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Submission info in intro section */
+.peptidelinks-submission-info-top {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.peptidelinks-submission-info-top p:last-child {
+    margin-bottom: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // View Toggle
+    const listViewBtn = document.getElementById('listViewBtn');
+    const cardViewBtn = document.getElementById('cardViewBtn');
+    const listView = document.getElementById('listView');
+    const cardView = document.getElementById('cardView');
+    
+    if (listViewBtn && cardViewBtn) {
+        listViewBtn.addEventListener('click', function() {
+            listView.classList.add('active');
+            cardView.classList.remove('active');
+            listViewBtn.classList.add('active');
+            cardViewBtn.classList.remove('active');
+            
+            // Save preference
+            localStorage.setItem('peptidelinks-view', 'list');
+        });
+        
+        cardViewBtn.addEventListener('click', function() {
+            cardView.classList.add('active');
+            listView.classList.remove('active');
+            cardViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            
+            // Save preference
+            localStorage.setItem('peptidelinks-view', 'card');
+        });
+        
+        // Restore preference
+        const savedView = localStorage.getItem('peptidelinks-view');
+        if (savedView === 'card') {
+            cardViewBtn.click();
+        }
     }
     
-    .peptidelinks-search-form .col-md-2,
-    .peptidelinks-search-form .col-md-3 {
-        width: 100%;
+    // Enhanced Search with Suggestions
+    const searchInput = document.getElementById('mainSearch');
+    const suggestionsDiv = document.getElementById('searchSuggestions');
+    let searchTimeout;
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                suggestionsDiv.classList.remove('active');
+                return;
+            }
+            
+            // Debounce search
+            searchTimeout = setTimeout(() => {
+                fetchSuggestions(query);
+            }, 300);
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                suggestionsDiv.classList.remove('active');
+            }
+        });
+    }
+    
+    function fetchSuggestions(query) {
+        fetch(`/api/researchers/suggestions/?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySuggestions(data.suggestions || []);
+            })
+            .catch(error => {
+                console.error('Error fetching suggestions:', error);
+                suggestionsDiv.classList.remove('active');
+            });
+    }
+    
+    function displaySuggestions(suggestions) {
+        if (suggestions.length === 0) {
+            suggestionsDiv.classList.remove('active');
+            return;
+        }
+        
+        let html = '';
+        suggestions.forEach(item => {
+            html += `
+                <div class="suggestion-item" data-name="${item.name}">
+                    <div class="suggestion-name">${item.name}</div>
+                    <div class="suggestion-institution">${item.institution}</div>
+                </div>
+            `;
+        });
+        
+        suggestionsDiv.innerHTML = html;
+        suggestionsDiv.classList.add('active');
+        
+        // Add click handlers
+        suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                searchInput.value = this.dataset.name;
+                suggestionsDiv.classList.remove('active');
+                document.getElementById('searchForm').submit();
+            });
+        });
+    }
+    
+    // Country/State Dynamic Loading
+    const countrySelect = document.getElementById('countrySelect');
+    const stateSelect = document.getElementById('stateSelect');
+    
+    if (countrySelect && stateSelect) {
+        countrySelect.addEventListener('change', function() {
+            if (this.value === 'USA') {
+                stateSelect.disabled = false;
+                // Load US states via AJAX if needed
+            } else {
+                stateSelect.disabled = true;
+                stateSelect.value = '';
+            }
+        });
+    }
+    
+    // Auto-submit on filter change (optional)
+    const filterSelects = document.querySelectorAll('.form-select');
+    filterSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            // Optional: auto-submit form
+            // document.getElementById('searchForm').submit();
+        });
+    });
+});
+
+// Integrated Profile Management Functions
+function openClaimProfileModal() {
+    document.getElementById('claimProfileModal').style.display = 'block';
+}
+
+function openAddProfileModal() {
+    document.getElementById('addProfileModal').style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function searchForProfile() {
+    const searchTerm = document.getElementById('profileSearch').value.trim();
+    if (searchTerm.length < 2) {
+        alert('Please enter at least 2 characters to search');
+        return;
+    }
+    
+    // Show loading
+    document.getElementById('profileSearchResults').innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+    
+    fetch(`/api/researchers/suggestions/?q=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.json())
+        .then(data => {
+            displayProfileSearchResults(data.suggestions || []);
+        })
+        .catch(error => {
+            document.getElementById('profileSearchResults').innerHTML = '<div class="text-danger">Error searching profiles</div>';
+        });
+}
+
+function displayProfileSearchResults(suggestions) {
+    const resultsDiv = document.getElementById('profileSearchResults');
+    
+    if (suggestions.length === 0) {
+        resultsDiv.innerHTML = '<div class="text-muted">No profiles found matching your search</div>';
+        return;
+    }
+    
+    let html = '<div class="profile-search-results">';
+    suggestions.forEach((item, index) => {
+        html += `
+            <div class="profile-result-item" onclick="selectProfile(${index}, '${item.name}')">
+                <div class="result-name">${item.name}</div>
+                <div class="result-institution text-muted">${item.institution}</div>
+                <div class="result-location text-muted small">${item.location}</div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    
+    resultsDiv.innerHTML = html;
+    window.searchResults = suggestions; // Store for selection
+}
+
+function selectProfile(index, name) {
+    const profile = window.searchResults[index];
+    document.getElementById('selectedProfileName').textContent = profile.name;
+    document.getElementById('selectedProfileInstitution').textContent = profile.institution;
+    document.getElementById('selectedResearcherId').value = profile.id || ''; // Assuming we get ID from API
+    
+    // Show claim form
+    document.getElementById('profileSearchSection').style.display = 'none';
+    document.getElementById('claimFormSection').style.display = 'block';
+}
+
+function backToSearch() {
+    document.getElementById('profileSearchSection').style.display = 'block';
+    document.getElementById('claimFormSection').style.display = 'none';
+}
+
+function submitClaimForm() {
+    const formData = {
+        action: 'claim',
+        researcher_id: document.getElementById('selectedResearcherId').value,
+        email: document.getElementById('claimEmail').value,
+        phone: document.getElementById('claimPhone').value,
+        address_1: document.getElementById('claimAddress').value,
+        city: document.getElementById('claimCity').value,
+        state: document.getElementById('claimState').value,
+        zip_code: document.getElementById('claimZip').value,
+        country: document.getElementById('claimCountry').value,
+        affiliation_type: document.getElementById('claimAffiliationType').value,
+        research_interests: document.getElementById('claimResearchInterests').value,
+        website_url: document.getElementById('claimWebsite').value,
+        orcid_id: document.getElementById('claimOrcid').value,
+        public_bio: document.getElementById('claimBio').value
+    };
+    
+    // Show loading
+    document.getElementById('claimSubmitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    document.getElementById('claimSubmitBtn').disabled = true;
+    
+    fetch('/api/researchers/integrated/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Profile claimed successfully! You will receive a confirmation email shortly.');
+            closeModal('claimProfileModal');
+            // Optionally redirect to member portal
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error occurred'));
+        }
+    })
+    .catch(error => {
+        alert('Network error. Please try again.');
+    })
+    .finally(() => {
+        document.getElementById('claimSubmitBtn').innerHTML = '<i class="fas fa-check"></i> Claim Profile & Join APS';
+        document.getElementById('claimSubmitBtn').disabled = false;
+    });
+}
+
+function submitAddForm() {
+    const formData = {
+        action: 'add_new',
+        first_name: document.getElementById('addFirstName').value,
+        last_name: document.getElementById('addLastName').value,
+        institution: document.getElementById('addInstitution').value,
+        email: document.getElementById('addEmail').value,
+        phone: document.getElementById('addPhone').value,
+        address_1: document.getElementById('addAddress').value,
+        city: document.getElementById('addCity').value,
+        state: document.getElementById('addState').value,
+        zip_code: document.getElementById('addZip').value,
+        country: document.getElementById('addCountry').value,
+        title: document.getElementById('addTitle').value,
+        department: document.getElementById('addDepartment').value,
+        website_url: document.getElementById('addWebsite').value,
+        orcid_id: document.getElementById('addOrcid').value,
+        research_interests: document.getElementById('addResearchInterests').value,
+        affiliation_type: document.getElementById('addAffiliationType').value
+    };
+    
+    // Show loading
+    document.getElementById('addSubmitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Profile...';
+    document.getElementById('addSubmitBtn').disabled = true;
+    
+    fetch('/api/researchers/integrated/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Welcome to PeptideLinks and APS! You will receive a welcome email shortly.');
+            closeModal('addProfileModal');
+            // Optionally redirect to member portal
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error occurred'));
+        }
+    })
+    .catch(error => {
+        alert('Network error. Please try again.');
+    })
+    .finally(() => {
+        document.getElementById('addSubmitBtn').innerHTML = '<i class="fas fa-user-plus"></i> Add Me to PeptideLinks & Join APS';
+        document.getElementById('addSubmitBtn').disabled = false;
+    });
+}
+</script>
+
+<!-- Claim Profile Modal -->
+<div id="claimProfileModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-user-check"></i> Claim Your Profile</h3>
+            <span class="close" onclick="closeModal('claimProfileModal')">&times;</span>
+        </div>
+        
+        <div id="profileSearchSection">
+            <p class="mb-3">Search for your existing profile in the PeptideLinks directory:</p>
+            <div class="search-section">
+                <div class="input-group mb-3">
+                    <input type="text" id="profileSearch" class="form-control" 
+                           placeholder="Search by your name or institution...">
+                    <button class="btn btn-primary" onclick="searchForProfile()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                <div id="profileSearchResults"></div>
+            </div>
+        </div>
+        
+        <div id="claimFormSection" style="display: none;">
+            <div class="selected-profile mb-4">
+                <h5>Claiming Profile:</h5>
+                <div class="profile-info">
+                    <strong id="selectedProfileName"></strong><br>
+                    <span id="selectedProfileInstitution" class="text-muted"></span>
+                </div>
+                <input type="hidden" id="selectedResearcherId">
+                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="backToSearch()">
+                    <i class="fas fa-arrow-left"></i> Back to Search
+                </button>
+            </div>
+            
+            <div class="membership-explanation alert alert-info">
+                <h6><i class="fas fa-info-circle"></i> APS Membership Benefits</h6>
+                <p class="mb-2">To claim and update your profile, we'll create a <strong>free APS membership</strong> for you with these benefits:</p>
+                <ul class="mb-0">
+                    <li>Access to member portal and resources</li>
+                    <li>APS newsletters and announcements</li>
+                    <li>Networking opportunities</li>
+                    <li>Conference discounts and priority registration</li>
+                </ul>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); submitClaimForm();">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Contact Information <span class="text-danger">*</span></h6>
+                        <div class="mb-3">
+                            <input type="email" id="claimEmail" class="form-control" placeholder="Email Address *" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="tel" id="claimPhone" class="form-control" placeholder="Phone Number *" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="claimAddress" class="form-control" placeholder="Address *" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" id="claimCity" class="form-control" placeholder="City *" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="claimState" class="form-control" placeholder="State *" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <input type="text" id="claimZip" class="form-control" placeholder="ZIP Code *" required>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="claimCountry" class="form-select" required>
+                                    <option value="USA">United States</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="France">France</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Professional Information</h6>
+                        <div class="mb-3">
+                            <select id="claimAffiliationType" class="form-select">
+                                <option value="academic">Academic</option>
+                                <option value="industry">Industry</option>
+                                <option value="government">Government</option>
+                                <option value="nonprofit">Non-Profit</option>
+                                <option value="student">Student</option>
+                                <option value="retired">Retired</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <textarea id="claimResearchInterests" class="form-control" rows="3" 
+                                      placeholder="Research Interests"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" id="claimWebsite" class="form-control" placeholder="Website URL">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="claimOrcid" class="form-control" 
+                                   placeholder="ORCID ID (e.g., 0000-0000-0000-0000)">
+                        </div>
+                        <div class="mb-3">
+                            <textarea id="claimBio" class="form-control" rows="3" 
+                                      placeholder="Public Bio (optional)"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('claimProfileModal')">Cancel</button>
+                    <button type="submit" id="claimSubmitBtn" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Claim Profile & Join APS
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Profile Modal -->
+<div id="addProfileModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-user-plus"></i> Add Me to PeptideLinks</h3>
+            <span class="close" onclick="closeModal('addProfileModal')">&times;</span>
+        </div>
+        
+        <div class="membership-explanation alert alert-success">
+            <h6><i class="fas fa-gift"></i> Welcome to APS!</h6>
+            <p class="mb-2">By adding yourself to PeptideLinks, you'll automatically receive a <strong>free APS membership</strong> with:</p>
+            <ul class="mb-0">
+                <li>Visibility in the global peptide researcher directory</li>
+                <li>Access to member portal and resources</li>
+                <li>APS newsletters and scientific updates</li>
+                <li>Networking opportunities with 1000+ researchers worldwide</li>
+            </ul>
+        </div>
+        
+        <form onsubmit="event.preventDefault(); submitAddForm();">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Personal Information <span class="text-danger">*</span></h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" id="addFirstName" class="form-control mb-3" placeholder="First Name *" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="addLastName" class="form-control mb-3" placeholder="Last Name *" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="addTitle" class="form-control" placeholder="Title (Dr., Prof., etc.)">
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" id="addEmail" class="form-control" placeholder="Email Address *" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="tel" id="addPhone" class="form-control" placeholder="Phone Number *" required>
+                    </div>
+                    
+                    <h6>Address <span class="text-danger">*</span></h6>
+                    <div class="mb-3">
+                        <input type="text" id="addAddress" class="form-control" placeholder="Address *" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" id="addCity" class="form-control" placeholder="City *" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="addState" class="form-control" placeholder="State *" required>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <input type="text" id="addZip" class="form-control" placeholder="ZIP Code *" required>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="addCountry" class="form-select" required>
+                                <option value="USA">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="Germany">Germany</option>
+                                <option value="France">France</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h6>Professional Information <span class="text-danger">*</span></h6>
+                    <div class="mb-3">
+                        <input type="text" id="addInstitution" class="form-control" placeholder="Institution *" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="addDepartment" class="form-control" placeholder="Department">
+                    </div>
+                    <div class="mb-3">
+                        <select id="addAffiliationType" class="form-select">
+                            <option value="academic">Academic</option>
+                            <option value="industry">Industry</option>
+                            <option value="government">Government</option>
+                            <option value="nonprofit">Non-Profit</option>
+                            <option value="student">Student</option>
+                            <option value="retired">Retired</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="addResearchInterests" class="form-control" rows="3" 
+                                  placeholder="Research Interests *" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="url" id="addWebsite" class="form-control" placeholder="Website URL">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="addOrcid" class="form-control" 
+                               placeholder="ORCID ID (e.g., 0000-0000-0000-0000)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addProfileModal')">Cancel</button>
+                <button type="submit" id="addSubmitBtn" class="btn btn-success">
+                    <i class="fas fa-user-plus"></i> Add Me to PeptideLinks & Join APS
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 80px auto 2% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    padding: 20px 30px;
+    background: linear-gradient(135deg, #FF7F11 0%, #FF9500 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    opacity: 0.8;
+}
+
+.modal-content form {
+    padding: 30px;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.membership-explanation {
+    border-left: 4px solid #FF7F11;
+    margin-bottom: 25px;
+}
+
+.profile-search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.profile-result-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.profile-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.profile-result-item:last-child {
+    border-bottom: none;
+}
+
+.result-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.selected-profile {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.profile-info {
+    margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 80px auto 5% auto;
+    }
+    
+    .modal-content form {
+        padding: 20px;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.25rem;
     }
 }
 </style>
+
 {% endblock %}

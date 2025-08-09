@@ -26,7 +26,11 @@ urlpatterns = [
     # Award recipient detail pages
     path("awards/recipient/<slug:slug>/", views.award_recipient_detail_view, name="award-recipient-detail"),
 
-    # Symposium images API
+    # API endpoints
+    path("api/researchers/suggestions/", views.researcher_suggestions_api, name="researcher-suggestions-api"),
+    path("api/researchers/claim/", views.researcher_claim_profile_api, name="researcher-claim-api"),
+    path("api/researchers/update/", views.researcher_update_request_api, name="researcher-update-api"),
+    path("api/researchers/integrated/", views.researcher_integrated_update_api, name="researcher-integrated-api"),
     path("api/symposium-images/<str:year>/", views.symposium_images_api, name="symposium-images-api"),
 
     # Allauth URLs for membership authentication

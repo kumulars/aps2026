@@ -1,0 +1,57 @@
+# local.py - Local development/production overrides
+# Copy this to local.py and customize for your environment
+
+# ===============================================
+# Email Configuration (for testing/production)
+# ===============================================
+
+# Option 1: Console backend (for development - prints emails to console)
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Option 2: File backend (for development - saves emails to files)
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = '/tmp/app-messages'  # Change this to a path you can access
+
+# Option 3: SMTP backend (for production or testing with real email)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Gmail configuration (recommended for testing)
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'your-app-password'  # Replace with your Gmail app password
+DEFAULT_FROM_EMAIL = 'APS 2026 <noreply@americanpeptidesociety.org>'
+
+# Your email addresses for testing
+ADMINS = [
+    ('Your Name', 'your-email@gmail.com'),  # Replace with your email
+    # ('Another Admin', 'admin2@domain.com'),
+]
+
+MANAGERS = ADMINS
+
+# Optional: Test email sending with Django's built-in test email command
+# Run: python manage.py sendtestemail your-email@gmail.com
+
+# ===============================================
+# Other Local Overrides
+# ===============================================
+
+# Uncomment to enable debug mode
+# DEBUG = True
+
+# Uncomment to allow all hosts (for development only!)
+# ALLOWED_HOSTS = ['*']
+
+# Database overrides (if using different database locally)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'aps2026_local',
+#         'USER': 'your_db_user',
+#         'PASSWORD': 'your_db_password',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }

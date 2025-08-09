@@ -288,7 +288,6 @@ h4, .h4 {
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-item.active .nav-link {
   color: #FF7F11 !important;
-  background-color: rgba(255, 127, 17, 0.1);
   transform: translateY(-1px);
 }
 
@@ -442,6 +441,11 @@ h4, .h4 {
     margin-top: 0;
     padding-top: 15px;
   }
+}
+
+/* Small paragraph style for captions and other reduced-size text */
+p.small {
+  font-size: 85%;
 }
 
 .aps-news-slider .card h4 {

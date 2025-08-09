@@ -59,3 +59,96 @@ body.login {
   position: relative;
   z-index: 1;
 }
+
+/* Increase left-hand navigation column width by 119px */
+/* Override Wagtail core sidebar width with high specificity */
+
+/* Target the exact Wagtail core selectors with higher specificity */
+body .sidebar,
+body .sidebar-loading,
+html body .sidebar,
+html body .sidebar-loading {
+  width: calc(200px + 119px) !important;
+  min-width: calc(200px + 119px) !important;
+  max-width: calc(200px + 119px) !important;
+}
+
+/* Additional selectors for comprehensive coverage */
+.w-sidebar-nav,
+.sidebar-nav,
+[data-controller="w-sidebar"],
+.w-nav-side,
+aside[role="navigation"],
+.navigation,
+.nav-wrapper,
+.sidebar-wrapper {
+  width: calc(200px + 119px) !important;
+  min-width: calc(200px + 119px) !important;
+  max-width: calc(200px + 119px) !important;
+}
+
+/* Reset the content margin - let's remove the previous problematic rule */
+.content-wrapper {
+  margin-left: 0 !important;
+}
+
+/* Reset content area margin to use full width */
+/* Target Wagtail's main content container */
+body .content-main,
+body main[role="main"],
+body .main-content,
+body .main,
+body .content,
+body .wrapper {
+  margin-left: 89px !important;
+  
+}
+
+/* Force the body to accommodate the wider sidebar */
+body {
+  --w-sidebar-width: calc(200px + 119px) !important;
+}
+
+/* CSS custom properties approach for newer Wagtail versions */
+:root {
+  --sidebar-width: calc(200px + 119px) !important;
+}
+
+/* Make menu items in the left navigation bold */
+/* Target all navigation menu items and links in the sidebar */
+body .sidebar a,
+body .sidebar .nav-item,
+body .sidebar .menu-item,
+body .sidebar .nav-link,
+body .sidebar .sidebar-nav a,
+body .sidebar nav a,
+body .sidebar ul li a,
+body .sidebar .menu a {
+  font-weight: bold !important;
+}
+
+/* Target specific Wagtail navigation elements */
+body .sidebar .nav-main a,
+body .sidebar .nav-main li,
+body .sidebar .nav-main span,
+body .sidebar [role="navigation"] a,
+body .sidebar [role="navigation"] li,
+body .sidebar [role="navigation"] span {
+  font-weight: bold !important;
+}
+
+/* Target any text elements in sidebar navigation */
+body .sidebar nav *,
+body .sidebar .navigation *,
+body .sidebar .menu * {
+  font-weight: bold !important;
+}
+
+/* For mobile/collapsed states */
+@media (max-width: 1024px) {
+  .content-main,
+  main[role="main"],
+  .main-content {
+    margin-left: 0 !important;
+  }
+}

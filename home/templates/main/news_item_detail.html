@@ -20,8 +20,13 @@
     <div class="col-md-5">
       <div style="min-height: 1px;">
         {% if page.news_item_image %}
-        <img src="{{ page.news_item_image.file.url }}" alt="Feature image" class="aps-img" style="margin-bottom: 19px;">
-        <p><strong>Published here on {{ page.news_item_entry_date }}</strong><br /><strong>Title: </strong><a href="{{ page.news_item_journal_url }}" target="_blank">{{ page.news_item_full_title|safe }}</a><br /><strong>Authors:</strong> {{ page.news_item_authors }}<br />
+        <img src="{{ page.news_item_image.file.url }}" alt="Feature image" class="aps-img">
+        {% if page.news_item_image_caption %}
+        <div style="margin-top: 19px;">
+          {{ page.news_item_image_caption|safe }}
+        </div>
+        {% endif %}
+        <p style="margin-top: 19px;"><strong>Published here on {{ page.news_item_entry_date }}</strong><br /><strong>Title: </strong><a href="{{ page.news_item_journal_url }}" target="_blank">{{ page.news_item_full_title|safe }}</a><br /><strong>Authors:</strong> {{ page.news_item_authors }}<br />
       <strong>Citation:</strong> {{ page.news_item_citation|safe }}</p>
       {% endif %}
       </div>

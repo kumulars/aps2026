@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
+from django.utils.safestring import mark_safe
 import csv
 from datetime import datetime
 from .models import Member, MembershipLevel
@@ -23,10 +24,25 @@ class MemberAdmin(SnippetViewSet):
     menu_order = 200
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ['full_name', 'email', 'status', 'affiliation', 'created_at']
-    list_filter = ['status', 'affiliation_type', 'data_source', 'is_verified']
+    list_display = ['formatted_name', 'email', 'status', 'affiliation_type', 'data_source', 'directory_visible', 'is_verified', 'created_at']
+    list_filter = ['status', 'affiliation_type', 'data_source', 'is_verified', 'directory_visible', 'show_research_interests']
     search_fields = ['first_name', 'last_name', 'email', 'affiliation']
     ordering = ['last_name', 'first_name']
+    list_per_page = 75
+    
+    def get_queryset(self, request=None):
+        """Default to showing only members with names"""
+        from django.db.models import Q
+        qs = Member.objects.all()
+        
+        # If request is provided, check for filters
+        if request and not request.GET.get('status') and not request.GET.get('affiliation_type'):
+            return qs.exclude(
+                Q(first_name='') | Q(first_name__isnull=True),
+                Q(last_name='') | Q(last_name__isnull=True)
+            ).order_by('last_name', 'first_name')
+        
+        return qs.order_by('last_name', 'first_name')
     
     panels = [
         TabbedInterface([
@@ -62,6 +78,11 @@ class MemberAdmin(SnippetViewSet):
                 FieldPanel('membership_expires'),
                 FieldPanel('is_verified'),
             ], heading='Membership Details'),
+            
+            ObjectList([
+                FieldPanel('directory_visible'),
+                FieldPanel('show_research_interests'),
+            ], heading='Privacy Settings'),
             
             ObjectList([
                 FieldPanel('data_source'),
@@ -145,29 +166,41 @@ def membership_dashboard_view(request):
     from django.db.models import Count, Q
     from datetime import datetime, timedelta
     
-    # Get membership statistics
-    total_members = Member.objects.count()
-    active_members = Member.objects.filter(status='active').count()
-    pending_members = Member.objects.filter(status='pending').count()
+    # Get membership statistics - showing only members with complete names
+    members_with_names = Member.objects.exclude(
+        Q(first_name='') | Q(first_name__isnull=True),
+        Q(last_name='') | Q(last_name__isnull=True)
+    )
     
-    # Recent signups (last 30 days)
+    total_members = members_with_names.count()
+    active_members = members_with_names.filter(status='active').count()
+    pending_members = members_with_names.filter(status='pending').count()
+    
+    # Recent signups (last 30 days) - only those with names
     thirty_days_ago = datetime.now() - timedelta(days=30)
-    recent_signups = Member.objects.filter(created_at__gte=thirty_days_ago).count()
+    recent_signups = members_with_names.filter(created_at__gte=thirty_days_ago).count()
     
-    # Data source breakdown
-    data_sources = Member.objects.values('data_source').annotate(
+    # Data source breakdown - only members with names
+    data_sources = members_with_names.values('data_source').annotate(
         count=Count('id')
     ).order_by('-count')
     
-    # Affiliation type breakdown
-    affiliations = Member.objects.exclude(
+    # Affiliation type breakdown - only members with names
+    affiliations = members_with_names.exclude(
         affiliation_type=''
     ).values('affiliation_type').annotate(
         count=Count('id')
     ).order_by('-count')
     
-    # Recent members
-    recent_members = Member.objects.order_by('-created_at')[:10]
+    # Recent members - only those with names
+    recent_members = members_with_names.order_by('-created_at')[:10]
+    
+    # Also get counts of problematic records for admin insight
+    total_raw_members = Member.objects.count()
+    members_without_names = Member.objects.filter(
+        Q(first_name='') | Q(first_name__isnull=True),
+        Q(last_name='') | Q(last_name__isnull=True)
+    ).count()
     
     context = {
         'total_members': total_members,
@@ -177,6 +210,10 @@ def membership_dashboard_view(request):
         'data_sources': data_sources,
         'affiliations': affiliations,
         'recent_members': recent_members,
+        # Additional admin insight data
+        'total_raw_members': total_raw_members,
+        'members_without_names': members_without_names,
+        'directory_visible_members': members_with_names.filter(directory_visible=True).count(),
     }
     
     return render(request, 'wagtailadmin/membership_dashboard.html', context)
@@ -354,3 +391,9 @@ def export_members_csv(request):
         writer.writerow([f'# Data source filter: {data_source_filter}'])
     
     return response
+
+
+# Add custom CSS to Wagtail admin
+@hooks.register('insert_global_admin_css')
+def global_admin_css():
+    return mark_safe('<link rel="stylesheet" type="text/css" href="/static/css/admin_custom.css">')

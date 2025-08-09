@@ -181,8 +181,82 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'  # Trust social providers
 SOCIALACCOUNT_QUERY_EMAIL = True
 
-# Email settings (for development - you'll need to configure for production)
+# ===============================================
+# Email Configuration
+# ===============================================
+
+# Default to console backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Production email settings (override in production.py or local.py)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # Or your SMTP server
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'your-app-password'  # Use app password for Gmail
+# DEFAULT_FROM_EMAIL = 'APS 2026 <noreply@americanpeptidesociety.org>'
+
+# Administrators (will receive automation reports and error emails)
+ADMINS = [
+    ('APS Admin', 'admin@americanpeptidesociety.org'),
+    # ('Your Name', 'your-email@domain.com'),
+]
+
+# Managers (will receive broken link notifications)
+MANAGERS = ADMINS
+
+# ===============================================
+# Logging Configuration for Automation
+# ===============================================
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'peptidelinks_automation.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+    },
+    'loggers': {
+        'home.management.commands.automated_peptidelinks_updater': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'home.management.commands.sync_orcid_researchers': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
 
 # Social provider configuration (add your keys in local settings)
 SOCIALACCOUNT_PROVIDERS = {

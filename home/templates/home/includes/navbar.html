@@ -26,6 +26,10 @@
           </ul>
         </li>
 
+        <li class="nav-item{% if request.path|slice:':14' == '/peptide-links' %} active{% endif %}">
+          <a class="nav-link" href="/peptide-links/">PEPTIDE LINKS</a>
+        </li>
+
         <li class="nav-item dropdown{% if request.path|slice:':7' == '/people' or request.path|slice:':15' == '/past-presidents' or request.path|slice:':11' == '/committees' or request.path|slice:':20' == '/student-activities' or request.path|slice:':11' == '/obituaries' %} active{% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="peopleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             PEOPLE
@@ -60,13 +64,15 @@
             MEMBERS
           </a>
           <ul class="dropdown-menu aps-fade-dropdown" aria-labelledby="membersDropdown">
+            <li><a class="dropdown-item" href="/members/directory/">Member Directory</a></li>
             {% if user.is_authenticated %}
+              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/members/dashboard/">My Dashboard</a></li>
               <li><a class="dropdown-item" href="/members/profile/">My Profile</a></li>
-              <li><a class="dropdown-item" href="/members/directory/">Member Directory</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/accounts/logout/">Logout</a></li>
             {% else %}
+              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/accounts/login/">Member Login</a></li>
               <li><a class="dropdown-item" href="/accounts/signup/">Join APS</a></li>
               <li><hr class="dropdown-divider"></li>

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python manage.py:*)",
-      "Bash(source:*)"
+      "Bash(source:*)",
+      "WebFetch(domain:peptidelinks.net)"
     ],
     "deny": []
   }

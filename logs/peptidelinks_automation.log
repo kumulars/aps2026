@@ -1,0 +1,187 @@
+ERROR 2025-08-08 14:27:07,525 log 35061 6189592576 Internal Server Error: /api/researchers/claim/
+ERROR 2025-08-09 14:03:57,830 log 49225 6164967424 Internal Server Error: /peptide-links/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 74, in resolve_template
+    return get_template(template, using=self.using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: home/peptide_links_index_page_improved.html
+ERROR 2025-08-09 14:04:00,637 log 49225 6164967424 Internal Server Error: /peptide-links/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/response.py", line 74, in resolve_template
+    return get_template(template, using=self.using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: home/peptide_links_index_page_improved.html
+ERROR 2025-08-09 14:51:08,166 log 64368 6286503936 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 14:53:24,074 log 65690 6204780544 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 14:53:29,401 log 65794 6135672832 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 14:54:23,548 log 65813 6201454592 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 14:55:45,961 log 65813 6201454592 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 14:55:57,049 log 65813 6218280960 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 113, in member_directory
+    return render(request, 'members/directory.html', context)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: members/directory.html
+ERROR 2025-08-09 16:17:51,180 log 69494 6204190720 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 93, in member_directory
+    Q(first_name='') | Q(first_name__isnull=True),
+    ^
+NameError: name 'Q' is not defined
+ERROR 2025-08-09 16:17:57,314 log 69494 6204190720 Internal Server Error: /members/directory/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/views.py", line 93, in member_directory
+    Q(first_name='') | Q(first_name__isnull=True),
+    ^
+NameError: name 'Q' is not defined
+ERROR 2025-08-09 16:33:32,807 log 71185 6133575680 Internal Server Error: /admin/snippets/members/member/
+Traceback (most recent call last):
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/wagtail/admin/urls/__init__.py", line 178, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/wagtail/admin/auth.py", line 149, in decorated_view
+    response = view_func(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/wagtail/admin/views/generic/permissions.py", line 30, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ~~~~~~~~~~~~~~~~~^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/wagtail/admin/views/generic/base.py", line 494, in get_queryset
+    queryset = self.get_base_queryset()
+  File "/Users/larssahl/Documents/wagtail/aps2026/venv/lib/python3.13/site-packages/wagtail/snippets/views/snippets.py", line 163, in get_base_queryset
+    self.queryset = self.queryset(self.request)
+                    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/larssahl/Documents/wagtail/aps2026/members/wagtail_hooks.py", line 38, in get_queryset
+    return qs.exclude(
+           ^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'exclude'

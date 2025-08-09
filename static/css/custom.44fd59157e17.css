@@ -1,0 +1,872 @@
+/* === TypeKit & Global Font === */
+@import url("https://use.typekit.net/dvt1uyd.css");
+
+/* === Base Layout === */
+html, body {
+  height: 100%;
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+  font-family: "azo-sans-web", sans-serif;
+  color: #222;
+  background-color: #fff;
+}
+
+/* === Typography === */
+p {
+  font-size: clamp(1rem, 1.3vw, 1.05rem);
+  line-height: 1.6;
+  font-weight: 400;
+  color: #5A5A5A;
+  margin-bottom: 1rem;
+}
+
+/* Enhanced link styling */
+a {
+  color: #3a53a4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #FF7F11;
+  text-decoration: underline;
+}
+
+/* Professional list styling */
+ul, ol {
+  line-height: 1.6;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+/* Emphasis improvements */
+strong, b {
+  font-weight: 600;
+  color: #5A5A5A;
+}
+
+em, i {
+  color: #495057;
+}
+
+/* Headers - Unified styling */
+.main-page-header{
+  font-size: 42px;
+  font-weight: 300;
+  color: #5A5A5A;
+  margin-top: 39px;
+  background-image: url("/media/logo/aps_circle.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 35px;
+  padding-left: 39px;
+  line-height: 1.2;
+  position: relative;
+}
+
+
+/* Secondary headers */
+h2{
+  font-weight: 300;
+  color: #5a5a5a;
+  margin-bottom: 19px;
+  margin-top: 19px;
+}
+
+h3, .h3 {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+h4, .h4 {
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+.aps-h2 {
+  all: unset;
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1em;
+  color: #1D3557;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.news-item-template-header {
+  font-size: clamp(19px, 2.6vw, 28px);
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+.people-header {
+  margin-bottom: 3px;
+  font-size: 2rem;
+}
+
+.index-header {
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
+  line-height: 1.5;
+  font-weight: 400;
+  color: #5A5A5A;
+  margin-top: 7px;
+}
+
+.sub-header {
+  text-align: left;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* === Enhanced Buttons === */
+.btn {
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* APS Button styles */
+.aps-button {
+  background-color: #3a53a4;
+  border-color: #3a53a4;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.aps-button:hover {
+  background-color: #d1951f;
+  border-color: #d1951f;
+  color: #ffffff;
+}
+
+.aps-button-small {
+  background-color: #cb3b2d;
+  border-color: #cb3b2d;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.aps-button-small:hover {
+  background-color: #3a53a4;
+  border-color: #3a53a4;
+  color: #ffffff;
+}
+
+/* Primary buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #3a53a4, #5a73c4);
+  color: #ffffff;
+  border-color: #3a53a4;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #2a4394, #3a53a4);
+  color: #ffffff;
+  border-color: #2a4394;
+}
+
+/* Secondary buttons */
+.btn-secondary {
+  background: linear-gradient(135deg, #cb3b2d, #db5b4d);
+  color: #ffffff;
+  border-color: #cb3b2d;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #bb2b1d, #cb3b2d);
+  color: #ffffff;
+  border-color: #bb2b1d;
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+  background: transparent;
+  color: #3a53a4;
+  border-color: #3a53a4;
+}
+
+.btn-outline-primary:hover {
+  background: #3a53a4;
+  color: #ffffff;
+  border-color: #3a53a4;
+}
+
+/* Success buttons */
+.btn-success {
+  background: linear-gradient(135deg, #28a745, #48c765);
+  color: #ffffff;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #218838, #28a745);
+  color: #ffffff;
+  border-color: #218838;
+}
+
+/* Small buttons */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 6px;
+}
+
+/* Large buttons */
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  border-radius: 10px;
+}
+
+/* === Navbar Styling - Consolidated === */
+.aps-navbar {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #EDEDED;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.aps-navbar-logo {
+  width: 125px;
+  height: auto;
+  max-height: 60px;
+  padding-left: 0;
+  transition: transform 0.3s ease;
+}
+
+.aps-navbar-logo:hover {
+  transform: scale(1.05);
+}
+
+.navbar-nav {
+  padding-top: 9px;
+}
+
+/* Enhanced nav link styling - Consolidated */
+.navbar-nav .nav-link {
+  font-weight: 600;
+  color: #000000 !important;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  margin: 0 4px;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-item.active .nav-link {
+  color: #FF7F11 !important;
+  background-color: rgba(255, 127, 17, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Bootstrap 5 dropdown caret removal */
+.navbar-nav .dropdown-toggle::after {
+  display: none;
+}
+
+/* Enhanced dropdown styling - Consolidated */
+.navbar-nav .dropdown-menu {
+  margin-top: 0;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  display: none;
+}
+
+/* Enable hover for dropdowns on desktop - Single consolidated rule */
+@media (min-width: 992px) {
+  .navbar-nav .dropdown:hover > .dropdown-menu {
+    display: block !important;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Prevent dropdown from going off-screen */
+  .navbar-nav .dropdown:last-child .dropdown-menu,
+  .navbar-nav .dropdown:nth-last-child(2) .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
+
+/* Show dropdown when Bootstrap's show class is added */
+.navbar-nav .dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar-nav .dropdown-item {
+  padding: 0.5rem 1rem .5rem 0;
+  font-weight: 400;
+  color: #333;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border-radius: 6px;
+  margin: 2px 4px;
+}
+
+.navbar-nav .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #FF7F11;
+  transform: translateX(4px);
+}
+
+/* Mobile navbar toggler */
+.navbar-toggler {
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.7%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* === News Carousel - Clean Version === */
+.aps-news-slider {
+  font-family: "azo-sans-web", sans-serif;
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.aps-news-slider .slider-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+.aps-news-slider .slider-container {
+  max-width: 1700px;
+  margin: 0 auto;
+  position: relative;
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+.aps-news-slider .slider-track {
+  display: flex;
+  transition: transform 0.6s ease;
+  will-change: transform;
+}
+
+.aps-news-slider .slide {
+  flex: 0 0 20%;
+  padding: 0 10px;
+}
+
+.aps-news-slider .card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.aps-news-slider .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.aps-news-slider .card img {
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  object-position: top;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+}
+
+.aps-news-slider .card-content {
+  padding: 0;
+  margin-top: -16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.aps-news-slider .card h4 {
+  margin: 0px 15px 8px 15px;
+  font-size: 1.1em;
+  color: #333;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* News slider text elements - Single definition (resolved duplicate) */
+.aps-news-slider .reflecting-work,
+.aps-news-slider .news-blurb {
+  font-size: 0.85em;
+  color: #888;
+  font-style: italic;
+  margin: 8px 15px 6px 15px;
+  line-height: 1.3;
+}
+
+.aps-news-slider .nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.aps-news-slider .nav-arrow:hover {
+  background: rgba(255,127,17,0.9);
+  color: white;
+  border-color: #FF7F11;
+}
+
+.aps-news-slider .nav-left { left: 20px; }
+.aps-news-slider .nav-right { right: 20px; }
+
+.aps-news-slider .news-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.aps-news-slider .news-item-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === Enhanced Cards - Resolved contradiction === */
+.panel,
+.card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.panel:hover,
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Card images */
+.card img,
+.panel img,
+.aps-img {
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+}
+
+.card:hover img,
+.panel:hover img,
+.aps-img:hover {
+  transform: scale(1.03);
+}
+
+/* Thumbnail enhancements */
+.thumbnail {
+  border: none;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.thumbnail:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* === Layout Elements === */
+.aps-container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding-left: 21px;
+  padding-right: 21px;
+}
+
+.aps-container ol {
+  padding-left: 15px !important;
+}
+
+.aps-container ul {
+  padding-left: 15px !important;
+}
+
+.aps-menu-placeholder {
+  position: relative;
+  z-index: 10;
+  height: 100px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+
+.aps-menu-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.aps-menu-text {
+  font-size: 1.5rem;
+  color: #151515;
+  font-weight: 400;
+  margin: 0;
+  padding-left: 0;
+}
+
+.inside {
+  padding: 0;
+}
+
+.people {
+  margin-bottom: 30px;
+}
+
+/* === Homepage Layout Styles === */
+hr.blue {
+  border: 0;
+  height: 2px;
+  background: #3a53a4;
+  margin: 20px 0;
+}
+
+.newsitem-container {
+  margin-bottom: 30px;
+}
+
+.main-sidebar-right {
+  padding-left: 30px;
+  border-left: 1px solid #CCCCCC;
+}
+
+.nopad {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.member-testimonials {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* === News item categories === */
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 0.5rem;
+}
+
+.category-filters a {
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.category-filters a.active {
+  background-color: #003366;
+  color: white;
+}
+
+/* === PROCEEDINGS DISPLAY === */
+.caption-wrapper {
+    min-height: 200px;
+}
+
+.caption {
+    padding-top: 10px;
+}
+
+/* === Fix Tab Visibility and Styling === */
+.nav-tabs {
+  border-bottom: 1px solid #E0E0E0;
+  margin-bottom: 20px;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link {
+  font-weight: 400;
+  color: #000;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 0 0;
+  margin-right: 4px;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #FF7F11;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.nav-tabs .nav-link.active {
+  color: #FF7F11;
+  background-color: #fff;
+  border: 1px solid #FF7F11;
+  border-bottom-color: transparent;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.tab-content {
+  border-top: none;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 0 0 6px 6px;
+}
+
+/* === Sticky Footer Support === */
+#wrap {
+  min-height: 100%;
+  margin-bottom: -249px;
+  padding-bottom: 249px;
+}
+
+/* === Hover Effect on Proceedings Page === */
+.proceedings-cover-wrapper {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+.proceedings-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.proceedings-cover {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.proceedings-cover-wrapper:hover .proceedings-cover {
+    transform: scale(1.04);
+    filter: brightness(90%);
+}
+
+.hover-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(58, 88, 148, 0.8);
+    color: white;
+    text-align: center;
+    padding: 6px 0;
+    font-weight: bold;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.proceedings-cover-wrapper:hover .hover-overlay {
+    opacity: 1;
+}
+
+/* === Fade Transition Logic === */
+body {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+body.fade-out {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* === Image Effects === */
+.aps-img,
+.aps-news-research-content img {
+  margin-bottom: 12px;
+  border-radius: 7px;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.news-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.news-item-link:hover {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.aps-border {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #CCC;
+}
+
+/* === Footer === */
+#aps-footer {
+  background-color: #f7f9fb;
+  color: #2a628f;
+  font-size: 1.05rem;
+  margin-top: 5rem;
+  border-top: 2px solid #d8e2ec;
+}
+
+#aps-footer .aps-container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+#aps-footer h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+#aps-footer p,
+#aps-footer a {
+  color: #4e8098;
+  line-height: 1.6;
+}
+
+#aps-footer a:hover {
+  color: #ff7f11;
+  text-decoration: underline;
+}
+
+.aps-colophon {
+  background-color: #2a628f;
+  color: #ffffff;
+  padding: 16px 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+  margin: 0;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .main-sidebar-right {
+    padding-left: 15px;
+    border-left: none;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 30px;
+    padding-top: 20px;
+  }
+  
+  h1.home-page-header {
+    font-size: 1.5rem;
+  }
+  
+  h2.secondary-homepage-header-left-2 {
+    font-size: 1.2rem;
+  }
+
+  .aps-news-slider .slide { flex: 0 0 100%; }
+  .aps-news-slider .nav-left { left: 10px; }
+  .aps-news-slider .nav-right { right: 10px; }
+
+  .aps-homepage-content .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .aps-community-content {
+    order: 1;
+  }
+
+  .aps-news-research-content {
+    order: 2;
+  }
+
+  .aps-member-content {
+    order: 3;
+  }
+
+  .aps-news-research-content,
+  .aps-community-content,
+  .aps-member-content {
+    border-left: none !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
