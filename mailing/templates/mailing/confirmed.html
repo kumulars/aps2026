@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Email Confirmed{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-check-circle fa-3x text-success mb-4"></i>
+                    
+                    <h1 class="card-title mb-4">Email Confirmed!</h1>
+                    
+                    <p class="mb-4">
+                        Thank you for confirming your email address 
+                        <strong>{{ subscriber.email }}</strong>!
+                    </p>
+                    
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-envelope me-2"></i>
+                        Your subscription is now active. You'll receive updates about 
+                        peptide science, symposiums, and APS news.
+                    </div>
+                    
+                    <p class="text-muted mb-4">
+                        Welcome to the American Peptide Society community! 
+                        We're excited to keep you informed about the latest developments 
+                        in peptide research.
+                    </p>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/people/" class="btn btn-primary me-md-2">
+                            <i class="fas fa-users me-2"></i>
+                            Browse Research Directory
+                        </a>
+                        <a href="/" class="btn btn-secondary">
+                            <i class="fas fa-home me-2"></i>
+                            Return to Homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

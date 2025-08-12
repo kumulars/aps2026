@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Successfully Unsubscribed{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-check-circle fa-3x text-success mb-4"></i>
+                    
+                    <h1 class="card-title mb-4">Successfully Unsubscribed</h1>
+                    
+                    <p class="mb-4">
+                        <strong>{{ subscriber.email }}</strong> has been successfully 
+                        unsubscribed from our newsletter.
+                    </p>
+                    
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-envelope-open me-2"></i>
+                        You will no longer receive email communications from the 
+                        American Peptide Society.
+                    </div>
+                    
+                    <p class="text-muted mb-4">
+                        We're sorry to see you go! If you change your mind, you can 
+                        always subscribe again using our newsletter signup form.
+                    </p>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/mailing/subscribe/" class="btn btn-primary me-md-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            Subscribe Again
+                        </a>
+                        <a href="/" class="btn btn-secondary">
+                            <i class="fas fa-home me-2"></i>
+                            Return to Homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

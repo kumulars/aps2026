@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Unsubscribe from Newsletter{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-envelope-open-text fa-3x text-warning mb-4"></i>
+                    
+                    <h1 class="card-title mb-4">Unsubscribe Confirmation</h1>
+                    
+                    <p class="mb-4">
+                        We're sorry to see you go! Are you sure you want to unsubscribe 
+                        <strong>{{ subscriber.email }}</strong> from our newsletter?
+                    </p>
+                    
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        You'll no longer receive updates about peptide science, 
+                        symposiums, and APS news.
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-warning btn-lg me-md-2">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Yes, Unsubscribe
+                            </button>
+                            <a href="/" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Keep My Subscription
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -132,6 +132,30 @@ Project lacks linting/formatting configuration. Consider adding:
 - isort for import sorting
 - flake8 for linting
 
+## FUTURE DEVELOPMENT PRIORITIES (ON HOLD)
+
+### SEO Optimization Module
+**Status:** Planned - Comprehensive SEO strategy designed
+- Enhanced meta tag management for all page models
+- Structured data (Schema.org) implementation for scientific content
+- Advanced keyword optimization for peptide research terms
+- Google Search Console integration
+- Content optimization tools and SEO audit commands
+- Authority building through scientific community link building
+- Expected results: 100% increase in organic traffic within 6 months
+
+### Voting/Elections Module
+**Status:** Planned - Democratic governance platform
+- Secure electronic voting system for APS elections
+- Member authentication and eligibility verification
+- Multiple election types: Board elections, policy votes, award selections
+- Real-time vote counting and result visualization
+- Complete audit trail and transparency features
+- Mobile-optimized voting experience
+- Blockchain-inspired security for election integrity
+
+**Note:** Both modules have detailed specifications available. Priority should be given to SEO implementation first for member growth, followed by voting system for governance needs.
+
 ### Database Considerations
 - Development uses SQLite
 - Production settings support PostgreSQL/MySQL

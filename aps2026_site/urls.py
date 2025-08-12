@@ -38,6 +38,9 @@ urlpatterns = [
     
     # Member views
     path("members/", include("members.urls")),
+    
+    # Mailing system
+    path("mailing/", include("mailing.urls")),
 
     # Wagtail's page routing — MUST come last
     path("", include(wagtail_urls)),
