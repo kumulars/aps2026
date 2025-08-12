@@ -5,7 +5,7 @@
 
 /* Force the background image to appear */
 .wagtail-logo {
-  background-image: url('/static/images/aps_circle.png') !important;
+  background-image: url("/static/images/aps_circle.20dce8e1f2aa.png") !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
   background-position: center left !important;

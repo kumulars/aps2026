@@ -1,0 +1,309 @@
+{% extends "wagtailadmin/base.html" %}
+{% load static %}
+
+{% block titletag %}Analytics Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .analytics-dashboard {
+        padding: 20px;
+    }
+    
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .metric-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .metric-label {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .metric-value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .metric-change {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    .metric-change.positive {
+        color: #28a745;
+    }
+    
+    .metric-change.negative {
+        color: #dc3545;
+    }
+    
+    .chart-container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .data-table {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .health-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    
+    .health-good {
+        background: #28a745;
+    }
+    
+    .health-warning {
+        background: #ffc107;
+    }
+    
+    .health-error {
+        background: #dc3545;
+    }
+    
+    .date-filter {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .top-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .top-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .top-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .error-item {
+        background: #fff3cd;
+        padding: 10px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-dashboard">
+    <header class="w-header">
+        <h1 class="w-header__title">
+            Analytics Dashboard
+            {% if not system_health.analytics_enabled %}
+                <span class="w-status w-status--critical">Disabled</span>
+            {% endif %}
+        </h1>
+        <div class="w-header__controls">
+            <a href="{% url 'analytics_settings' %}" class="button button-small">
+                <svg class="icon icon-cog" aria-hidden="true"><use href="#icon-cog"></use></svg>
+                Settings
+            </a>
+            <a href="{% url 'analytics_export' %}?start_date={{ start_date }}&end_date={{ end_date }}" class="button button-small">
+                <svg class="icon icon-download" aria-hidden="true"><use href="#icon-download"></use></svg>
+                Export CSV
+            </a>
+            <a href="{% url 'analytics_debug' %}" class="button button-small">
+                <svg class="icon icon-help" aria-hidden="true"><use href="#icon-help"></use></svg>
+                Debug
+            </a>
+        </div>
+    </header>
+
+    <!-- Date Filter -->
+    <div class="date-filter">
+        <form method="get" class="w-form">
+            <div class="w-field__wrapper">
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date" id="start_date" value="{{ start_date|date:'Y-m-d' }}">
+            </div>
+            <div class="w-field__wrapper">
+                <label for="end_date">End Date:</label>
+                <input type="date" name="end_date" id="end_date" value="{{ end_date|date:'Y-m-d' }}">
+            </div>
+            <button type="submit" class="button button-primary">Update</button>
+        </form>
+    </div>
+
+    <!-- System Health -->
+    {% if system_health.failed_events > 0 or not system_health.analytics_enabled %}
+    <div class="w-panel">
+        <h2 class="w-panel__heading">System Health</h2>
+        <div class="w-panel__body">
+            {% if not system_health.analytics_enabled %}
+            <p class="error-item">
+                <strong>Analytics is currently disabled.</strong> 
+                <a href="{% url 'analytics_settings' %}">Enable in settings</a>
+            </p>
+            {% endif %}
+            {% if system_health.failed_events > 0 %}
+            <p class="error-item">
+                <strong>{{ system_health.failed_events }} failed events</strong> in the last 24 hours.
+                <a href="{% url 'analytics_debug' %}">View debug info</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Metrics -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Page Views</div>
+            <div class="metric-value">{{ metrics.total_page_views|floatformat:0 }}</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-label">Unique Visitors</div>
+            <div class="metric-value">{{ metrics.unique_visitors|floatformat:0 }}</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-label">Searches</div>
+            <div class="metric-value">{{ metrics.total_searches|floatformat:0 }}</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-label">Errors</div>
+            <div class="metric-value">{{ metrics.error_count|floatformat:0 }}</div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-container">
+        <h2>Traffic Trend</h2>
+        <canvas id="trafficChart" width="400" height="100"></canvas>
+    </div>
+
+    <!-- Top Pages & Searches -->
+    <div class="w-layout">
+        <div class="w-layout__item w-layout__item--6">
+            <div class="data-table">
+                <h3>Top Pages</h3>
+                <ul class="top-list">
+                    {% for page in top_pages %}
+                    <li>
+                        <span>{{ page.page_url|truncatechars:50 }}</span>
+                        <strong>{{ page.views }}</strong>
+                    </li>
+                    {% empty %}
+                    <li>No page views recorded</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="w-layout__item w-layout__item--6">
+            <div class="data-table">
+                <h3>Top Searches</h3>
+                <ul class="top-list">
+                    {% for search, count in top_searches %}
+                    <li>
+                        <span>{{ search }}</span>
+                        <strong>{{ count }}</strong>
+                    </li>
+                    {% empty %}
+                    <li>No searches recorded</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Errors -->
+    {% if recent_errors %}
+    <div class="data-table">
+        <h3>Recent Errors (Last 24 Hours)</h3>
+        {% for error in recent_errors|slice:":5" %}
+        <div class="error-item">
+            <strong>{{ error.timestamp|date:"Y-m-d H:i" }}</strong> - 
+            {{ error.page_url|truncatechars:50 }}
+            {% if error.event_data.error_type %}
+                ({{ error.event_data.error_type }})
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Traffic chart
+const ctx = document.getElementById('trafficChart').getContext('2d');
+const dailyData = {{ daily_data|safe }};
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: dailyData.map(d => d.date),
+        datasets: [{
+            label: 'Page Views',
+            data: dailyData.map(d => d.page_views),
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Visitors',
+            data: dailyData.map(d => d.visitors),
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            tension: 0.1
+        }, {
+            label: 'Searches',
+            data: dailyData.map(d => d.searches),
+            borderColor: 'rgb(255, 159, 64)',
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

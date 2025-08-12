@@ -10,7 +10,8 @@ BASE_DIR = PROJECT_DIR.parent                         # /aps2026/
 INSTALLED_APPS = [
     "home",
     "search",
-    "members",  # Custom membership app
+    "members",
+    "analytics",  # Custom membership app
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",  # Allauth middleware
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "analytics.middleware.AnalyticsMiddleware",  # Analytics tracking
 ]
 
 ROOT_URLCONF = "aps2026_site.urls"
@@ -67,6 +69,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "analytics.context_processors.analytics_context",
             ],
         },
     },
@@ -241,6 +244,11 @@ LOGGING = {
     },
     'loggers': {
         'home.management.commands.automated_peptidelinks_updater': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'analytics': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
             'propagate': False,

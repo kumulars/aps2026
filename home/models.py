@@ -775,6 +775,9 @@ class Researcher(models.Model):
                                         help_text="Search term for PubMed (e.g., 'Smith J[Author]')")
     pubmed_url = models.URLField(blank=True)
     
+    # Google Scholar Integration
+    google_scholar_url = models.URLField(blank=True, help_text="Google Scholar profile or search URL")
+    
     # Research Areas
     research_areas = models.ManyToManyField(ResearchArea, blank=True)
     research_keywords = models.TextField(blank=True, help_text="Comma-separated keywords")
@@ -837,7 +840,8 @@ class Researcher(models.Model):
         MultiFieldPanel([
             FieldPanel('pubmed_search_term'),
             FieldPanel('pubmed_url'),
-        ], heading="PubMed Information"),
+            FieldPanel('google_scholar_url'),
+        ], heading="Academic Profile Links"),
         
         MultiFieldPanel([
             FieldPanel('research_areas'),
@@ -881,11 +885,19 @@ class Researcher(models.Model):
         return ", ".join(parts) if parts else self.country
 
     def get_pubmed_url(self):
-        """Generate PubMed URL from search term"""
+        """Get PubMed URL (prefers updated pubmed_url field over legacy search term)"""
+        # Use the updated pubmed_url field first (better format)
+        if self.pubmed_url:
+            return self.pubmed_url
+        # Fallback to legacy pubmed_search_term if needed
         if self.pubmed_search_term:
             base_url = "https://www.ncbi.nlm.nih.gov/pubmed/"
             return f"{base_url}?term={self.pubmed_search_term}"
-        return self.pubmed_url
+        return None
+    
+    def get_google_scholar_url(self):
+        """Get Google Scholar URL"""
+        return self.google_scholar_url if self.google_scholar_url else None
 
     def check_website_status(self):
         """Check if website URL is accessible"""
@@ -1097,6 +1109,11 @@ class PeptideLinksIndexPage(Page):
             'state_province', flat=True).distinct().order_by('state_province')
         research_areas = ResearchArea.objects.all()
         
+        # Get latest news items for sidebar
+        latest_news = NewsResearchItem.objects.filter(
+            news_item_image__isnull=False
+        ).order_by('-news_item_entry_date')[:6]
+        
         context.update({
             'researchers_by_location': sorted_locations,
             'search_query': search_query,
@@ -1107,6 +1124,7 @@ class PeptideLinksIndexPage(Page):
             'selected_state': state_filter,
             'selected_research_area': research_area_filter,
             'total_researchers': researchers.count(),
+            'latest_news': latest_news,
         })
         
         return context
@@ -1719,3 +1737,166 @@ class SymposiumImageViewSet(SnippetViewSet):
     list_filter = ['year', 'import_date']
     search_fields = ['filename', 'caption', 'year']
     ordering = ['-year', 'display_order', 'filename']
+
+
+# =====================================
+# KNOWLEDGE BASE MODELS
+# =====================================
+
+@register_snippet
+class KnowledgeBaseCategory(models.Model):
+    """Categories for knowledge base articles"""
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    description = models.TextField(blank=True, help_text="Brief description of this category")
+    sort_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+    
+    class Meta:
+        verbose_name_plural = "Knowledge Base Categories"
+        ordering = ['sort_order', 'name']
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+
+class KnowledgeBaseArticle(models.Model):
+    """Individual knowledge base articles"""
+    title = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=300, unique=True, blank=True)
+    excerpt = models.TextField(blank=True, help_text="Short summary of the article")
+    content = RichTextField(help_text="Full article content")
+    
+    # Categories - many-to-many relationship
+    categories = models.ManyToManyField(KnowledgeBaseCategory, blank=True, related_name='articles')
+    
+    # Tags for additional classification
+    tags = models.CharField(max_length=500, blank=True, help_text="Comma-separated tags")
+    
+    # Publication info
+    published_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=[
+        ('draft', 'Draft'),
+        ('publish', 'Published'),
+        ('private', 'Private'),
+    ], default='publish')
+    
+    # SEO and metadata
+    meta_description = models.CharField(max_length=300, blank=True)
+    
+    # Tracking
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    import_date = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-published_date']
+        verbose_name = "Knowledge Base Article"
+        verbose_name_plural = "Knowledge Base Articles"
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.title
+    
+    @property
+    def tag_list(self):
+        """Return tags as a list"""
+        return [tag.strip() for tag in self.tags.split(',') if tag.strip()]
+    
+    def get_absolute_url(self):
+        return reverse('knowledge_base_article', args=[self.slug])
+
+
+class KnowledgeBaseIndexPage(Page):
+    """Knowledge base index/listing page"""
+    intro = RichTextField(
+        blank=True,
+        default="<p>Welcome to the APS Knowledge Base - your comprehensive resource for peptide science education and research.</p>"
+    )
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+    ]
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # Get all published articles
+        articles = KnowledgeBaseArticle.objects.filter(status='publish').order_by('-published_date')
+        
+        # Handle category filtering
+        category_slug = request.GET.get('category')
+        selected_category = None
+        if category_slug:
+            try:
+                selected_category = KnowledgeBaseCategory.objects.get(slug=category_slug)
+                articles = articles.filter(categories=selected_category)
+            except KnowledgeBaseCategory.DoesNotExist:
+                pass
+        
+        # Handle search
+        search_query = request.GET.get('search', '').strip()
+        if search_query:
+            articles = articles.filter(
+                Q(title__icontains=search_query) |
+                Q(content__icontains=search_query) |
+                Q(tags__icontains=search_query) |
+                Q(excerpt__icontains=search_query)
+            )
+        
+        # Pagination
+        from django.core.paginator import Paginator
+        paginator = Paginator(articles, 12)  # 12 articles per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        context.update({
+            'articles': page_obj,
+            'categories': KnowledgeBaseCategory.objects.all(),
+            'selected_category': selected_category,
+            'search_query': search_query,
+            'total_articles': articles.count(),
+        })
+        
+        return context
+
+
+class KnowledgeBaseArticlePage(Page):
+    """Individual knowledge base article page"""
+    article = models.OneToOneField(
+        KnowledgeBaseArticle, 
+        on_delete=models.PROTECT,
+        related_name='page'
+    )
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('article'),
+    ]
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        
+        # Get related articles from same categories
+        if self.article.categories.exists():
+            related_articles = KnowledgeBaseArticle.objects.filter(
+                categories__in=self.article.categories.all(),
+                status='publish'
+            ).exclude(id=self.article.id).distinct()[:6]
+        else:
+            related_articles = KnowledgeBaseArticle.objects.filter(
+                status='publish'
+            ).exclude(id=self.article.id)[:6]
+        
+        context.update({
+            'related_articles': related_articles,
+        })
+        
+        return context

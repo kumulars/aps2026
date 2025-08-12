@@ -14,7 +14,7 @@ from django.db import transaction
 from home.models import Researcher, ResearchArea
 import hashlib
 import unicodedata
-from urllib.parse import urljoin
+from urllib.parse import urljoin, quote
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
@@ -215,8 +215,9 @@ class Command(BaseCommand):
             
             # Check if this link text appears in our line
             if link_text and link_text in line:
+                # Skip old PubMed URLs - we'll generate proper ones
                 if 'pubmed' in href.lower() or 'ncbi' in href.lower():
-                    researcher_info['pubmed_url'] = href
+                    pass  # Don't use the old format URLs from source
                 elif href.startswith('http') and not researcher_info['website_url']:
                     researcher_info['website_url'] = href
                     researcher_info['name'] = link_text
@@ -231,8 +232,93 @@ class Command(BaseCommand):
             if remaining:
                 # Clean institution name to prevent duplicates
                 researcher_info['institution'] = self.clean_institution_name(remaining)
+            
+            # Generate proper PubMed URL using improved format
+            researcher_info['pubmed_url'] = self.create_proper_pubmed_url(researcher_info['name'])
+            
+            # Generate Google Scholar URL
+            researcher_info['google_scholar_url'] = self.create_google_scholar_url(researcher_info['name'])
                 
         return researcher_info if researcher_info['name'] else None
+    
+    def create_proper_pubmed_url(self, full_name):
+        """
+        Create a proper PubMed search URL for a researcher using the correct format.
+        Uses "LastName FirstName"[Author] format for precise matching.
+        """
+        if not full_name:
+            return ''
+        
+        # Parse name parts
+        name_parts = full_name.strip().split()
+        if len(name_parts) < 2:
+            return ''
+        
+        # Get first and last name
+        first_name = self.clean_name_for_pubmed(name_parts[0])
+        last_name = self.clean_name_for_pubmed(' '.join(name_parts[1:]))
+        
+        if not first_name or not last_name:
+            return ''
+        
+        # Clean names for PubMed search
+        first_name_clean = re.sub(r'[^\w\s-]', '', first_name)
+        last_name_clean = re.sub(r'[^\w\s-]', '', last_name)
+        
+        # Construct search term with full first name
+        if first_name_clean:
+            search_term = f'"{last_name_clean} {first_name_clean}"[Author]'
+        else:
+            search_term = f'"{last_name_clean}"[Author]'
+        
+        # URL encode the search term
+        encoded_term = quote(search_term)
+        
+        # Create the full PubMed URL
+        pubmed_url = f'https://pubmed.ncbi.nlm.nih.gov/?term={encoded_term}&sort=date'
+        
+        return pubmed_url
+    
+    def clean_name_for_pubmed(self, name):
+        """Clean and normalize name for PubMed search."""
+        if not name:
+            return ""
+        
+        # Remove titles and suffixes
+        name = re.sub(r'\b(Dr\.?|Prof\.?|Professor|PhD\.?|Ph\.D\.?|MD\.?|M\.D\.?|Jr\.?|Sr\.?|II|III)\b', '', name, flags=re.IGNORECASE)
+        
+        # Remove special characters except hyphens and apostrophes
+        name = re.sub(r'[^\w\s\'-]', '', name)
+        
+        # Clean up whitespace
+        name = re.sub(r'\s+', ' ', name).strip()
+        
+        # Handle compound names - take the primary part for first names
+        if ' ' in name and len(name.split()) > 1:
+            parts = name.split()
+            # For first names, take the first part; for last names, keep all parts
+            return parts[0] if len(parts[0]) > 1 else name
+        
+        return name
+    
+    def create_google_scholar_url(self, full_name):
+        """Create a Google Scholar search URL for a researcher"""
+        if not full_name:
+            return ''
+        
+        # Clean and format the name for Google Scholar search
+        clean_name = full_name.strip()
+        
+        # Create search term with quotes for exact match
+        search_term = f'"{clean_name}"'
+        
+        # URL encode the search term
+        encoded_term = quote(search_term)
+        
+        # Create the Google Scholar URL
+        scholar_url = f'https://scholar.google.com/scholar?q={encoded_term}&hl=en&as_sdt=0%2C5'
+        
+        return scholar_url
     
     def clean_institution_name(self, institution):
         """Clean institution name to prevent duplicates"""
@@ -305,6 +391,7 @@ class Command(BaseCommand):
             researcher_defaults = {
                 'website_url': researcher_data.get('website_url', ''),
                 'pubmed_url': researcher_data.get('pubmed_url', ''),
+                'google_scholar_url': researcher_data.get('google_scholar_url', ''),
                 'country': location.get('country', 'USA'),
                 'state_province': location.get('state_province', ''),
                 'is_active': True,

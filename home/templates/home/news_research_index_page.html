@@ -9,20 +9,20 @@
       
       <!-- Enhanced Category Filter Navigation -->
       <div class="category-filter-section mb-4">
-        <div class="d-flex flex-wrap justify-content-center gap-2">
+        <div class="d-flex flex-wrap justify-content-start gap-2">
           <a href="{{ page.url }}" 
-             class="category-filter-btn {% if not selected_category %}active{% endif %}"
+             class="category-filter-btn {% if not selected_category %}active{% endif %} fw-bold"
              data-category="all">
             <span class="filter-label">ALL</span>
-            <span class="filter-count">({{ total_count|default:"0" }})</span>
+            <span class="filter-count">| {{ total_count|default:"0" }} |</span>
           </a>
           
           {% for cat in categories %}
             <a href="?category={{ cat.name }}" 
-               class="category-filter-btn {% if selected_category == cat.name %}active{% endif %}"
+               class="category-filter-btn {% if selected_category == cat.name %}active{% endif %} fw-bold"
                data-category="{{ cat.name|lower }}">
               <span class="filter-label">{{ cat.name|upper }}</span>
-              <span class="filter-count">({{ cat.item_count|default:"0" }})</span>
+              <span class="filter-count">| {{ cat.item_count|default:"0" }} |</span>
             </a>
           {% endfor %}
         </div>

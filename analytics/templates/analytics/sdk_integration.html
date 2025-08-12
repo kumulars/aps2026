@@ -1,0 +1,237 @@
+{% load static %}
+
+<!-- APS Analytics SDK Integration -->
+<script src="{% static 'analytics/analytics-sdk.js' %}"></script>
+<script>
+// Initialize APS Analytics with configuration
+APS.Analytics.init({
+    endpoint: '/api/analytics/',
+    debug: {% if debug %}true{% else %}false{% endif %},
+    enabled: {% if analytics_enabled %}true{% else %}false{% endif %},
+    batchSize: 5,
+    flushInterval: 3000
+});
+
+// Set user information if available
+{% if user.is_authenticated %}
+APS.Analytics.identifyUser({{ user.pk }}, {
+    username: '{{ user.username }}',
+    is_staff: {% if user.is_staff %}true{% else %}false{% endif %},
+    joined_date: '{{ user.date_joined|date:"Y-m-d" }}'
+});
+{% endif %}
+
+// Page-specific tracking
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Track page category based on URL
+    const path = window.location.pathname;
+    let pageCategory = 'other';
+    
+    if (path.includes('/peptide-links/')) {
+        pageCategory = 'research_directory';
+    } else if (path.includes('/news/')) {
+        pageCategory = 'news';
+    } else if (path.includes('/members/')) {
+        pageCategory = 'membership';
+    } else if (path === '/') {
+        pageCategory = 'homepage';
+    }
+    
+    // Track page category
+    APS.Analytics.track('page_category', {
+        category: pageCategory,
+        url: window.location.href
+    });
+    
+    // Track newsletter signup forms
+    const newsletterForms = document.querySelectorAll('form[action*="newsletter"], form[id*="newsletter"]');
+    newsletterForms.forEach(form => {
+        form.addEventListener('submit', function() {
+            APS.Analytics.goal('newsletter_signup', null, {
+                form_location: pageCategory,
+                referrer: document.referrer
+            });
+        });
+    });
+    
+    // Track member registration
+    const memberForms = document.querySelectorAll('form[action*="register"], form[id*="register"]');
+    memberForms.forEach(form => {
+        form.addEventListener('submit', function() {
+            APS.Analytics.goal('member_registration', null, {
+                form_location: pageCategory
+            });
+        });
+    });
+    
+    // Track peptide links interactions
+    if (pageCategory === 'research_directory') {
+        // Track search usage
+        const searchForms = document.querySelectorAll('form[method="get"]');
+        searchForms.forEach(form => {
+            form.addEventListener('submit', function() {
+                const query = form.querySelector('input[name="search"]')?.value || '';
+                if (query) {
+                    APS.Analytics.track('peptide_search', {
+                        query: query.substring(0, 100), // Limit query length
+                        filters: getActiveFilters()
+                    });
+                }
+            });
+        });
+        
+        // Track researcher profile clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.researcher-name a, .researcher-card a')) {
+                const link = e.target.closest('a');
+                APS.Analytics.track('researcher_profile_view', {
+                    researcher_url: link.href,
+                    list_position: getElementPosition(link)
+                });
+            }
+        });
+    }
+    
+    // Track news article engagement
+    if (pageCategory === 'news') {
+        // Track scroll depth for articles
+        let maxScroll = 0;
+        let milestones = [25, 50, 75, 100];
+        let trackedMilestones = [];
+        
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round(
+                (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+            );
+            
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                
+                // Check for milestones
+                milestones.forEach(milestone => {
+                    if (scrollPercent >= milestone && !trackedMilestones.includes(milestone)) {
+                        trackedMilestones.push(milestone);
+                        APS.Analytics.track('article_scroll_depth', {
+                            depth_percent: milestone,
+                            article_url: window.location.href
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    // Track file downloads
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.href && isDownloadLink(link.href)) {
+            APS.Analytics.track('file_download', {
+                file_url: link.href,
+                file_type: getFileExtension(link.href),
+                link_text: link.textContent.trim().substring(0, 50),
+                page_category: pageCategory
+            });
+        }
+    });
+    
+    // Track external links
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.href && 
+            link.hostname !== window.location.hostname && 
+            !link.href.startsWith('mailto:') && 
+            !link.href.startsWith('tel:')) {
+            
+            APS.Analytics.track('external_link_click', {
+                destination_url: link.href,
+                link_text: link.textContent.trim().substring(0, 50),
+                page_category: pageCategory
+            });
+        }
+    });
+});
+
+// Helper functions
+function getActiveFilters() {
+    const filters = {};
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    ['country', 'state', 'research_area'].forEach(param => {
+        if (urlParams.get(param)) {
+            filters[param] = urlParams.get(param);
+        }
+    });
+    
+    return filters;
+}
+
+function getElementPosition(element) {
+    const containers = document.querySelectorAll('.researcher-row, .researcher-card');
+    return Array.from(containers).indexOf(element.closest('.researcher-row, .researcher-card')) + 1;
+}
+
+function isDownloadLink(url) {
+    const downloadExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.zip', '.rar', '.ppt', '.pptx'];
+    return downloadExtensions.some(ext => url.toLowerCase().includes(ext));
+}
+
+function getFileExtension(url) {
+    return url.split('.').pop().toLowerCase();
+}
+
+// Global functions for manual tracking
+window.trackGoal = function(goalName, value, properties) {
+    APS.Analytics.goal(goalName, value, properties);
+};
+
+window.trackEvent = function(eventName, properties, options) {
+    APS.Analytics.track(eventName, properties, options);
+};
+
+// Error tracking for JavaScript errors
+window.addEventListener('error', function(e) {
+    APS.Analytics.trackError(e.error || new Error(e.message), {
+        type: 'javascript_error',
+        filename: e.filename,
+        lineno: e.lineno,
+        colno: e.colno
+    });
+});
+
+// Track unhandled promise rejections
+window.addEventListener('unhandledrejection', function(e) {
+    APS.Analytics.trackError(new Error(e.reason), {
+        type: 'unhandled_promise_rejection'
+    });
+});
+
+// Performance monitoring
+window.addEventListener('load', function() {
+    // Track page load performance
+    setTimeout(function() {
+        const perfData = performance.timing;
+        const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+        
+        if (loadTime > 0) {
+            APS.Analytics.trackTiming('page_load', 'full_page', loadTime);
+            
+            // Track slow page loads
+            if (loadTime > 3000) {
+                APS.Analytics.track('slow_page_load', {
+                    load_time_ms: loadTime,
+                    url: window.location.href
+                });
+            }
+        }
+    }, 0);
+});
+
+// Track session duration on page unload
+window.addEventListener('beforeunload', function() {
+    const sessionDuration = performance.now();
+    APS.Analytics.trackTiming('session_duration', window.location.pathname, sessionDuration);
+});
+
+console.log('🎯 APS Analytics SDK loaded and tracking active');
+</script>

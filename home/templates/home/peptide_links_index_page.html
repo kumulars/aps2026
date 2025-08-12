@@ -8,24 +8,43 @@
         <div class="col-md-12">
             <h1 class="main-page-header">{{ page.title }}</h1>
             <div class="peptidelinks-intro">
-                {{ page.intro_text|safe }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>This site provides a directory of principal investigators in peptide science at academic institutions, 
+                        government laboratories, and companies who have research-oriented web pages. It serves the peptide science 
+                        community by connecting researchers across institutions and facilitating collaboration.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>The field of peptides is interdisciplinary, spanning chemistry, biochemistry, molecular biology, medicine, 
+                        pharmaceutical sciences, materials science, and engineering. While we cannot include every researcher who 
+                        uses peptides, we aim to provide a comprehensive directory of active peptide scientists.</p>
+                    </div>
+                </div>
                 
                 <!-- Submission Information -->
                 <div class="peptidelinks-submission-info-top">
-                    {{ page.submission_instructions|safe }}
-                    <div class="text-center">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-primary btn-lg" onclick="openClaimProfileModal()">
-                                <i class="fas fa-user-check"></i> Claim My Profile
-                            </button>
-                            <button type="button" class="btn btn-success btn-lg" onclick="openAddProfileModal()">
-                                <i class="fas fa-user-plus"></i> Add Me to PeptideLinks
-                            </button>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="text-start">If you are a peptide scientist and principal investigator with a web page at your institution, 
+                            you may submit your information for inclusion in this directory. Please provide your name, 
+                            institution, research focus, and website URL.</p>
                         </div>
-                        <p class="text-muted mt-2 small" style="margin-bottom: 19px;">
-                            <i class="fas fa-info-circle"></i> 
-                            To update your profile, we'll create a free APS membership account for you
-                        </p>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary" onclick="openClaimProfileModal()">
+                                        <i class="fas fa-user-check"></i> Claim My Profile
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="openAddProfileModal()">
+                                        <i class="fas fa-user-plus"></i> Add Me to PeptideLinks
+                                    </button>
+                                </div>
+                                <p class="text-muted mt-2 small" style="margin-bottom: 19px;">
+                                    <i class="fas fa-info-circle"></i> 
+                                    To update your profile, we'll create a free APS membership account for you
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,7 +147,7 @@
     <!-- Results Display -->
     {% if total_researchers > 0 %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="peptidelinks-results">
                 <!-- List View (Default) -->
                 <div id="listView" class="view-container active">
@@ -161,6 +180,15 @@
                                            class="action-link pubmed"
                                            title="PubMed">
                                             <i class="fas fa-book-medical"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if researcher.get_google_scholar_url %}
+                                        <a href="{{ researcher.get_google_scholar_url }}" 
+                                           target="_blank" 
+                                           rel="noopener" 
+                                           class="action-link scholar"
+                                           title="Google Scholar">
+                                            <i class="fab fa-google"></i>
                                         </a>
                                     {% endif %}
                                     {% if researcher.website_url %}
@@ -215,6 +243,9 @@
                                         {% if researcher.get_pubmed_url %}
                                             <a href="{{ researcher.get_pubmed_url }}" target="_blank" class="link-badge">PubMed</a>
                                         {% endif %}
+                                        {% if researcher.get_google_scholar_url %}
+                                            <a href="{{ researcher.get_google_scholar_url }}" target="_blank" class="link-badge">Google Scholar</a>
+                                        {% endif %}
                                         {% if researcher.orcid_id %}
                                             <a href="https://orcid.org/{{ researcher.orcid_id }}" target="_blank" class="link-badge">ORCID</a>
                                         {% endif %}
@@ -228,11 +259,41 @@
                 </div>
             </div>
         </div>
+        
+        <!-- News Sidebar -->
+        <div class="col-md-4">
+            <div class="news-sidebar">
+                <h4 class="sidebar-title">Latest News & Research Items</h4>
+                {% for news_item in latest_news %}
+                <div class="news-sidebar-item">
+                    {% if news_item.news_item_image %}
+                    <div class="news-sidebar-image">
+                        <a href="/news/{{ news_item.slug }}/">
+                            {% load wagtailimages_tags %}
+                            {% image news_item.news_item_image fill-100x100 as news_thumb %}
+                            <img src="{{ news_thumb.url }}" alt="{{ news_item.news_item_short_title }}">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="news-sidebar-content">
+                        <h6 class="news-sidebar-title">
+                            <a href="/news/{{ news_item.slug }}/">{{ news_item.news_item_short_title }}</a>
+                        </h6>
+                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords:20 }}</p>
+                        <small class="news-sidebar-date">{{ news_item.news_item_entry_date|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="text-center mt-3">
+                    <a href="/news-research-index/" class="btn btn-outline-primary btn-sm">View All News →</a>
+                </div>
+            </div>
+        </div>
     </div>
     {% else %}
     <!-- No Results State -->
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="no-results-state">
                 <i class="fas fa-search fa-3x text-muted mb-3"></i>
                 {% if search_query or selected_country or selected_state %}
@@ -242,6 +303,36 @@
                     <h4>Start searching to find researchers</h4>
                     <p>Use the search bar above to find peptide science researchers by name, institution, or location</p>
                 {% endif %}
+            </div>
+        </div>
+        
+        <!-- News Sidebar (always visible) -->
+        <div class="col-md-4">
+            <div class="news-sidebar">
+                <h4 class="sidebar-title">Latest News</h4>
+                {% for news_item in latest_news %}
+                <div class="news-sidebar-item">
+                    {% if news_item.news_item_image %}
+                    <div class="news-sidebar-image">
+                        <a href="/news/{{ news_item.slug }}/">
+                            {% load wagtailimages_tags %}
+                            {% image news_item.news_item_image fill-100x100 as news_thumb %}
+                            <img src="{{ news_thumb.url }}" alt="{{ news_item.news_item_short_title }}">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="news-sidebar-content">
+                        <h6 class="news-sidebar-title">
+                            <a href="/news/{{ news_item.slug }}/">{{ news_item.news_item_short_title }}</a>
+                        </h6>
+                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords:20 }}</p>
+                        <small class="news-sidebar-date">{{ news_item.news_item_entry_date|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="text-center mt-3">
+                    <a href="/news-research/" class="btn btn-outline-primary btn-sm">View All News →</a>
+                </div>
             </div>
         </div>
     </div>
@@ -464,8 +555,21 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.action-link.pubmed i {
+    color: #2563eb; /* Blue book icon */
+}
+
 .action-link.pubmed:hover {
     background: #337ab7;
+    color: white;
+}
+
+.action-link.scholar i {
+    color: #dc2626; /* Red G icon */
+}
+
+.action-link.scholar:hover {
+    background: #4285f4;
     color: white;
 }
 
@@ -536,6 +640,90 @@
     color: white;
 }
 
+/* News Sidebar Styles */
+.news-sidebar {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 1px solid #e9ecef;
+}
+
+.sidebar-title {
+    color: #1D3557;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #FF7F11;
+}
+
+.news-sidebar-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.news-sidebar-item:last-of-type {
+    border-bottom: none;
+    margin-bottom: 1rem;
+    padding-bottom: 0;
+}
+
+.news-sidebar-image {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.news-sidebar-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.news-sidebar-image:hover img {
+    transform: scale(1.05);
+}
+
+.news-sidebar-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.news-sidebar-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.news-sidebar-title a {
+    color: #1D3557;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.news-sidebar-title a:hover {
+    color: #FF7F11;
+}
+
+.news-sidebar-blurb {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.news-sidebar-date {
+    color: #999;
+    font-size: 0.75rem;
+}
+
 /* No Results State */
 .no-results-state {
     text-align: center;
@@ -546,6 +734,21 @@
 }
 
 /* Mobile Optimization */
+@media (max-width: 768px) {
+    .news-sidebar {
+        margin-top: 3rem;
+    }
+    
+    .news-sidebar-item {
+        flex-direction: row;
+    }
+    
+    .news-sidebar-image {
+        width: 80px;
+        height: 80px;
+    }
+}
+
 @media (max-width: 768px) {
     .peptidelinks-search-section {
         padding: 1.5rem 1rem;

@@ -7,25 +7,20 @@
 <div class="aps-container block-content">
   <div class="row">
     <div class="col-md-12">
-      <h1 class="main-page-header">{{ page.title }}</h1>
+      <h1 class="main-page-header">American Peptide Society Awards</h1>
     </div>
   </div>
 
   {% if page.introduction %}
     <div class="row">
-      <div class="col-md-12">
-        <div class="award-introduction">
-          {{ page.introduction|richtext }}
+      <div class="col-md-8">
+        <p>{{ page.introduction|richtext }}</p>
         </div>
-      </div>
     </div>
   {% endif %}
 
   <div class="row">
-    <div class="col-md-8 nopad">
-      <div class="panel-title">
-        <p>American Peptide Society Awards</p>
-      </div>
+    <div class="col-md-8">
       
       {% for award_type in award_types %}
         <div class="award-entry">
@@ -68,39 +63,13 @@
       {% endfor %}
     </div>
     
-    <div class="col-md-4 nopad">
-      <h2 class="secondary-page-header">About Our Awards</h2>
-      <p>The American Peptide Society recognizes outstanding contributions to peptide science through our prestigious awards program.</p>
-      
-      <div class="awards-stats">
-        <div class="stat-item">
-          <strong>{{ award_types.count }}</strong><br>
-          Award Types
-        </div>
-        <div class="stat-item">
-          <strong>
-            {% for award_type in award_types %}
-              {% if forloop.first %}{{ award_type.recipient_count }}{% else %}{% widthratio award_type.recipient_count|add:forloop.counter0 1 1 %}{% endif %}
-            {% endfor %}
-          </strong><br>
-          Total Recipients
-        </div>
-        <div class="stat-item">
-          <strong>{{ award_types|length }}+</strong><br>
-          Decades of Excellence
-        </div>
-      </div>
+    <div class="col-md-4">
+        &nbsp;
     </div>
   </div>
 </div>
 
 <style>
-.award-introduction {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-left: 4px solid #007bff;
-}
 
 .award-entry {
   margin-bottom: 1.5rem;
@@ -117,7 +86,7 @@
 }
 
 .award-name a:hover {
-  color: #007bff;
+  color: #cb3b2d; 
   text-decoration: underline;
 }
 

@@ -112,9 +112,9 @@ h4, .h4 {
 }
 
 .index-header {
-  font-size: clamp(0.9rem, 1vw, 1.05rem);
+  font-size: clamp(.95rem, 1.05vw, 1.1rem);
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
   color: #5A5A5A;
   margin-top: 7px;
 }
