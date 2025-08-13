@@ -6,7 +6,13 @@ __pycache__/
 # Wagtail/Django
 media/
 staticfiles/
+static/staticfiles.json
+static/css/*.*.css
 local_settings.py
+
+# Logs
+logs/
+*.log
 
 # Virtual environments
 venv/
