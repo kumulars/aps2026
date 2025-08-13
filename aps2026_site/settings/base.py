@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     "search",
     "members",
     "analytics",  # Custom membership app
+    "mailing",    # Email campaign system
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
