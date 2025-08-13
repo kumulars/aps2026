@@ -60,59 +60,11 @@ body.login {
   z-index: 1;
 }
 
-/* Increase left-hand navigation column width by 119px */
-/* Override Wagtail core sidebar width with high specificity */
+/* Sidebar width reset to Wagtail defaults */
+/* Removed custom width overrides to fix pop-out menu issues */
 
-/* Target the exact Wagtail core selectors with higher specificity */
-body .sidebar,
-body .sidebar-loading,
-html body .sidebar,
-html body .sidebar-loading {
-  width: calc(200px + 119px) !important;
-  min-width: calc(200px + 119px) !important;
-  max-width: calc(200px + 119px) !important;
-}
-
-/* Additional selectors for comprehensive coverage */
-.w-sidebar-nav,
-.sidebar-nav,
-[data-controller="w-sidebar"],
-.w-nav-side,
-aside[role="navigation"],
-.navigation,
-.nav-wrapper,
-.sidebar-wrapper {
-  width: calc(200px + 119px) !important;
-  min-width: calc(200px + 119px) !important;
-  max-width: calc(200px + 119px) !important;
-}
-
-/* Reset the content margin - let's remove the previous problematic rule */
-.content-wrapper {
-  margin-left: 0 !important;
-}
-
-/* Reset content area margin to use full width */
-/* Target Wagtail's main content container */
-body .content-main,
-body main[role="main"],
-body .main-content,
-body .main,
-body .content,
-body .wrapper {
-  margin-left: 89px !important;
-  
-}
-
-/* Force the body to accommodate the wider sidebar */
-body {
-  --w-sidebar-width: calc(200px + 119px) !important;
-}
-
-/* CSS custom properties approach for newer Wagtail versions */
-:root {
-  --sidebar-width: calc(200px + 119px) !important;
-}
+/* Content area restored to Wagtail defaults */
+/* All custom width overrides removed for proper menu functionality */
 
 /* Make menu items in the left navigation bold */
 /* Target all navigation menu items and links in the sidebar */

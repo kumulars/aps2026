@@ -289,16 +289,19 @@ def register_analytics_api_urls():
 
 @hooks.register('register_admin_menu_item')
 def register_analytics_menu():
-    from wagtail.admin.menu import SubmenuMenuItem
+    from wagtail.admin.menu import SubmenuMenuItem, MenuItem, Menu
+    
+    # Create a Menu object with the menu items
+    analytics_menu = Menu(items=[
+        MenuItem('Dashboard', reverse('analytics_dashboard'), icon_name='chart-bar'),
+        MenuItem('Advanced', reverse('analytics_advanced'), icon_name='chart-line'),
+        MenuItem('Settings', reverse('analytics_settings'), icon_name='cog'),
+        MenuItem('Debug', reverse('analytics_debug'), icon_name='help'),
+    ])
     
     return SubmenuMenuItem(
         'Analytics',
-        menu_items=[
-            MenuItem('Dashboard', reverse('analytics_dashboard'), icon_name='chart-bar'),
-            MenuItem('Advanced', reverse('analytics_advanced'), icon_name='chart-line'),
-            MenuItem('Settings', reverse('analytics_settings'), icon_name='cog'),
-            MenuItem('Debug', reverse('analytics_debug'), icon_name='help'),
-        ],
+        analytics_menu,
         icon_name='chart-line',
         order=1000
     )
