@@ -31,17 +31,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="text-center">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary" onclick="openClaimProfileModal()">
-                                        <i class="fas fa-user-check"></i> Claim My Profile
-                                    </button>
-                                    <button type="button" class="btn btn-success" onclick="openAddProfileModal()">
-                                        <i class="fas fa-user-plus"></i> Add Me to PeptideLinks
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-primary btn-lg" onclick="openAddProfileModal()">
+                                    <i class="fas fa-user-plus" style="color: white;"></i> Add Me to PeptideLinks
+                                </button>
                                 <p class="text-muted mt-2 small" style="margin-bottom: 19px;">
                                     <i class="fas fa-info-circle"></i> 
-                                    To update your profile, we'll create a free APS membership account for you
+                                    Join the directory of peptide science researchers
                                 </p>
                             </div>
                         </div>
@@ -109,7 +104,7 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="btn-group w-100" role="group">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search"></i> Search
+                                    <i class="fas fa-search" style="color: white;"></i> Search
                                 </button>
                                 <a href="{{ page.url }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-times"></i> Clear
@@ -279,7 +274,7 @@
                         <h6 class="news-sidebar-title">
                             <a href="/news/{{ news_item.slug }}/">{{ news_item.news_item_short_title }}</a>
                         </h6>
-                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords:20 }}</p>
+                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords_html:20|safe }}</p>
                         <small class="news-sidebar-date">{{ news_item.news_item_entry_date|date:"M d, Y" }}</small>
                     </div>
                 </div>
@@ -325,7 +320,7 @@
                         <h6 class="news-sidebar-title">
                             <a href="/news/{{ news_item.slug }}/">{{ news_item.news_item_short_title }}</a>
                         </h6>
-                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords:20 }}</p>
+                        <p class="news-sidebar-blurb">{{ news_item.news_item_blurb|truncatewords_html:20|safe }}</p>
                         <small class="news-sidebar-date">{{ news_item.news_item_entry_date|date:"M d, Y" }}</small>
                     </div>
                 </div>
@@ -965,11 +960,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Integrated Profile Management Functions
-function openClaimProfileModal() {
-    document.getElementById('claimProfileModal').style.display = 'block';
-}
-
+// Add Profile Functions
 function openAddProfileModal() {
     document.getElementById('addProfileModal').style.display = 'block';
 }
@@ -978,140 +969,32 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-function searchForProfile() {
-    const searchTerm = document.getElementById('profileSearch').value.trim();
-    if (searchTerm.length < 2) {
-        alert('Please enter at least 2 characters to search');
-        return;
-    }
+function submitAddProfileForm() {
+    const submitBtn = document.getElementById('addSubmitBtn');
     
-    // Show loading
-    document.getElementById('profileSearchResults').innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+    // Disable submit button and show loading
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     
-    fetch(`/api/researchers/suggestions/?q=${encodeURIComponent(searchTerm)}`)
-        .then(response => response.json())
-        .then(data => {
-            displayProfileSearchResults(data.suggestions || []);
-        })
-        .catch(error => {
-            document.getElementById('profileSearchResults').innerHTML = '<div class="text-danger">Error searching profiles</div>';
-        });
-}
-
-function displayProfileSearchResults(suggestions) {
-    const resultsDiv = document.getElementById('profileSearchResults');
-    
-    if (suggestions.length === 0) {
-        resultsDiv.innerHTML = '<div class="text-muted">No profiles found matching your search</div>';
-        return;
-    }
-    
-    let html = '<div class="profile-search-results">';
-    suggestions.forEach((item, index) => {
-        html += `
-            <div class="profile-result-item" onclick="selectProfile(${index}, '${item.name}')">
-                <div class="result-name">${item.name}</div>
-                <div class="result-institution text-muted">${item.institution}</div>
-                <div class="result-location text-muted small">${item.location}</div>
-            </div>
-        `;
-    });
-    html += '</div>';
-    
-    resultsDiv.innerHTML = html;
-    window.searchResults = suggestions; // Store for selection
-}
-
-function selectProfile(index, name) {
-    const profile = window.searchResults[index];
-    document.getElementById('selectedProfileName').textContent = profile.name;
-    document.getElementById('selectedProfileInstitution').textContent = profile.institution;
-    document.getElementById('selectedResearcherId').value = profile.id || ''; // Assuming we get ID from API
-    
-    // Show claim form
-    document.getElementById('profileSearchSection').style.display = 'none';
-    document.getElementById('claimFormSection').style.display = 'block';
-}
-
-function backToSearch() {
-    document.getElementById('profileSearchSection').style.display = 'block';
-    document.getElementById('claimFormSection').style.display = 'none';
-}
-
-function submitClaimForm() {
+    // Collect form data
     const formData = {
-        action: 'claim',
-        researcher_id: document.getElementById('selectedResearcherId').value,
-        email: document.getElementById('claimEmail').value,
-        phone: document.getElementById('claimPhone').value,
-        address_1: document.getElementById('claimAddress').value,
-        city: document.getElementById('claimCity').value,
-        state: document.getElementById('claimState').value,
-        zip_code: document.getElementById('claimZip').value,
-        country: document.getElementById('claimCountry').value,
-        affiliation_type: document.getElementById('claimAffiliationType').value,
-        research_interests: document.getElementById('claimResearchInterests').value,
-        website_url: document.getElementById('claimWebsite').value,
-        orcid_id: document.getElementById('claimOrcid').value,
-        public_bio: document.getElementById('claimBio').value
-    };
-    
-    // Show loading
-    document.getElementById('claimSubmitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    document.getElementById('claimSubmitBtn').disabled = true;
-    
-    fetch('/api/researchers/integrated/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Profile claimed successfully! You will receive a confirmation email shortly.');
-            closeModal('claimProfileModal');
-            // Optionally redirect to member portal
-        } else {
-            alert('Error: ' + (data.error || 'Unknown error occurred'));
-        }
-    })
-    .catch(error => {
-        alert('Network error. Please try again.');
-    })
-    .finally(() => {
-        document.getElementById('claimSubmitBtn').innerHTML = '<i class="fas fa-check"></i> Claim Profile & Join APS';
-        document.getElementById('claimSubmitBtn').disabled = false;
-    });
-}
-
-function submitAddForm() {
-    const formData = {
-        action: 'add_new',
-        first_name: document.getElementById('addFirstName').value,
-        last_name: document.getElementById('addLastName').value,
-        institution: document.getElementById('addInstitution').value,
-        email: document.getElementById('addEmail').value,
-        phone: document.getElementById('addPhone').value,
-        address_1: document.getElementById('addAddress').value,
-        city: document.getElementById('addCity').value,
-        state: document.getElementById('addState').value,
-        zip_code: document.getElementById('addZip').value,
+        first_name: document.getElementById('addFirstName').value.trim(),
+        last_name: document.getElementById('addLastName').value.trim(),
+        email: document.getElementById('addEmail').value.trim(),
+        title: document.getElementById('addTitle').value.trim(),
+        institution: document.getElementById('addInstitution').value.trim(),
+        department: document.getElementById('addDepartment').value.trim(),
         country: document.getElementById('addCountry').value,
-        title: document.getElementById('addTitle').value,
-        department: document.getElementById('addDepartment').value,
-        website_url: document.getElementById('addWebsite').value,
-        orcid_id: document.getElementById('addOrcid').value,
-        research_interests: document.getElementById('addResearchInterests').value,
-        affiliation_type: document.getElementById('addAffiliationType').value
+        state: document.getElementById('addState').value.trim(),
+        city: document.getElementById('addCity').value.trim(),
+        research_interests: document.getElementById('addResearchInterests').value.trim(),
+        website_url: document.getElementById('addWebsiteUrl').value.trim(),
+        phone: document.getElementById('addPhone').value.trim(),
+        affiliation_type: document.getElementById('addAffiliationType').value || 'academic'
     };
     
-    // Show loading
-    document.getElementById('addSubmitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Profile...';
-    document.getElementById('addSubmitBtn').disabled = true;
-    
-    fetch('/api/researchers/integrated/', {
+    // Send to API to create new profile
+    fetch('/api/researchers/add/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -1121,147 +1004,25 @@ function submitAddForm() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Welcome to PeptideLinks and APS! You will receive a welcome email shortly.');
+            alert('Welcome to PeptideLinks! Your profile has been added successfully.');
             closeModal('addProfileModal');
-            // Optionally redirect to member portal
+            location.reload(); // Reload to show the new profile
         } else {
             alert('Error: ' + (data.error || 'Unknown error occurred'));
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Add Me to PeptideLinks';
         }
     })
     .catch(error => {
-        alert('Network error. Please try again.');
-    })
-    .finally(() => {
-        document.getElementById('addSubmitBtn').innerHTML = '<i class="fas fa-user-plus"></i> Add Me to PeptideLinks & Join APS';
-        document.getElementById('addSubmitBtn').disabled = false;
+        console.error('Error:', error);
+        alert('Network error occurred. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Add Me to PeptideLinks';
     });
 }
-</script>
 
-<!-- Claim Profile Modal -->
-<div id="claimProfileModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3><i class="fas fa-user-check"></i> Claim Your Profile</h3>
-            <span class="close" onclick="closeModal('claimProfileModal')">&times;</span>
-        </div>
-        
-        <div id="profileSearchSection">
-            <p class="mb-3">Search for your existing profile in the PeptideLinks directory:</p>
-            <div class="search-section">
-                <div class="input-group mb-3">
-                    <input type="text" id="profileSearch" class="form-control" 
-                           placeholder="Search by your name or institution...">
-                    <button class="btn btn-primary" onclick="searchForProfile()">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </div>
-                <div id="profileSearchResults"></div>
-            </div>
-        </div>
-        
-        <div id="claimFormSection" style="display: none;">
-            <div class="selected-profile mb-4">
-                <h5>Claiming Profile:</h5>
-                <div class="profile-info">
-                    <strong id="selectedProfileName"></strong><br>
-                    <span id="selectedProfileInstitution" class="text-muted"></span>
-                </div>
-                <input type="hidden" id="selectedResearcherId">
-                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="backToSearch()">
-                    <i class="fas fa-arrow-left"></i> Back to Search
-                </button>
-            </div>
-            
-            <div class="membership-explanation alert alert-info">
-                <h6><i class="fas fa-info-circle"></i> APS Membership Benefits</h6>
-                <p class="mb-2">To claim and update your profile, we'll create a <strong>free APS membership</strong> for you with these benefits:</p>
-                <ul class="mb-0">
-                    <li>Access to member portal and resources</li>
-                    <li>APS newsletters and announcements</li>
-                    <li>Networking opportunities</li>
-                    <li>Conference discounts and priority registration</li>
-                </ul>
-            </div>
-            
-            <form onsubmit="event.preventDefault(); submitClaimForm();">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Contact Information <span class="text-danger">*</span></h6>
-                        <div class="mb-3">
-                            <input type="email" id="claimEmail" class="form-control" placeholder="Email Address *" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="tel" id="claimPhone" class="form-control" placeholder="Phone Number *" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" id="claimAddress" class="form-control" placeholder="Address *" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <input type="text" id="claimCity" class="form-control" placeholder="City *" required>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" id="claimState" class="form-control" placeholder="State *" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <input type="text" id="claimZip" class="form-control" placeholder="ZIP Code *" required>
-                            </div>
-                            <div class="col-md-6">
-                                <select id="claimCountry" class="form-select" required>
-                                    <option value="USA">United States</option>
-                                    <option value="Canada">Canada</option>
-                                    <option value="UK">United Kingdom</option>
-                                    <option value="Germany">Germany</option>
-                                    <option value="France">France</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h6>Professional Information</h6>
-                        <div class="mb-3">
-                            <select id="claimAffiliationType" class="form-select">
-                                <option value="academic">Academic</option>
-                                <option value="industry">Industry</option>
-                                <option value="government">Government</option>
-                                <option value="nonprofit">Non-Profit</option>
-                                <option value="student">Student</option>
-                                <option value="retired">Retired</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <textarea id="claimResearchInterests" class="form-control" rows="3" 
-                                      placeholder="Research Interests"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <input type="url" id="claimWebsite" class="form-control" placeholder="Website URL">
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" id="claimOrcid" class="form-control" 
-                                   placeholder="ORCID ID (e.g., 0000-0000-0000-0000)">
-                        </div>
-                        <div class="mb-3">
-                            <textarea id="claimBio" class="form-control" rows="3" 
-                                      placeholder="Public Bio (optional)"></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('claimProfileModal')">Cancel</button>
-                    <button type="submit" id="claimSubmitBtn" class="btn btn-primary">
-                        <i class="fas fa-check"></i> Claim Profile & Join APS
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+// Removed all claim-related functions, keeping only submitAddProfileForm above
+</script>
 
 <!-- Add Profile Modal -->
 <div id="addProfileModal" class="modal" style="display: none;">
@@ -1271,110 +1032,133 @@ function submitAddForm() {
             <span class="close" onclick="closeModal('addProfileModal')">&times;</span>
         </div>
         
-        <div class="membership-explanation alert alert-success">
-            <h6><i class="fas fa-gift"></i> Welcome to APS!</h6>
-            <p class="mb-2">By adding yourself to PeptideLinks, you'll automatically receive a <strong>free APS membership</strong> with:</p>
-            <ul class="mb-0">
-                <li>Visibility in the global peptide researcher directory</li>
-                <li>Access to member portal and resources</li>
-                <li>APS newsletters and scientific updates</li>
-                <li>Networking opportunities with 1000+ researchers worldwide</li>
-            </ul>
+        <div class="alert alert-info mb-4" style="margin: 20px 30px;">
+            <h6><i class="fas fa-info-circle"></i> Join the Peptide Science Community</h6>
+            <p class="mb-0">Submit your information to be included in the PeptideLinks directory of peptide science researchers worldwide.</p>
         </div>
         
-        <form onsubmit="event.preventDefault(); submitAddForm();">
-            <div class="row">
-                <div class="col-md-6">
-                    <h6>Personal Information <span class="text-danger">*</span></h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" id="addFirstName" class="form-control mb-3" placeholder="First Name *" required>
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" id="addLastName" class="form-control mb-3" placeholder="Last Name *" required>
+        <form id="addProfileForm" onsubmit="event.preventDefault(); submitAddProfileForm();">
+            <div style="padding: 0 30px 30px 30px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" id="addFirstName" class="form-control" required>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <input type="text" id="addTitle" class="form-control" placeholder="Title (Dr., Prof., etc.)">
-                    </div>
-                    <div class="mb-3">
-                        <input type="email" id="addEmail" class="form-control" placeholder="Email Address *" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="tel" id="addPhone" class="form-control" placeholder="Phone Number *" required>
-                    </div>
-                    
-                    <h6>Address <span class="text-danger">*</span></h6>
-                    <div class="mb-3">
-                        <input type="text" id="addAddress" class="form-control" placeholder="Address *" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input type="text" id="addCity" class="form-control" placeholder="City *" required>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="addState" class="form-control" placeholder="State *" required>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <input type="text" id="addZip" class="form-control" placeholder="ZIP Code *" required>
-                        </div>
-                        <div class="col-md-6">
-                            <select id="addCountry" class="form-select" required>
-                                <option value="USA">United States</option>
-                                <option value="Canada">Canada</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="Germany">Germany</option>
-                                <option value="France">France</option>
-                                <option value="Other">Other</option>
-                            </select>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" id="addLastName" class="form-control" required>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
-                    <h6>Professional Information <span class="text-danger">*</span></h6>
-                    <div class="mb-3">
-                        <input type="text" id="addInstitution" class="form-control" placeholder="Institution *" required>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" id="addEmail" class="form-control" required>
+                            <div class="form-text">Your institutional email address</div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <input type="text" id="addDepartment" class="form-control" placeholder="Department">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Title/Position *</label>
+                            <input type="text" id="addTitle" class="form-control" required placeholder="e.g., Professor, Research Scientist">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <select id="addAffiliationType" class="form-select">
-                            <option value="academic">Academic</option>
-                            <option value="industry">Industry</option>
-                            <option value="government">Government</option>
-                            <option value="nonprofit">Non-Profit</option>
-                            <option value="student">Student</option>
-                            <option value="retired">Retired</option>
-                        </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Institution *</label>
+                    <input type="text" id="addInstitution" class="form-control" required 
+                           placeholder="University, Company, or Research Organization">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Department/Division</label>
+                    <input type="text" id="addDepartment" class="form-control" 
+                           placeholder="e.g., Chemistry, Biochemistry, Materials Science">
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Country *</label>
+                            <select id="addCountry" class="form-control" required>
+                                <option value="">Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Germany">Germany</option>
+                                <option value="France">France</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Australia">Australia</option>
+                                <option value="China">China</option>
+                                <option value="India">India</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <textarea id="addResearchInterests" class="form-control" rows="3" 
-                                  placeholder="Research Interests *" required></textarea>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">State/Province</label>
+                            <input type="text" id="addState" class="form-control">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <input type="url" id="addWebsite" class="form-control" placeholder="Website URL">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">City</label>
+                            <input type="text" id="addCity" class="form-control">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <input type="text" id="addOrcid" class="form-control" 
-                               placeholder="ORCID ID (e.g., 0000-0000-0000-0000)">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Research Interests *</label>
+                    <textarea id="addResearchInterests" class="form-control" rows="3" required
+                              placeholder="Brief description of your research focus and interests (e.g., peptide synthesis, bioactive peptides, drug delivery)"></textarea>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Website URL *</label>
+                            <input type="url" id="addWebsiteUrl" class="form-control" required placeholder="https://...">
+                            <div class="form-text">Your lab or institutional webpage</div>
+                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="addPhone" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Affiliation Type</label>
+                    <select id="addAffiliationType" class="form-control">
+                        <option value="academic">Academic Institution</option>
+                        <option value="government">Government Laboratory</option>
+                        <option value="industry">Industry/Company</option>
+                        <option value="nonprofit">Non-profit Organization</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
             </div>
             
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('addProfileModal')">Cancel</button>
-                <button type="submit" id="addSubmitBtn" class="btn btn-success">
-                    <i class="fas fa-user-plus"></i> Add Me to PeptideLinks & Join APS
+                <button type="submit" id="addSubmitBtn" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus" style="color: white;"></i> Add Me to PeptideLinks
                 </button>
             </div>
         </form>
     </div>
 </div>
-
 <style>
 /* Modal Styles */
 .modal {
@@ -1497,6 +1281,42 @@ function submitAddForm() {
     .modal-header h3 {
         font-size: 1.25rem;
     }
+}
+
+/* Profile claiming specific styles */
+.profile-claimed-info {
+    border-left: 4px solid #198754;
+}
+
+.membership-bonus {
+    border-left: 4px solid #0dcaf0;
+}
+
+.match-option {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.match-option:hover {
+    border-color: #0d6efd;
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.match-info {
+    flex-grow: 1;
+}
+
+.match-action {
+    flex-shrink: 0;
 }
 </style>
 
